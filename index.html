@@ -1351,6 +1351,190 @@ async function hapusBarisBukuKas(row) {
   }
 }
 
+// Debug: Lihat struktur database Buku Kas
+async function debugBukuKasStructure() {
+  const sb = initSupabase();
+  if(!sb) {
+    console.warn('❌ Supabase tidak terkoneksi');
+    return;
+  }
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+  const periode = getPeriodeStr();
+
+  console.log(`🔍 Debug struktur Buku Kas untuk ${kelompok} - ${periode}`);
+  
+  try {
+    // Ambil semua data tanpa filter
+    const { data, error } = await sb.from('buku_kas')
+      .select('*')
+      .eq('kelompok', kelompok)
+      .eq('periode', periode)
+      .order('baris');
+
+    if(error) {
+      console.error('❌ Error mengambil data:', error);
+      return;
+    }
+
+    console.log(`📊 Total ${data?.length || 0} record di database`);
+    
+    if(data && data.length > 0) {
+      console.log('📋 Struktur data (sample record):', data[0]);
+      console.log('📋 Semua data:', data);
+      
+      // Tampilkan baris numbers yang ada
+      const barisNumbers = data.map(d => d.baris);
+      console.log('📊 Baris numbers yang ada:', barisNumbers);
+      
+      // Group by baris
+      const byBaris = {};
+      data.forEach(item => {
+        if(!byBaris[item.baris]) byBaris[item.baris] = [];
+        byBaris[item.baris].push(item);
+      });
+      console.log('📋 Data by baris:', byBaris);
+    }
+
+  } catch(e) {
+    console.error('❌ Error debug:', e);
+  }
+}
+
+// Hapus agresif - coba semua kemungkinan
+async function hapusBarisBukuKasAgresif(row) {
+  const sb = initSupabase();
+  if(!sb) {
+    console.warn('❌ Supabase tidak terkoneksi');
+    return;
+  }
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+  const periode = getPeriodeStr();
+
+  // Ambil data dari baris
+  const cells = row.querySelectorAll('td');
+  const barisNum = row.querySelector('td')?.textContent || '';
+  const keterangan = getVal(cells[1]) || '';
+  const debet = bersihkanAngka(getVal(cells[2]) || '0');
+  const kredit = bersihkanAngka(getVal(cells[3]) || '0');
+
+  console.log(`🗑️ HAPUS AGRESIF - Baris: ${barisNum}, Keterangan: "${keterangan}", D: ${debet}, K: ${kredit}`);
+
+  try {
+    // Strategy 1: Hapus by baris number
+    if(barisNum) {
+      console.log(`🔍 Strategy 1: Hapus by baris ${barisNum}`);
+      const { error } = await sb.from('buku_kas')
+        .delete()
+        .eq('kelompok', kelompok)
+        .eq('periode', periode)
+        .eq('baris', parseInt(barisNum));
+
+      if(!error) {
+        console.log('✅ Strategy 1 berhasil - Hapus by baris number');
+        showStatus('✅ Baris berhasil dihapus (by baris)', '#2e7d5a');
+        return;
+      } else {
+        console.log('❌ Strategy 1 gagal:', error);
+      }
+    }
+
+    // Strategy 2: Hapus semua dengan keterangan kosong
+    if(!keterangan) {
+      console.log('🔍 Strategy 2: Hapus semua dengan keterangan kosong');
+      const { error } = await sb.from('buku_kas')
+        .delete()
+        .eq('kelompok', kelompok)
+        .eq('periode', periode)
+        .is('keterangan', null);
+
+      if(!error) {
+        console.log('✅ Strategy 2 berhasil - Hapus keterangan kosong');
+        showStatus('✅ Baris berhasil dihapus (keterangan kosong)', '#2e7d5a');
+        return;
+      } else {
+        console.log('❌ Strategy 2 gagal:', error);
+      }
+    }
+
+    // Strategy 3: Hapus semua dengan debet=0 dan kredit=0
+    if(debet === 0 && kredit === 0) {
+      console.log('🔍 Strategy 3: Hapus semua dengan debet=0 dan kredit=0');
+      const { error } = await sb.from('buku_kas')
+        .delete()
+        .eq('kelompok', kelompok)
+        .eq('periode', periode)
+        .eq('debet', 0)
+        .eq('kredit', 0);
+
+      if(!error) {
+        console.log('✅ Strategy 3 berhasil - Hapus debet=kredit=0');
+        showStatus('✅ Baris berhasil dihapus (debet=kredit=0)', '#2e7d5a');
+        return;
+      } else {
+        console.log('❌ Strategy 3 gagal:', error);
+      }
+    }
+
+    // Strategy 4: Ambil semua data dan hapus yang cocok manual
+    console.log('🔍 Strategy 4: Manual matching');
+    const { data: allData, error: allError } = await sb.from('buku_kas')
+      .select('*')
+      .eq('kelompok', kelompok)
+      .eq('periode', periode);
+
+    if(!allError && allData) {
+      console.log(`📊 Total ${allData.length} records untuk dicek`);
+      
+      for(const record of allData) {
+        const match = (
+          (!barisNum || record.baris === parseInt(barisNum)) &&
+          (!keterangan || record.keterangan === keterangan) &&
+          record.debet === debet &&
+          record.kredit === kredit
+        );
+        
+        if(match) {
+          console.log('🗑️ Menghapus record yang cocok:', record);
+          const { error: deleteError } = await sb.from('buku_kas')
+            .delete()
+            .eq('id', record.id);
+
+          if(!deleteError) {
+            console.log('✅ Strategy 4 berhasil - Hapus manual matching');
+            showStatus('✅ Baris berhasil dihapus (manual)', '#2e7d5a');
+            return;
+          } else {
+            console.log('❌ Error hapus manual:', deleteError);
+          }
+        }
+      }
+    }
+
+    console.log('❌ Semua strategy gagal');
+    alert('❌ Tidak dapat menghapus baris - semua strategy gagal');
+
+  } catch(e) {
+    console.error('❌ Error hapus agresif:', e);
+    alert('❌ Terjadi kesalahan saat menghapus data');
+  }
+}
+
+// Buat fungsi global
+window.debugBukuKasStructure = debugBukuKasStructure;
+window.hapusAgresif = async function() {
+  // Hapus baris yang sedang dipilih (misalnya baris aktif)
+  const selectedRow = document.querySelector('tr:hover');
+  if(selectedRow) {
+    await hapusBarisBukuKasAgresif(selectedRow);
+  } else {
+    alert('❌ Hover dulu pada baris yang ingin dihapus, lalu jalankan hapusAgresif()');
+  }
+};
+
 // Debug: Lihat semua data Buku Kas di database
 async function debugBukuKasData() {
   const sb = initSupabase();
