@@ -1208,11 +1208,86 @@ function tambahBarisBukuKas(){
   saveBukuKas();
 }
 
+// Hapus baris Buku Kas dari database
+async function hapusBarisBukuKas(row) {
+  const sb = initSupabase();
+  if(!sb) {
+    console.warn('❌ Supabase tidak terkoneksi');
+    return;
+  }
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+  const periode = getPeriodeStr();
+
+  // Ambil data dari baris yang akan dihapus
+  const cells = row.querySelectorAll('td');
+  if(cells.length < 6) {
+    console.warn('⚠️ Baris tidak valid untuk dihapus');
+    return;
+  }
+
+  const keterangan = getVal(cells[1]) || '';
+  const debet = bersihkanAngka(getVal(cells[2]) || '0');
+  const kredit = bersihkanAngka(getVal(cells[3]) || '0');
+  const saldo = bersihkanAngka(getVal(cells[4]) || '0');
+
+  console.log(`🗑️ Menghapus baris Buku Kas: ${keterangan} | D:${debet} K:${kredit}`);
+
+  try {
+    // Cari record yang cocok di database
+    const { data: existingData, error: findError } = await sb.from('buku_kas')
+      .select('*')
+      .eq('kelompok', kelompok)
+      .eq('periode', periode)
+      .eq('keterangan', keterangan)
+      .eq('debet', debet)
+      .eq('kredit', kredit)
+      .eq('saldo', saldo);
+
+    if(findError) {
+      console.error('❌ Error mencari data:', findError);
+      return;
+    }
+
+    if(!existingData || existingData.length === 0) {
+      console.log('📭 Tidak ada data yang cocok di database untuk dihapus');
+      return;
+    }
+
+    // Hapus record yang ditemukan
+    const { error: deleteError } = await sb.from('buku_kas')
+      .delete()
+      .eq('kelompok', kelompok)
+      .eq('periode', periode)
+      .eq('keterangan', keterangan)
+      .eq('debet', debet)
+      .eq('kredit', kredit)
+      .eq('saldo', saldo);
+
+    if(deleteError) {
+      console.error('❌ Error menghapus data:', deleteError);
+      alert('❌ Gagal menghapus data dari database');
+      return;
+    }
+
+    console.log(`✅ Berhasil menghapus ${existingData.length} record dari database`);
+    showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+
+  } catch(e) {
+    console.error('❌ Error hapus baris Buku Kas:', e);
+    alert('❌ Terjadi kesalahan saat menghapus data');
+  }
+}
+
 // Context menu untuk Buku Kas
 function tampilContextMenuBukuKas(e, row){
   ctxMenu.innerHTML='';
-  ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', ()=>{
+  ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', async ()=>{
     if(confirm('Hapus baris ini?')){ 
+      // Hapus dari database dulu
+      await hapusBarisBukuKas(row);
+      // Baru hapus dari DOM
       row.remove(); 
       recalc2(); 
       saveBukuKas(); 
@@ -1238,11 +1313,86 @@ function tambahBarisLaporanKas(){
   saveLaporanKas();
 }
 
+// Hapus baris Laporan Kas dari database
+async function hapusBarisLaporanKas(row) {
+  const sb = initSupabase();
+  if(!sb) {
+    console.warn('❌ Supabase tidak terkoneksi');
+    return;
+  }
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+  const periode = getPeriodeStr();
+
+  // Ambil data dari baris yang akan dihapus
+  const cells = row.querySelectorAll('td');
+  if(cells.length < 6) {
+    console.warn('⚠️ Baris tidak valid untuk dihapus');
+    return;
+  }
+
+  const keterangan = getVal(cells[1]) || '';
+  const debet = bersihkanAngka(getVal(cells[2]) || '0');
+  const kredit = bersihkanAngka(getVal(cells[3]) || '0');
+  const saldo = bersihkanAngka(getVal(cells[4]) || '0');
+
+  console.log(`🗑️ Menghapus baris Laporan Kas: ${keterangan} | D:${debet} K:${kredit}`);
+
+  try {
+    // Cari record yang cocok di database
+    const { data: existingData, error: findError } = await sb.from('laporan_kas')
+      .select('*')
+      .eq('kelompok', kelompok)
+      .eq('periode', periode)
+      .eq('keterangan', keterangan)
+      .eq('debet', debet)
+      .eq('kredit', kredit)
+      .eq('saldo', saldo);
+
+    if(findError) {
+      console.error('❌ Error mencari data:', findError);
+      return;
+    }
+
+    if(!existingData || existingData.length === 0) {
+      console.log('📭 Tidak ada data yang cocok di database untuk dihapus');
+      return;
+    }
+
+    // Hapus record yang ditemukan
+    const { error: deleteError } = await sb.from('laporan_kas')
+      .delete()
+      .eq('kelompok', kelompok)
+      .eq('periode', periode)
+      .eq('keterangan', keterangan)
+      .eq('debet', debet)
+      .eq('kredit', kredit)
+      .eq('saldo', saldo);
+
+    if(deleteError) {
+      console.error('❌ Error menghapus data:', deleteError);
+      alert('❌ Gagal menghapus data dari database');
+      return;
+    }
+
+    console.log(`✅ Berhasil menghapus ${existingData.length} record dari database`);
+    showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+
+  } catch(e) {
+    console.error('❌ Error hapus baris Laporan Kas:', e);
+    alert('❌ Terjadi kesalahan saat menghapus data');
+  }
+}
+
 // Context menu untuk Laporan Kas
 function tampilContextMenuLaporanKas(e, row){
   ctxMenu.innerHTML='';
-  ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', ()=>{
+  ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', async ()=>{
     if(confirm('Hapus baris ini?')){ 
+      // Hapus dari database dulu
+      await hapusBarisLaporanKas(row);
+      // Baru hapus dari DOM
       row.remove(); 
       recalc3(); 
       saveLaporanKas(); 
@@ -2045,10 +2195,26 @@ async function editPeriodeData(oldPeriode, parentModal) {
       parentModal.remove();
       showStatus(`✅ Periode berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`, '#2e7d5a');
       
-      // Refresh data
-      setTimeout(() => {
-        loadAll();
-      }, 1000);
+      // Switch ke periode baru dan reload data
+      document.getElementById('cfg-periode').value = newPeriode;
+      const s = JSON.parse(localStorage.getItem('cfg')||'{}');
+      s.periode = newPeriode;
+      localStorage.setItem('cfg', JSON.stringify(s));
+      
+      // Update _periodeDate
+      const [bulan, tahun] = newPeriode.split(' ');
+      const bulanIndex = BULAN.indexOf(bulan);
+      if(bulanIndex !== -1){
+        _periodeDate.bulan = bulanIndex;
+        _periodeDate.tahun = parseInt(tahun);
+      }
+      
+      terapkanSetting(s);
+      
+      // Reload data untuk menampilkan data di periode baru
+      setTimeout(async () => {
+        await loadAll();
+      }, 500);
 
     } catch(e) {
       console.error('Error ubah periode:', e);
@@ -2094,35 +2260,65 @@ async function prosesUbahPeriode(oldPeriode, newPeriode) {
     'saldo_awal'
   ];
 
+  let totalUpdated = 0;
+
   for(const table of tables) {
     console.log(`📝 Update tabel: ${table}`);
     
-    const { data, error } = await sb.from(table)
+    // Cek dulu data yang akan diupdate
+    const { data: existingData, error: checkError } = await sb.from(table)
       .select('*')
       .eq('kelompok', kelompok)
       .eq('periode', oldPeriode);
     
-    if(error) {
-      console.warn(`⚠️ Error ${table}:`, error);
+    if(checkError) {
+      console.warn(`⚠️ Error cek ${table}:`, checkError);
       continue;
     }
 
-    if(data && data.length > 0) {
-      // Update periode untuk semua record
-      const { error: updateError } = await sb.from(table)
-        .update({ periode: newPeriode })
-        .eq('kelompok', kelompok)
-        .eq('periode', oldPeriode);
+    if(!existingData || existingData.length === 0) {
+      console.log(`📭 Tidak ada data di ${table} untuk periode ${oldPeriode}`);
+      continue;
+    }
 
-      if(updateError) {
-        throw new Error(`Gagal update ${table}: ${updateError.message}`);
-      }
+    console.log(`📊 Ditemukan ${existingData.length} record di ${table}`);
 
-      console.log(`✅ ${table}: ${data.length} record diupdate`);
+    // Update periode untuk semua record
+    const { data: updatedData, error: updateError } = await sb.from(table)
+      .update({ periode: newPeriode })
+      .eq('kelompok', kelompok)
+      .eq('periode', oldPeriode)
+      .select('*');
+
+    if(updateError) {
+      console.error(`❌ Gagal update ${table}:`, updateError);
+      throw new Error(`Gagal update ${table}: ${updateError.message}`);
+    }
+
+    console.log(`✅ ${table}: ${updatedData?.length || 0} record berhasil diupdate`);
+    totalUpdated += (updatedData?.length || 0);
+
+    // Verifikasi update berhasil
+    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay
+    const { data: verifyData, error: verifyError } = await sb.from(table)
+      .select('*')
+      .eq('kelompok', kelompok)
+      .eq('periode', newPeriode);
+    
+    if(verifyError) {
+      console.warn(`⚠️ Error verifikasi ${table}:`, verifyError);
+    } else {
+      console.log(`✅ Verifikasi ${table}: ${verifyData?.length || 0} record di periode baru`);
     }
   }
 
-  console.log(`✅ Semua data berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`);
+  console.log(`✅ Total ${totalUpdated} record berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`);
+  
+  // Reload data untuk memastikan perubahan terlihat
+  if(totalUpdated > 0) {
+    console.log('🔄 Me-reload data setelah update periode...');
+    await loadAll();
+  }
 }
 
 // Fungsi untuk hapus periode beserta semua data
