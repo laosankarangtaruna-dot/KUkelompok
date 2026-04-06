@@ -1913,8 +1913,17 @@ async function tampilkanSemuaPeriode(){
         await editPeriodeData(periode, modal);
       };
       
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '🗑️ Hapus';
+      deleteBtn.style.cssText = 'padding:4px 8px; font-size:10px; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;';
+      deleteBtn.onclick = async (e) => {
+        e.stopPropagation();
+        await hapusPeriodeData(periode, modal);
+      };
+      
       actions.appendChild(switchBtn);
       actions.appendChild(editBtn);
+      actions.appendChild(deleteBtn);
       
       btn.innerHTML = `
         <span style="flex:1;">${periode}</span>
@@ -2112,6 +2121,162 @@ async function prosesUbahPeriode(oldPeriode, newPeriode) {
   }
 
   console.log(`✅ Semua data berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`);
+}
+
+// Fungsi untuk hapus periode beserta semua data
+async function hapusPeriodeData(periode, parentModal) {
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:10002; 
+    display:flex; align-items:center; justify-content:center;
+  `;
+
+  const box = document.createElement('div');
+  box.style.cssText = `
+    background:white; border-radius:12px; padding:24px; max-width:450px; 
+    width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  `;
+
+  const title = document.createElement('h3');
+  title.textContent = '🗑️ Hapus Periode';
+  title.style.cssText = 'margin:0 0 16px 0; color:#e74c3c; font-size:18px;';
+  box.appendChild(title);
+
+  const warning = document.createElement('div');
+  warning.innerHTML = `
+    <div style="background:#fee; border:1px solid #fcc; border-radius:8px; padding:16px; margin-bottom:16px;">
+      <h4 style="color:#e74c3c; margin:0 0 12px 0; font-size:14px;">⚠️ PERINGATAN KRITIS!</h4>
+      <p style="margin:0 0 8px 0; color:#333; font-size:13px; line-height:1.4;">
+        Anda akan <strong>MENGHAPUS PERMANEN</strong> semua data untuk periode:
+      </p>
+      <div style="background:#e74c3c; color:white; padding:8px 12px; border-radius:6px; text-align:center; font-weight:bold; margin:8px 0;">
+        ${periode}
+      </div>
+      <p style="margin:8px 0 0 0; color:#333; font-size:13px; line-height:1.4;">
+        Data yang akan dihapus:
+        <br>• <strong>Data Jamaah</strong> (semua anggota & setoran)
+        <br>• <strong>Buku Kas</strong> (semua transaksi)
+        <br>• <strong>Laporan Kas</strong> (semua laporan)
+        <br>• <strong>Saldo Awal</strong>
+      </p>
+      <p style="margin:8px 0 0 0; color:#666; font-size:12px; font-style:italic;">
+        Tindakan ini <strong>TIDAK DAPAT DIBATALKAN!</strong>
+      </p>
+    </div>
+  `;
+  box.appendChild(warning);
+
+  const confirmInput = document.createElement('div');
+  confirmInput.style.cssText = 'margin-bottom:16px;';
+  confirmInput.innerHTML = `
+    <label style="font-size:12px; font-weight:600; color:#e74c3c;">
+      Ketik <strong>HAPUS</strong> untuk konfirmasi:
+      <input id="confirm-delete-input" type="text" 
+             style="display:block; width:100%; margin-top:4px; padding:8px 10px; 
+                    border:2px solid #e74c3c; border-radius:5px; font-size:14px; 
+                    font-family:inherit; text-align:center; text-transform:uppercase;"
+             placeholder="HAPUS">
+    </label>
+  `;
+  box.appendChild(confirmInput);
+
+  const actions = document.createElement('div');
+  actions.style.cssText = 'display:flex; gap:8px;';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = '❌ Batal';
+  cancelBtn.className = 'btn btn-r';
+  cancelBtn.style.cssText = 'flex:1; font-size:14px;';
+  cancelBtn.onclick = () => modal.remove();
+
+  const confirmBtn = document.createElement('button');
+  confirmBtn.textContent = '🗑️ HAPUS PERMANEN';
+  confirmBtn.className = 'btn btn-r';
+  confirmBtn.style.cssText = 'flex:1; background:#e74c3c; font-size:14px; font-weight:bold;';
+  confirmBtn.onclick = async () => {
+    const confirmText = document.getElementById('confirm-delete-input').value.trim();
+    
+    if(confirmText !== 'HAPUS') {
+      alert('❌ Masukkan "HAPUS" untuk konfirmasi penghapusan!');
+      return;
+    }
+
+    if(!confirm(`🗑️ ANDA YAKIN?\n\nPeriode "${periode}" dan SEMUA datanya akan dihapus PERMANEN!\n\nTidak ada cara untuk membatalkan tindakan ini!`)) {
+      return;
+    }
+
+    try {
+      await prosesHapusPeriode(periode);
+      modal.remove();
+      parentModal.remove();
+      showStatus(`🗑️ Periode "${periode}" dan semua data telah dihapus`, '#e74c3c');
+      
+      // Refresh data
+      setTimeout(() => {
+        loadAll();
+      }, 1000);
+
+    } catch(e) {
+      console.error('Error hapus periode:', e);
+      alert('❌ Gagal menghapus periode: ' + e.message);
+    }
+  };
+
+  actions.appendChild(cancelBtn);
+  actions.appendChild(confirmBtn);
+  box.appendChild(actions);
+
+  modal.appendChild(box);
+  modal.onclick = (e) => {
+    if(e.target === modal) modal.remove();
+  };
+  document.body.appendChild(modal);
+
+  // Auto focus ke input
+  setTimeout(() => {
+    const input = document.getElementById('confirm-delete-input');
+    if(input) {
+      input.focus();
+      input.select();
+    }
+  }, 100);
+}
+
+// Proses hapus periode data
+async function prosesHapusPeriode(periode) {
+  const sb = initSupabase();
+  if(!sb) throw new Error('Supabase tidak terkoneksi!');
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+
+  console.log(`🗑️ Menghapus periode: ${periode} untuk kelompok: ${kelompok}`);
+
+  // Hapus dari semua tabel yang ada
+  const tables = [
+    'data_jamaah',
+    'buku_kas', 
+    'laporan_kas',
+    'saldo_awal'
+  ];
+
+  for(const table of tables) {
+    console.log(`🗑️ Hapus dari tabel: ${table}`);
+    
+    const { error } = await sb.from(table)
+      .delete()
+      .eq('kelompok', kelompok)
+      .eq('periode', periode);
+    
+    if(error) {
+      console.warn(`⚠️ Error hapus ${table}:`, error);
+      // Lanjutkan ke tabel berikutnya meskipun ada error
+    } else {
+      console.log(`✅ ${table}: Berhasil dihapus`);
+    }
+  }
+
+  console.log(`✅ Semua data periode "${periode}" berhasil dihapus`);
 }
 
 async function refreshPeriodeAktif(){
