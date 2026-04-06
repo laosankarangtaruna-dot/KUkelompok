@@ -1403,8 +1403,8 @@ async function hapusBarisBukuKas(row) {
       }
     }
 
-    console.log('📭 Tidak ada data yang cocok untuk dihapus');
-    alert('❌ Tidak dapat menemukan data yang cocok di database');
+    console.log('📭 Tidak ada data yang cocok untuk dihapus (baris mungkin belum tersimpan di DB)');
+    // Tidak perlu alert — baris kosong memang belum tentu ada di database
 
   } catch(e) {
     console.error('❌ Error hapus baris Buku Kas:', e);
@@ -1685,9 +1685,13 @@ function tampilContextMenuBukuKas(e, row){
   ctxMenu.innerHTML='';
   ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', async ()=>{
     if(confirm('Hapus baris ini?')){ 
-      // Hapus dari database dulu
-      await hapusBarisBukuKas(row);
-      // Baru hapus dari DOM
+      try {
+        // Coba hapus dari database (baris kosong mungkin tidak ada di DB — tidak masalah)
+        await hapusBarisBukuKas(row);
+      } catch(err) {
+        console.warn('⚠️ Hapus dari DB gagal (mungkin baris kosong):', err);
+      }
+      // Selalu hapus dari DOM meskipun DB gagal
       row.remove(); 
       recalc2(); 
       saveBukuKas(); 
@@ -1847,6 +1851,8 @@ function kasRow(rowNum,ket,debEdit=true,kreEdit=true,kreFormulaHint=''){
   }
   // Saldo
   const tSld=cel('td','form','0');tSld.id=`ks${rowNum}`;row.appendChild(tSld);
+  // Context menu — klik kanan untuk hapus baris
+  row.addEventListener('contextmenu',e=>{e.preventDefault();tampilContextMenuBukuKas(e,row);});
   return row;
 }
 
