@@ -1231,18 +1231,17 @@ async function hapusBarisBukuKas(row) {
   const keterangan = getVal(cells[1]) || '';
   const debet = bersihkanAngka(getVal(cells[2]) || '0');
   const kredit = bersihkanAngka(getVal(cells[3]) || '0');
-  const saldo = bersihkanAngka(getVal(cells[4]) || '0');
+  // Tidak menggunakan saldo karena tidak ada di database
 
   console.log(`🗑️ Data baris yang akan dihapus:`);
   console.log(`  - Keterangan: "${keterangan}"`);
   console.log(`  - Debet: ${debet}`);
   console.log(`  - Kredit: ${kredit}`);
-  console.log(`  - Saldo: ${saldo}`);
   console.log(`  - Kelompok: ${kelompok}`);
   console.log(`  - Periode: ${periode}`);
 
   try {
-    // Cari record yang cocok di database
+    // Cari record yang cocok di database (tanpa saldo)
     console.log(`🔍 Mencari data di database...`);
     const { data: existingData, error: findError } = await sb.from('buku_kas')
       .select('*')
@@ -1250,8 +1249,7 @@ async function hapusBarisBukuKas(row) {
       .eq('periode', periode)
       .eq('keterangan', keterangan)
       .eq('debet', debet)
-      .eq('kredit', kredit)
-      .eq('saldo', saldo);
+      .eq('kredit', kredit);
 
     if(findError) {
       console.error('❌ Error mencari data:', findError);
@@ -1266,7 +1264,7 @@ async function hapusBarisBukuKas(row) {
     if(!existingData || existingData.length === 0) {
       console.log('📭 Tidak ada data yang cocok di database untuk dihapus');
       
-      // Coba cari dengan kriteria lebih longgar
+      // Coba cari dengan kriteria lebih longgar (hanya keterangan)
       console.log('🔍 Mencari dengan kriteria lebih longgar...');
       const { data: looseData, error: looseError } = await sb.from('buku_kas')
         .select('*')
@@ -1276,6 +1274,26 @@ async function hapusBarisBukuKas(row) {
 
       if(!looseError && looseData) {
         console.log(`📋 Data dengan keterangan sama (${looseData.length} record):`, looseData);
+        
+        // Jika hanya ada 1 record dengan keterangan ini, hapus saja
+        if(looseData.length === 1) {
+          console.log('🗑️ Menghapus 1 record yang ditemukan...');
+          const { error: deleteError } = await sb.from('buku_kas')
+            .delete()
+            .eq('kelompok', kelompok)
+            .eq('periode', periode)
+            .eq('keterangan', keterangan);
+
+          if(deleteError) {
+            console.error('❌ Error menghapus data:', deleteError);
+            alert('❌ Gagal menghapus data dari database');
+            return;
+          }
+
+          console.log(`✅ Berhasil menghapus 1 record dari database`);
+          showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+          return;
+        }
       }
       
       return;
@@ -1289,8 +1307,7 @@ async function hapusBarisBukuKas(row) {
       .eq('periode', periode)
       .eq('keterangan', keterangan)
       .eq('debet', debet)
-      .eq('kredit', kredit)
-      .eq('saldo', saldo);
+      .eq('kredit', kredit);
 
     if(deleteError) {
       console.error('❌ Error menghapus data:', deleteError);
@@ -1309,8 +1326,7 @@ async function hapusBarisBukuKas(row) {
       .eq('periode', periode)
       .eq('keterangan', keterangan)
       .eq('debet', debet)
-      .eq('kredit', kredit)
-      .eq('saldo', saldo);
+      .eq('kredit', kredit);
 
     if(!verifyError) {
       console.log(`📊 Verifikasi: ${verifyData?.length || 0} record masih ada`);
@@ -1461,20 +1477,19 @@ async function hapusBarisLaporanKas(row) {
   const keterangan = getVal(cells[1]) || '';
   const debet = bersihkanAngka(getVal(cells[2]) || '0');
   const kredit = bersihkanAngka(getVal(cells[3]) || '0');
-  const saldo = bersihkanAngka(getVal(cells[4]) || '0');
+  // Tidak menggunakan saldo karena tidak ada di database
 
   console.log(`🗑️ Menghapus baris Laporan Kas: ${keterangan} | D:${debet} K:${kredit}`);
 
   try {
-    // Cari record yang cocok di database
+    // Cari record yang cocok di database (tanpa saldo)
     const { data: existingData, error: findError } = await sb.from('laporan_kas')
       .select('*')
       .eq('kelompok', kelompok)
       .eq('periode', periode)
       .eq('keterangan', keterangan)
       .eq('debet', debet)
-      .eq('kredit', kredit)
-      .eq('saldo', saldo);
+      .eq('kredit', kredit);
 
     if(findError) {
       console.error('❌ Error mencari data:', findError);
@@ -1493,8 +1508,7 @@ async function hapusBarisLaporanKas(row) {
       .eq('periode', periode)
       .eq('keterangan', keterangan)
       .eq('debet', debet)
-      .eq('kredit', kredit)
-      .eq('saldo', saldo);
+      .eq('kredit', kredit);
 
     if(deleteError) {
       console.error('❌ Error menghapus data:', deleteError);
