@@ -1231,10 +1231,40 @@ async function hapusBarisBukuKas(row) {
   const keterangan = getVal(cells[1]) || '';
   const debet = bersihkanAngka(getVal(cells[2]) || '0');
   const kredit = bersihkanAngka(getVal(cells[3]) || '0');
-  const barisNum = row.querySelector('td')?.textContent || '';
+  
+  // Cara baca baris number yang lebih reliable
+  let barisNum = null;
+  
+  // Method 1: Dari first cell (nomor baris)
+  const firstCell = cells[0];
+  if(firstCell) {
+    const text = firstCell.textContent || firstCell.innerText || '';
+    const match = text.match(/\d+/);
+    if(match) {
+      barisNum = parseInt(match[0]);
+    }
+  }
+  
+  // Method 2: Dari row index di table
+  if(!barisNum || isNaN(barisNum)) {
+    const tbody = row.parentElement;
+    if(tbody) {
+      const allRows = Array.from(tbody.querySelectorAll('tr'));
+      const dataRows = allRows.filter(tr => !tr.classList.contains('rl') && !tr.classList.contains('rs'));
+      const rowIndex = dataRows.indexOf(row);
+      if(rowIndex !== -1) {
+        barisNum = rowIndex + 6; // Excel row numbers start at 6
+      }
+    }
+  }
+  
+  // Method 3: D dari atribut data-baris jika ada
+  if(!barisNum || isNaN(barisNum)) {
+    barisNum = parseInt(row.getAttribute('data-baris')) || null;
+  }
 
   console.log(`🗑️ Data baris yang akan dihapus:`);
-  console.log(`  - Baris: ${barisNum}`);
+  console.log(`  - Baris: ${barisNum} (type: ${typeof barisNum})`);
   console.log(`  - Keterangan: "${keterangan}"`);
   console.log(`  - Debet: ${debet}`);
   console.log(`  - Kredit: ${kredit}`);
@@ -1242,14 +1272,14 @@ async function hapusBarisBukuKas(row) {
   console.log(`  - Periode: ${periode}`);
 
   try {
-    // Strategy 1: Cari by baris number (paling reliable)
-    if(barisNum) {
-      console.log(`🔍 Mencari by baris number: ${barisNum}`);
+    // Strategy 1: Hapus by baris number (jika valid)
+    if(barisNum && !isNaN(barisNum)) {
+      console.log(`🔍 Strategy 1: Hapus by baris ${barisNum}`);
       const { data: barisData, error: barisError } = await sb.from('buku_kas')
         .select('*')
         .eq('kelompok', kelompok)
         .eq('periode', periode)
-        .eq('baris', parseInt(barisNum));
+        .eq('baris', barisNum);
 
       if(!barisError && barisData && barisData.length > 0) {
         console.log(`📊 Ditemukan ${barisData.length} record by baris number`);
@@ -1259,7 +1289,7 @@ async function hapusBarisBukuKas(row) {
           .delete()
           .eq('kelompok', kelompok)
           .eq('periode', periode)
-          .eq('baris', parseInt(barisNum));
+          .eq('baris', barisNum);
 
         if(!deleteError) {
           console.log(`✅ Berhasil menghapus ${barisData.length} record by baris number`);
@@ -1268,12 +1298,14 @@ async function hapusBarisBukuKas(row) {
         } else {
           console.error('❌ Error hapus by baris:', deleteError);
         }
+      } else {
+        console.log('📭 Tidak ada data by baris number');
       }
     }
 
-    // Strategy 2: Cari by keterangan + debet + kredit
+    // Strategy 2: Hapus by keterangan + debet + kredit
     if(keterangan) {
-      console.log(`🔍 Mencari by keterangan+debet+kredit...`);
+      console.log(`🔍 Strategy 2: Hapus by keterangan+debet+kredit`);
       const { data: existingData, error: findError } = await sb.from('buku_kas')
         .select('*')
         .eq('kelompok', kelompok)
@@ -1301,11 +1333,32 @@ async function hapusBarisBukuKas(row) {
         } else {
           console.error('❌ Error hapus by keterangan:', deleteError);
         }
+      } else {
+        console.log('📭 Tidak ada data by keterangan+debet+kredit');
       }
     }
 
-    // Strategy 3: Cari all data dan hapus yang cocok
-    console.log('🔍 Strategy 3: Get all data and find match...');
+    // Strategy 3: Hapus semua dengan debet=0 dan kredit=0 (untuk baris kosong)
+    if(debet === 0 && kredit === 0 && (!keterangan || keterangan.trim() === '')) {
+      console.log(`🔍 Strategy 3: Hapus semua dengan debet=0 dan kredit=0`);
+      const { error } = await sb.from('buku_kas')
+        .delete()
+        .eq('kelompok', kelompok)
+        .eq('periode', periode)
+        .eq('debet', 0)
+        .eq('kredit', 0);
+
+      if(!error) {
+        console.log('✅ Strategy 3 berhasil - Hapus debet=kredit=0');
+        showStatus('✅ Baris berhasil dihapus (debet=kredit=0)', '#2e7d5a');
+        return;
+      } else {
+        console.log('❌ Strategy 3 gagal:', error);
+      }
+    }
+
+    // Strategy 4: Get all data dan hapus yang cocok
+    console.log('🔍 Strategy 4: Get all data and find match...');
     const { data: allData, error: allError } = await sb.from('buku_kas')
       .select('*')
       .eq('kelompok', kelompok)
@@ -1316,10 +1369,10 @@ async function hapusBarisBukuKas(row) {
       
       // Cari record yang cocok
       const matchRecord = allData.find(record => {
-        const matchKet = record.keterangan === keterangan;
+        const matchKet = !keterangan || record.keterangan === keterangan;
         const matchDebet = record.debet === debet;
         const matchKredit = record.kredit === kredit;
-        const matchBaris = barisNum ? record.baris === parseInt(barisNum) : true;
+        const matchBaris = !barisNum || record.baris === barisNum;
         
         return matchKet && matchDebet && matchKredit && matchBaris;
       });
@@ -1339,6 +1392,14 @@ async function hapusBarisBukuKas(row) {
         } else {
           console.error('❌ Error hapus by id:', deleteError);
         }
+      } else {
+        console.log('📭 Tidak ada record yang cocok di semua data');
+        
+        // Tampilkan semua data untuk debugging
+        console.log('📋 Semua data di database:');
+        allData.forEach((record, idx) => {
+          console.log(`  ${idx + 1}. baris:${record.baris}, ket:"${record.keterangan}", D:${record.debet}, K:${record.kredit}`);
+        });
       }
     }
 
