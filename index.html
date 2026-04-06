@@ -289,35 +289,8 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ═══════════════════════════════════════
-   SUPABASE CONFIG — ganti dengan milik kamu
-═══════════════════════════════════════ */
-const SUPABASE_URL = 'https://mdgpewanggcfpxxeeqyr.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kZ3Bld2FuZ2djZnB4eGVlcXlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMTQ5MzcsImV4cCI6MjA5MDU5MDkzN30.dD5p6xjKhEwY7wzdwE5C28nmeuHXHEh8a_pg7zUrdPY';
-let _sb = null;
-
-// Fungsi inisialisasi Supabase (single instance)
-function initSupabase(){
-  if(!_sb && SUPABASE_URL && SUPABASE_KEY){
-    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    console.log('✅ Supabase client initialized');
-  }
-  return _sb;
-}
-
-// Indikator status simpan
-const statusEl = document.createElement('div');
-statusEl.id = 'save-status';
-statusEl.style.cssText = 'position:fixed;bottom:12px;right:16px;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;z-index:999;display:none';
-document.body.appendChild(statusEl);
-
-function showStatus(msg, color){
-  statusEl.textContent = msg;
-  statusEl.style.background = color;
-  statusEl.style.color = '#fff';
-  statusEl.style.display = 'block';
-  clearTimeout(statusEl._t);
-  statusEl._t = setTimeout(()=>statusEl.style.display='none', 2500);
-}
+   KELAS SETORAN
+══════════════════════════════════════ */
 
 // Debounce agar tidak spam request
 function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
@@ -799,6 +772,35 @@ function terapkanKelasKeData(){
 </script>
 
 <script>
+/* ═══════════════════════════════════════
+   SUPABASE CONFIG — ganti dengan milik kamu
+═══════════════════════════════════════ */
+const SUPABASE_URL = 'https://mdgpewanggcfpxxeeqyr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kZ3Bld2FuZ2djZnB4eGVlcXlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMTQ5MzcsImV4cCI6MjA5MDU5MDkzN30.dD5p6xjKhEwY7wzdwE5C28nmeuHXHEh8a_pg7zUrdPY';
+let _sb = null;
+
+// Fungsi inisialisasi Supabase (single instance)
+function initSupabase(){
+  if(!_sb && SUPABASE_URL && SUPABASE_KEY){
+    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('✅ Supabase client initialized');
+  }
+  return _sb;
+}
+
+// Indikator status simpan
+const statusEl = document.createElement('div');
+statusEl.id = 'save-status';
+statusEl.style.cssText = 'position:fixed;bottom:12px;right:16px;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;z-index:999;display:none';
+document.body.appendChild(statusEl);
+
+function showStatus(msg, color){
+  statusEl.textContent = msg;
+  statusEl.style.background = color;
+  statusEl.style.display = 'block';
+  setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+}
+
 /* ═══════════════════════════════════════
    UTILITIES
 ═══════════════════════════════════════ */
