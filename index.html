@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Laporan Keuangan – Kelompok Gumukrejo</title>
+<title>Laporan Keuangan – Kelompok Laosan</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--hijau:#1a4d3a;--hijau2:#2e7d5a;--emas:#c8a951;--emas2:#e8c97a;--krem:#f9f5ee;--border:#d4c89a}
@@ -244,6 +244,10 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
       <label style="font-size:12px;font-weight:600">Periode
         <input id="cfg-periode" type="text" value="Desember 2025" style="display:block;width:100%;margin-top:4px;padding:6px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:inherit">
       </label>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-p" onclick="tampilkanSemuaPeriode()" style="font-size:11px;padding:4px 10px">📋 Lihat Semua Periode</button>
+        <button class="btn btn-p" onclick="refreshPeriodeAktif()" style="font-size:11px;padding:4px 10px">🔄 Refresh</button>
+      </div>
     </div>
 
     <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:10px">
@@ -1787,6 +1791,318 @@ function gantiPeriode(arah){
       recalc2(); recalc3();
     }
   });
+}
+
+/* ─── Manajemen Periode ─── */
+async function tampilkanSemuaPeriode(){
+  const sb = initSupabase();
+  if(!sb){
+    alert('❌ Supabase belum terkoneksi!');
+    return;
+  }
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+
+  try {
+    // Ambil semua periode yang ada dari tabel data_jamaah
+    const {data: periodes, error} = await sb.from('data_jamaah')
+      .select('periode')
+      .eq('kelompok', kelompok)
+      .order('periode', {ascending: false});
+
+    if(error){
+      console.error('Error:', error);
+      alert('❌ Gagal mengambil data periode: ' + error.message);
+      return;
+    }
+
+    // Ambil periode unik
+    const uniquePeriodes = [...new Set(periodes?.map(p => p.periode) || [])];
+    
+    if(uniquePeriodes.length === 0){
+      alert('📋 Belum ada data untuk kelompok "' + kelompok + '"');
+      return;
+    }
+
+    // Buat modal untuk pilih periode
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; 
+      display:flex; align-items:center; justify-content:center;
+    `;
+
+    const box = document.createElement('div');
+    box.style.cssText = `
+      background:white; border-radius:12px; padding:24px; max-width:400px; 
+      width:90%; max-height:70vh; overflow-y:auto; box-shadow:0 8px 32px rgba(0,0,0,0.3);
+    `;
+
+    const title = document.createElement('h3');
+    title.textContent = '📋 Pilih Periode';
+    title.style.cssText = 'margin:0 0 16px 0; color:var(--hijau); font-size:18px;';
+    box.appendChild(title);
+
+    const list = document.createElement('div');
+    list.style.cssText = 'display:flex; flex-direction:column; gap:8px;';
+
+    uniquePeriodes.forEach(periode => {
+      const btn = document.createElement('button');
+      btn.textContent = periode;
+      btn.style.cssText = `
+        padding:12px 16px; border:1px solid var(--border); border-radius:8px;
+        background:${periode === getPeriodeStr() ? 'var(--hijau)' : '#f9f5ee'};
+        color:${periode === getPeriodeStr() ? 'white' : 'var(--hijau)'};
+        font-size:14px; cursor:pointer; transition:all 0.2s; display:flex; justify-content:space-between; align-items:center;
+      `;
+      
+      const actions = document.createElement('div');
+      actions.style.cssText = 'display:flex; gap:4px;';
+      
+      const switchBtn = document.createElement('button');
+      switchBtn.textContent = '🔄 Switch';
+      switchBtn.style.cssText = 'padding:4px 8px; font-size:10px; background:var(--hijau2); color:white; border:none; border-radius:4px; cursor:pointer;';
+      switchBtn.onclick = async (e) => {
+        e.stopPropagation();
+        // Switch ke periode yang dipilih
+        document.getElementById('cfg-periode').value = periode;
+        const s = JSON.parse(localStorage.getItem('cfg')||'{}');
+        s.periode = periode;
+        localStorage.setItem('cfg', JSON.stringify(s));
+        
+        // Update _periodeDate
+        const [bulan, tahun] = periode.split(' ');
+        const bulanIndex = BULAN.indexOf(bulan);
+        if(bulanIndex !== -1){
+          _periodeDate.bulan = bulanIndex;
+          _periodeDate.tahun = parseInt(tahun);
+        }
+        
+        terapkanSetting(s);
+        await loadAll();
+        modal.remove();
+        
+        showStatus(`✅ Switch ke periode: ${periode}`, '#2e7d5a');
+      };
+      
+      const editBtn = document.createElement('button');
+      editBtn.textContent = '✏️ Edit';
+      editBtn.style.cssText = 'padding:4px 8px; font-size:10px; background:#f39c12; color:white; border:none; border-radius:4px; cursor:pointer;';
+      editBtn.onclick = async (e) => {
+        e.stopPropagation();
+        await editPeriodeData(periode, modal);
+      };
+      
+      actions.appendChild(switchBtn);
+      actions.appendChild(editBtn);
+      
+      btn.innerHTML = `
+        <span style="flex:1;">${periode}</span>
+      `;
+      btn.appendChild(actions);
+      
+      btn.onmouseenter = () => {
+        if(periode !== getPeriodeStr()) btn.style.background = '#e8f5ef';
+      };
+      btn.onmouseleave = () => {
+        if(periode !== getPeriodeStr()) btn.style.background = '#f9f5ee';
+      };
+      
+      list.appendChild(btn);
+    });
+
+    box.appendChild(list);
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Tutup';
+    closeBtn.className = 'btn btn-r';
+    closeBtn.style.cssText = 'margin-top:16px; width:100%;';
+    closeBtn.onclick = () => modal.remove();
+    box.appendChild(closeBtn);
+
+    modal.appendChild(box);
+    modal.onclick = (e) => {
+      if(e.target === modal) modal.remove();
+    };
+    document.body.appendChild(modal);
+
+  } catch(e){
+    console.error('Error:', e);
+    alert('❌ Terjadi kesalahan: ' + e.message);
+  }
+}
+
+// Fungsi untuk edit periode data yang salah
+async function editPeriodeData(oldPeriode, parentModal) {
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:10001; 
+    display:flex; align-items:center; justify-content:center;
+  `;
+
+  const box = document.createElement('div');
+  box.style.cssText = `
+    background:white; border-radius:12px; padding:24px; max-width:450px; 
+    width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  `;
+
+  const title = document.createElement('h3');
+  title.textContent = '✏️ Edit Periode Data';
+  title.style.cssText = 'margin:0 0 16px 0; color:var(--hijau); font-size:18px;';
+  box.appendChild(title);
+
+  const info = document.createElement('div');
+  info.innerHTML = `
+    <p style="margin:0 0 16px 0; color:#666; font-size:13px; line-height:1.4;">
+      Data dengan periode <strong>${oldPeriode}</strong> akan dipindahkan ke periode baru.
+      <br><br>
+      <strong>⚠️ Perhatian:</strong> Ini akan mengubah SEMUA data di periode tersebut:
+      <br>• Data Jamaah, Buku Kas, Laporan Kas
+      <br>• Saldo Awal
+    </p>
+  `;
+  box.appendChild(info);
+
+  const form = document.createElement('div');
+  form.style.cssText = 'display:flex; flex-direction:column; gap:12px; margin-bottom:16px;';
+
+  const label = document.createElement('label');
+  label.innerHTML = `
+    <span style="font-size:12px; font-weight:600; color:var(--hijau);">Periode Baru:</span>
+    <input id="new-periode-input" type="text" value="${getPeriodeStr()}" 
+           style="display:block; width:100%; margin-top:4px; padding:8px 10px; 
+                  border:1px solid var(--border); border-radius:5px; font-size:14px; 
+                  font-family:inherit;" placeholder="Contoh: Januari 2026">
+  `;
+  form.appendChild(label);
+
+  box.appendChild(form);
+
+  const actions = document.createElement('div');
+  actions.style.cssText = 'display:flex; gap:8px;';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = 'Batal';
+  cancelBtn.className = 'btn btn-r';
+  cancelBtn.style.cssText = 'flex:1;';
+  cancelBtn.onclick = () => modal.remove();
+
+  const confirmBtn = document.createElement('button');
+  confirmBtn.textContent = '🔄 Ubah Periode';
+  confirmBtn.className = 'btn btn-p';
+  confirmBtn.style.cssText = 'flex:1; background:#f39c12;';
+  confirmBtn.onclick = async () => {
+    const newPeriode = document.getElementById('new-periode-input').value.trim();
+    
+    if(!newPeriode) {
+      alert('❌ Masukkan periode baru!');
+      return;
+    }
+
+    if(newPeriode === oldPeriode) {
+      alert('❌ Periode baru sama dengan periode lama!');
+      return;
+    }
+
+    if(!confirm(`⚠️ Yakin ingin mengubah semua data dari "${oldPeriode}" ke "${newPeriode}"?\n\nTindakan ini tidak dapat dibatalkan!`)) {
+      return;
+    }
+
+    try {
+      await prosesUbahPeriode(oldPeriode, newPeriode);
+      modal.remove();
+      parentModal.remove();
+      showStatus(`✅ Periode berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`, '#2e7d5a');
+      
+      // Refresh data
+      setTimeout(() => {
+        loadAll();
+      }, 1000);
+
+    } catch(e) {
+      console.error('Error ubah periode:', e);
+      alert('❌ Gagal mengubah periode: ' + e.message);
+    }
+  };
+
+  actions.appendChild(cancelBtn);
+  actions.appendChild(confirmBtn);
+  box.appendChild(actions);
+
+  modal.appendChild(box);
+  modal.onclick = (e) => {
+    if(e.target === modal) modal.remove();
+  };
+  document.body.appendChild(modal);
+
+  // Auto select input text
+  setTimeout(() => {
+    const input = document.getElementById('new-periode-input');
+    if(input) {
+      input.select();
+      input.focus();
+    }
+  }, 100);
+}
+
+// Proses ubah periode data
+async function prosesUbahPeriode(oldPeriode, newPeriode) {
+  const sb = initSupabase();
+  if(!sb) throw new Error('Supabase tidak terkoneksi!');
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+
+  console.log(`🔄 Mengubah periode: ${oldPeriode} → ${newPeriode} untuk kelompok: ${kelompok}`);
+
+  // Update semua tabel yang ada
+  const tables = [
+    'data_jamaah',
+    'buku_kas', 
+    'laporan_kas',
+    'saldo_awal'
+  ];
+
+  for(const table of tables) {
+    console.log(`📝 Update tabel: ${table}`);
+    
+    const { data, error } = await sb.from(table)
+      .select('*')
+      .eq('kelompok', kelompok)
+      .eq('periode', oldPeriode);
+    
+    if(error) {
+      console.warn(`⚠️ Error ${table}:`, error);
+      continue;
+    }
+
+    if(data && data.length > 0) {
+      // Update periode untuk semua record
+      const { error: updateError } = await sb.from(table)
+        .update({ periode: newPeriode })
+        .eq('kelompok', kelompok)
+        .eq('periode', oldPeriode);
+
+      if(updateError) {
+        throw new Error(`Gagal update ${table}: ${updateError.message}`);
+      }
+
+      console.log(`✅ ${table}: ${data.length} record diupdate`);
+    }
+  }
+
+  console.log(`✅ Semua data berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`);
+}
+
+async function refreshPeriodeAktif(){
+  showStatus('🔄 Refresh data...', '#f39c12');
+  try {
+    await loadAll();
+    showStatus('✅ Data refreshed', '#2e7d5a');
+  } catch(e){
+    console.error('Error refresh:', e);
+    showStatus('❌ Refresh gagal', '#c0392b');
+  }
 }
 
 /* ─── Setting ─── */
