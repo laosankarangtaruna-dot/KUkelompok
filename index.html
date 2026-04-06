@@ -1680,11 +1680,30 @@ window.debugAllTables = async function() {
   }
 };
 
+/* ── Manajemen baris Buku Kas yang dihapus (disimpan di localStorage) ── */
+function getHapusKey(){
+  const cfg=JSON.parse(localStorage.getItem('cfg')||'{}');
+  return 'hapus_kas_'+(cfg.kelompok||'Gumukrejo')+'_'+(getPeriodeStr().replace(' ','_'));
+}
+function getBarisHapus(){
+  try{ return JSON.parse(localStorage.getItem(getHapusKey())||'[]'); }
+  catch(e){ return []; }
+}
+function tambahBarisHapus(rowId){
+  const list=getBarisHapus();
+  if(!list.includes(rowId)){ list.push(rowId); localStorage.setItem(getHapusKey(),JSON.stringify(list)); }
+}
+function hapusSemuaBarisHapus(){
+  localStorage.removeItem(getHapusKey());
+}
+
 // Context menu untuk Buku Kas
 function tampilContextMenuBukuKas(e, row){
   ctxMenu.innerHTML='';
   ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', async ()=>{
     if(confirm('Hapus baris ini?')){ 
+      // Catat row id agar tidak muncul lagi saat refresh
+      if(row.id) tambahBarisHapus(row.id);
       try {
         // Coba hapus dari database (baris kosong mungkin tidak ada di DB — tidak masalah)
         await hapusBarisBukuKas(row);
@@ -3025,6 +3044,14 @@ async function loadAll(){
       setCell(td[3], row.debet ? String(row.debet) : '');
       // kredit hanya isi kalau bukan formula (ada contenteditable)
       if(td[4]?.querySelector('[contenteditable]')) setCell(td[4], row.kredit ? String(row.kredit) : '');
+    });
+  }
+  // Sembunyikan baris yang sudah dihapus user
+  const barisHapus = getBarisHapus();
+  if(barisHapus.length){
+    barisHapus.forEach(rowId=>{
+      const el = document.getElementById(rowId);
+      if(el) el.remove();
     });
   }
 
