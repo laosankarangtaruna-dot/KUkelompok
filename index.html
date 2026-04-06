@@ -293,7 +293,16 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
 ═══════════════════════════════════════ */
 const SUPABASE_URL = 'https://mdgpewanggcfpxxeeqyr.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kZ3Bld2FuZ2djZnB4eGVlcXlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMTQ5MzcsImV4cCI6MjA5MDU5MDkzN30.dD5p6xjKhEwY7wzdwE5C28nmeuHXHEh8a_pg7zUrdPY';
-const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let _sb = null;
+
+// Fungsi inisialisasi Supabase (single instance)
+function initSupabase(){
+  if(!_sb && SUPABASE_URL && SUPABASE_KEY){
+    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('✅ Supabase client initialized');
+  }
+  return _sb;
+}
 
 // Indikator status simpan
 const statusEl = document.createElement('div');
@@ -1795,14 +1804,19 @@ function gantiPeriode(arah){
 
 /* ─── Manajemen Periode ─── */
 async function tampilkanSemuaPeriode(){
+  console.log('🔍 tampilkanSemuaPeriode dipanggil');
+  
   const sb = initSupabase();
   if(!sb){
+    console.log('❌ Supabase tidak terkoneksi');
     alert('❌ Supabase belum terkoneksi!');
     return;
   }
 
   const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok = cfg.kelompok||'Gumukrejo';
+  
+  console.log('📊 Mengambil periode untuk kelompok:', kelompok);
 
   try {
     // Ambil semua periode yang ada dari tabel data_jamaah
@@ -1810,6 +1824,8 @@ async function tampilkanSemuaPeriode(){
       .select('periode')
       .eq('kelompok', kelompok)
       .order('periode', {ascending: false});
+
+    console.log('📋 Hasil query periodes:', { periodes, error });
 
     if(error){
       console.error('Error:', error);
@@ -1819,8 +1835,10 @@ async function tampilkanSemuaPeriode(){
 
     // Ambil periode unik
     const uniquePeriodes = [...new Set(periodes?.map(p => p.periode) || [])];
+    console.log('🎯 Periode unik:', uniquePeriodes);
     
     if(uniquePeriodes.length === 0){
+      console.log('📭 Tidak ada periode untuk kelompok:', kelompok);
       alert('📋 Belum ada data untuk kelompok "' + kelompok + '"');
       return;
     }
@@ -2510,6 +2528,7 @@ function downloadExcel(){
 }
 
 loadSetting();
+initSupabase(); // Inisialisasi Supabase
 loadAll();
 </script>
 </body>
