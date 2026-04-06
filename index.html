@@ -1368,6 +1368,44 @@ async function debugBukuKasData() {
   }
 }
 
+// Buat fungsi global untuk akses mudah dari console
+window.debugBukuKas = debugBukuKasData;
+window.debugAllTables = async function() {
+  const sb = initSupabase();
+  if(!sb) {
+    console.warn('❌ Supabase tidak terkoneksi');
+    return;
+  }
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+  const periode = getPeriodeStr();
+
+  console.log(`🔍 Debug ALL TABLES untuk ${kelompok} - ${periode}`);
+  
+  const tables = ['data_jamaah', 'buku_kas', 'laporan_kas', 'saldo_awal'];
+  
+  for(const table of tables) {
+    try {
+      const { data, error } = await sb.from(table)
+        .select('*')
+        .eq('kelompok', kelompok)
+        .eq('periode', periode);
+
+      if(error) {
+        console.error(`❌ Error ${table}:`, error);
+      } else {
+        console.log(`📊 ${table}: ${data?.length || 0} record`);
+        if(data && data.length > 0) {
+          console.log(`📋 ${table} data:`, data);
+        }
+      }
+    } catch(e) {
+      console.error(`❌ Error debug ${table}:`, e);
+    }
+  }
+};
+
 // Context menu untuk Buku Kas
 function tampilContextMenuBukuKas(e, row){
   ctxMenu.innerHTML='';
