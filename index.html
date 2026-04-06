@@ -1846,6 +1846,7 @@ async function tampilkanSemuaPeriode(){
     }
 
     // Buat modal untuk pilih periode
+    console.log('🎯 Membuat modal untuk periode:', uniquePeriodes);
     const modal = document.createElement('div');
     modal.style.cssText = `
       position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; 
@@ -1918,6 +1919,7 @@ async function tampilkanSemuaPeriode(){
       deleteBtn.style.cssText = 'padding:4px 8px; font-size:10px; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;';
       deleteBtn.onclick = async (e) => {
         e.stopPropagation();
+        console.log('🗑️ Tombol hapus diklik untuk periode:', periode);
         await hapusPeriodeData(periode, modal);
       };
       
@@ -2125,6 +2127,8 @@ async function prosesUbahPeriode(oldPeriode, newPeriode) {
 
 // Fungsi untuk hapus periode beserta semua data
 async function hapusPeriodeData(periode, parentModal) {
+  console.log('🗑️ hapusPeriodeData dipanggil untuk periode:', periode);
+  
   const modal = document.createElement('div');
   modal.style.cssText = `
     position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:10002; 
