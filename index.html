@@ -1231,9 +1231,10 @@ async function hapusBarisBukuKas(row) {
   const keterangan = getVal(cells[1]) || '';
   const debet = bersihkanAngka(getVal(cells[2]) || '0');
   const kredit = bersihkanAngka(getVal(cells[3]) || '0');
-  // Tidak menggunakan saldo karena tidak ada di database
+  const barisNum = row.querySelector('td')?.textContent || '';
 
   console.log(`🗑️ Data baris yang akan dihapus:`);
+  console.log(`  - Baris: ${barisNum}`);
   console.log(`  - Keterangan: "${keterangan}"`);
   console.log(`  - Debet: ${debet}`);
   console.log(`  - Kredit: ${kredit}`);
@@ -1241,96 +1242,108 @@ async function hapusBarisBukuKas(row) {
   console.log(`  - Periode: ${periode}`);
 
   try {
-    // Cari record yang cocok di database (tanpa saldo)
-    console.log(`🔍 Mencari data di database...`);
-    const { data: existingData, error: findError } = await sb.from('buku_kas')
-      .select('*')
-      .eq('kelompok', kelompok)
-      .eq('periode', periode)
-      .eq('keterangan', keterangan)
-      .eq('debet', debet)
-      .eq('kredit', kredit);
-
-    if(findError) {
-      console.error('❌ Error mencari data:', findError);
-      return;
-    }
-
-    console.log(`📊 Hasil pencarian: ${existingData?.length || 0} record ditemukan`);
-    if(existingData && existingData.length > 0) {
-      console.log('📋 Data yang ditemukan:', existingData);
-    }
-
-    if(!existingData || existingData.length === 0) {
-      console.log('📭 Tidak ada data yang cocok di database untuk dihapus');
-      
-      // Coba cari dengan kriteria lebih longgar (hanya keterangan)
-      console.log('🔍 Mencari dengan kriteria lebih longgar...');
-      const { data: looseData, error: looseError } = await sb.from('buku_kas')
+    // Strategy 1: Cari by baris number (paling reliable)
+    if(barisNum) {
+      console.log(`🔍 Mencari by baris number: ${barisNum}`);
+      const { data: barisData, error: barisError } = await sb.from('buku_kas')
         .select('*')
         .eq('kelompok', kelompok)
         .eq('periode', periode)
-        .eq('keterangan', keterangan);
+        .eq('baris', parseInt(barisNum));
 
-      if(!looseError && looseData) {
-        console.log(`📋 Data dengan keterangan sama (${looseData.length} record):`, looseData);
+      if(!barisError && barisData && barisData.length > 0) {
+        console.log(`📊 Ditemukan ${barisData.length} record by baris number`);
+        console.log('🗑️ Menghapus by baris number...');
         
-        // Jika hanya ada 1 record dengan keterangan ini, hapus saja
-        if(looseData.length === 1) {
-          console.log('🗑️ Menghapus 1 record yang ditemukan...');
-          const { error: deleteError } = await sb.from('buku_kas')
-            .delete()
-            .eq('kelompok', kelompok)
-            .eq('periode', periode)
-            .eq('keterangan', keterangan);
+        const { error: deleteError } = await sb.from('buku_kas')
+          .delete()
+          .eq('kelompok', kelompok)
+          .eq('periode', periode)
+          .eq('baris', parseInt(barisNum));
 
-          if(deleteError) {
-            console.error('❌ Error menghapus data:', deleteError);
-            alert('❌ Gagal menghapus data dari database');
-            return;
-          }
-
-          console.log(`✅ Berhasil menghapus 1 record dari database`);
+        if(!deleteError) {
+          console.log(`✅ Berhasil menghapus ${barisData.length} record by baris number`);
           showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
           return;
+        } else {
+          console.error('❌ Error hapus by baris:', deleteError);
         }
       }
-      
-      return;
     }
 
-    // Hapus record yang ditemukan
-    console.log(`🗑️ Menghapus ${existingData.length} record dari database...`);
-    const { error: deleteError } = await sb.from('buku_kas')
-      .delete()
-      .eq('kelompok', kelompok)
-      .eq('periode', periode)
-      .eq('keterangan', keterangan)
-      .eq('debet', debet)
-      .eq('kredit', kredit);
+    // Strategy 2: Cari by keterangan + debet + kredit
+    if(keterangan) {
+      console.log(`🔍 Mencari by keterangan+debet+kredit...`);
+      const { data: existingData, error: findError } = await sb.from('buku_kas')
+        .select('*')
+        .eq('kelompok', kelompok)
+        .eq('periode', periode)
+        .eq('keterangan', keterangan)
+        .eq('debet', debet)
+        .eq('kredit', kredit);
 
-    if(deleteError) {
-      console.error('❌ Error menghapus data:', deleteError);
-      alert('❌ Gagal menghapus data dari database');
-      return;
+      if(!findError && existingData && existingData.length > 0) {
+        console.log(`📊 Ditemukan ${existingData.length} record by keterangan+debet+kredit`);
+        console.log('🗑️ Menghapus by keterangan+debet+kredit...');
+        
+        const { error: deleteError } = await sb.from('buku_kas')
+          .delete()
+          .eq('kelompok', kelompok)
+          .eq('periode', periode)
+          .eq('keterangan', keterangan)
+          .eq('debet', debet)
+          .eq('kredit', kredit);
+
+        if(!deleteError) {
+          console.log(`✅ Berhasil menghapus ${existingData.length} record`);
+          showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+          return;
+        } else {
+          console.error('❌ Error hapus by keterangan:', deleteError);
+        }
+      }
     }
 
-    console.log(`✅ Berhasil menghapus ${existingData.length} record dari database`);
-    showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
-
-    // Verifikasi bahwa data benar-benar terhapus
-    console.log('🔍 Verifikasi penghapusan...');
-    const { data: verifyData, error: verifyError } = await sb.from('buku_kas')
+    // Strategy 3: Cari all data dan hapus yang cocok
+    console.log('🔍 Strategy 3: Get all data and find match...');
+    const { data: allData, error: allError } = await sb.from('buku_kas')
       .select('*')
       .eq('kelompok', kelompok)
-      .eq('periode', periode)
-      .eq('keterangan', keterangan)
-      .eq('debet', debet)
-      .eq('kredit', kredit);
+      .eq('periode', periode);
 
-    if(!verifyError) {
-      console.log(`📊 Verifikasi: ${verifyData?.length || 0} record masih ada`);
+    if(!allError && allData) {
+      console.log(`📊 Total ${allData.length} records di database`);
+      
+      // Cari record yang cocok
+      const matchRecord = allData.find(record => {
+        const matchKet = record.keterangan === keterangan;
+        const matchDebet = record.debet === debet;
+        const matchKredit = record.kredit === kredit;
+        const matchBaris = barisNum ? record.baris === parseInt(barisNum) : true;
+        
+        return matchKet && matchDebet && matchKredit && matchBaris;
+      });
+
+      if(matchRecord) {
+        console.log('📋 Record yang cocok ditemukan:', matchRecord);
+        console.log('🗑️ Menghapus record yang cocok...');
+        
+        const { error: deleteError } = await sb.from('buku_kas')
+          .delete()
+          .eq('id', matchRecord.id); // Hapus by primary key
+
+        if(!deleteError) {
+          console.log('✅ Berhasil menghapus record yang cocok');
+          showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+          return;
+        } else {
+          console.error('❌ Error hapus by id:', deleteError);
+        }
+      }
     }
+
+    console.log('📭 Tidak ada data yang cocok untuk dihapus');
+    alert('❌ Tidak dapat menemukan data yang cocok di database');
 
   } catch(e) {
     console.error('❌ Error hapus baris Buku Kas:', e);
