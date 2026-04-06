@@ -170,6 +170,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
   <div class="div"></div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
     <button class="btn btn-p" onclick="tambahBarisBukuKas()" style="background:var(--hijau2)">➕ Tambah Baris</button>
+    <button class="btn btn-r" onclick="debugBukuKasData()" style="font-size:11px;padding:4px 10px">🔍 Debug Data</button>
     <span style="font-size:11px;color:#888">Klik kanan pada baris untuk opsi hapus</span>
   </div>
   <div class="legend">
@@ -1232,10 +1233,17 @@ async function hapusBarisBukuKas(row) {
   const kredit = bersihkanAngka(getVal(cells[3]) || '0');
   const saldo = bersihkanAngka(getVal(cells[4]) || '0');
 
-  console.log(`🗑️ Menghapus baris Buku Kas: ${keterangan} | D:${debet} K:${kredit}`);
+  console.log(`🗑️ Data baris yang akan dihapus:`);
+  console.log(`  - Keterangan: "${keterangan}"`);
+  console.log(`  - Debet: ${debet}`);
+  console.log(`  - Kredit: ${kredit}`);
+  console.log(`  - Saldo: ${saldo}`);
+  console.log(`  - Kelompok: ${kelompok}`);
+  console.log(`  - Periode: ${periode}`);
 
   try {
     // Cari record yang cocok di database
+    console.log(`🔍 Mencari data di database...`);
     const { data: existingData, error: findError } = await sb.from('buku_kas')
       .select('*')
       .eq('kelompok', kelompok)
@@ -1250,12 +1258,31 @@ async function hapusBarisBukuKas(row) {
       return;
     }
 
+    console.log(`📊 Hasil pencarian: ${existingData?.length || 0} record ditemukan`);
+    if(existingData && existingData.length > 0) {
+      console.log('📋 Data yang ditemukan:', existingData);
+    }
+
     if(!existingData || existingData.length === 0) {
       console.log('📭 Tidak ada data yang cocok di database untuk dihapus');
+      
+      // Coba cari dengan kriteria lebih longgar
+      console.log('🔍 Mencari dengan kriteria lebih longgar...');
+      const { data: looseData, error: looseError } = await sb.from('buku_kas')
+        .select('*')
+        .eq('kelompok', kelompok)
+        .eq('periode', periode)
+        .eq('keterangan', keterangan);
+
+      if(!looseError && looseData) {
+        console.log(`📋 Data dengan keterangan sama (${looseData.length} record):`, looseData);
+      }
+      
       return;
     }
 
     // Hapus record yang ditemukan
+    console.log(`🗑️ Menghapus ${existingData.length} record dari database...`);
     const { error: deleteError } = await sb.from('buku_kas')
       .delete()
       .eq('kelompok', kelompok)
@@ -1274,9 +1301,70 @@ async function hapusBarisBukuKas(row) {
     console.log(`✅ Berhasil menghapus ${existingData.length} record dari database`);
     showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
 
+    // Verifikasi bahwa data benar-benar terhapus
+    console.log('🔍 Verifikasi penghapusan...');
+    const { data: verifyData, error: verifyError } = await sb.from('buku_kas')
+      .select('*')
+      .eq('kelompok', kelompok)
+      .eq('periode', periode)
+      .eq('keterangan', keterangan)
+      .eq('debet', debet)
+      .eq('kredit', kredit)
+      .eq('saldo', saldo);
+
+    if(!verifyError) {
+      console.log(`📊 Verifikasi: ${verifyData?.length || 0} record masih ada`);
+    }
+
   } catch(e) {
     console.error('❌ Error hapus baris Buku Kas:', e);
     alert('❌ Terjadi kesalahan saat menghapus data');
+  }
+}
+
+// Debug: Lihat semua data Buku Kas di database
+async function debugBukuKasData() {
+  const sb = initSupabase();
+  if(!sb) {
+    console.warn('❌ Supabase tidak terkoneksi');
+    return;
+  }
+
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+  const periode = getPeriodeStr();
+
+  console.log(`🔍 Debug: Melihat semua data Buku Kas untuk ${kelompok} - ${periode}`);
+  
+  try {
+    const { data, error } = await sb.from('buku_kas')
+      .select('*')
+      .eq('kelompok', kelompok)
+      .eq('periode', periode)
+      .order('baris');
+
+    if(error) {
+      console.error('❌ Error mengambil data:', error);
+      return;
+    }
+
+    console.log(`📊 Total data di database: ${data?.length || 0} record`);
+    if(data && data.length > 0) {
+      console.log('📋 Data lengkap:', data);
+      
+      // Group by keterangan
+      const byKeterangan = {};
+      data.forEach(item => {
+        const key = item.keterangan || '';
+        if(!byKeterangan[key]) byKeterangan[key] = [];
+        byKeterangan[key].push(item);
+      });
+      
+      console.log('📋 Data grouped by keterangan:', byKeterangan);
+    }
+
+  } catch(e) {
+    console.error('❌ Error debug:', e);
   }
 }
 
