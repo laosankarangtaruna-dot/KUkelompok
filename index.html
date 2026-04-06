@@ -2033,19 +2033,16 @@ function recalc2(){
   const s6El = document.getElementById('k6saldo');
   let saldo = numTd(s6El);
 
-  for(let i=7; i<=37; i++){
+  for(let i=7; i<=38; i++){
     const row = document.getElementById(`k${i}`);
     if(!row) continue;
     const tds = row.querySelectorAll('td');
     const debet  = numTd(tds[3]);
-    const kredit = numTd(tds[4]); // bekerja untuk td.ref maupun td.inp
+    const kredit = numTd(tds[4]);
     saldo = saldo + debet - kredit;
     const sEl = document.getElementById(`ks${i}`);
     if(sEl) sEl.textContent = fmt(saldo);
   }
-  // Baris saldo akhir (38)
-  const s38 = document.getElementById('ks38');
-  if(s38) s38.textContent = fmt(saldo);
 }
 
 document.getElementById('t2').addEventListener('input',()=>{recalc2();recalc3();debounceSaveKas();debounceSaveLap();});
@@ -2300,10 +2297,10 @@ function recalc3(){
   set('l3totK', totK);
 
   // ── Saldo Akhir = Saldo Awal + Total Debet - Total Kredit ──
-  const saldoAwal = numTd(document.getElementById('l3sAwal'));
-  const saldoAkhir = saldoAwal + totD - totK;
-  set('l3sBln',  totD - totK);   // Saldo Bulan = selisih periode ini
-  set('l3sAkh',  saldoAkhir);    // Saldo Akhir = kumulatif
+  // Sesuai Excel asli: F33=F34=SUM(D32-E32), keduanya sama persis
+  const selisih = totD - totK;
+  set('l3sBln', selisih);   // F33 Saldo Bulan = D32 - E32
+  set('l3sAkh', selisih);   // F34 Saldo Akhir = D32 - E32 (sama dengan F33)
 }
 
 document.getElementById('t3').addEventListener('input',()=>{ recalc3(); debounceSaveLap(); });
