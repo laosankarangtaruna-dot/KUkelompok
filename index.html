@@ -2994,8 +2994,19 @@ recalc1();
 ══════════════════════════════════════ */
 function setCell(td, val){
   const d = td?.querySelector('[contenteditable]');
-  if(d) d.textContent = val||'';
-  else if(td) td.textContent = val||'';
+  const target = d || td;
+  if(!target) return;
+  // Jika nilai adalah angka (dari DB), format lewat fmt() agar tampil tanpa desimal
+  if(val !== '' && val !== null && val !== undefined){
+    const n = parseFloat(String(val).replace(/\./g,'').replace(',','.'));
+    const isNumericCell = d && !td.classList.contains('inp-l') && !td.classList.contains('label-l');
+    if(isNumericCell && !isNaN(n) && String(val).trim() !== ''){
+      // Cek apakah val terlihat seperti angka (bukan teks keterangan)
+      const cleaned = String(val).replace(/[\d.,\-\s]/g,'');
+      if(cleaned === '') { target.textContent = fmt(n); return; }
+    }
+  }
+  target.textContent = val||'';
 }
 
 async function loadAll(){
