@@ -102,6 +102,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
 <div class="toolbar">
   <span style="flex:1"></span>
   <button class="btn btn-p" onclick="downloadExcel()">⬇️ Download Excel</button>
+  <button class="btn" style="background:#e67e22;color:#fff" onclick="fixKasData()">🔧 Perbaiki Data Kas</button>
   <button class="btn btn-r" onclick="resetAll()">🗑️ Reset</button>
 </div>
 
@@ -347,13 +348,21 @@ async function saveBukuKas(){
   const kelompok=cfg.kelompok||'Gumukrejo';
   const periode=getPeriodeStr();
   const rows=[];
-  document.getElementById('b2').querySelectorAll('tr').forEach((row,idx)=>{
+  document.getElementById('b2').querySelectorAll('tr').forEach((row)=>{
     const td=row.querySelectorAll('td');
     if(td.length<4) return;
+    // Ambil nomor baris dari id row (k7, k8, dst) — skip baris tanpa id (label/header)
+    const rowId = row.id;
+    if(!rowId || !rowId.match(/^k\d+$/)) return;
+    const baris = parseInt(rowId.replace('k',''));
+    // Kredit: hanya simpan jika ada contenteditable (bukan formula)
+    const kreditTd = td[4];
+    const kreditEditable = kreditTd?.querySelector('[contenteditable]');
+    const kredit = kreditEditable ? getNum(kreditTd) : 0;
     rows.push({
-      kelompok, periode, baris:idx+1,
+      kelompok, periode, baris,
       tgl:getVal(td[0]), keterangan:getVal(td[1]), code:getVal(td[2]),
-      debet:getNum(td[3]), kredit:getNum(td[4]),
+      debet:getNum(td[3]), kredit,
       updated_at: new Date().toISOString()
     });
   });
@@ -374,10 +383,15 @@ async function saveLaporanKas(){
   document.getElementById('b3').querySelectorAll('tr').forEach((row,idx)=>{
     const td=row.querySelectorAll('td');
     if(td.length<4) return;
+    // Hanya simpan nilai dari sel yang bisa diedit (contenteditable), skip formula (ref/auto)
+    const debTd = td[3];
+    const kreTd = td[4];
+    const debet  = debTd?.querySelector('[contenteditable]') ? getNum(debTd) : 0;
+    const kredit = kreTd?.querySelector('[contenteditable]') ? getNum(kreTd) : 0;
     rows.push({
       kelompok, periode, baris:idx+1,
       tgl:getVal(td[0]), keterangan:getVal(td[1]), code:getVal(td[2]),
-      debet:getNum(td[3]), kredit:getNum(td[4]),
+      debet, kredit,
       updated_at: new Date().toISOString()
     });
   });
@@ -385,6 +399,30 @@ async function saveLaporanKas(){
     .upsert(rows, {onConflict:'kelompok,periode,baris'});
   if(error){ console.error('laporan_kas error:', error.message, error.details, error.hint); showStatus('❌ '+error.message, '#c0392b'); }
   else showStatus('✅ Tersimpan', '#2e7d5a');
+}
+
+/* ══════════════════════════════════════
+   PERBAIKI DATA KAS — hapus data lama yang salah posisi,
+   simpan ulang dari DOM dengan format row ID yang benar.
+   Data Jamaah TIDAK tersentuh.
+══════════════════════════════════════ */
+async function fixKasData(){
+  if(!confirm('Perbaiki data Buku Kas & Laporan Kas di database?\n\nData Jamaah tidak akan terpengaruh.\n\nLanjutkan?')) return;
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+  const periode  = getPeriodeStr();
+
+  showStatus('⏳ Memperbaiki data kas...', '#2e7d5a');
+
+  // 1. Hapus semua data buku_kas & laporan_kas periode ini
+  await _sb.from('buku_kas').delete().eq('kelompok',kelompok).eq('periode',periode);
+  await _sb.from('laporan_kas').delete().eq('kelompok',kelompok).eq('periode',periode);
+
+  // 2. Save ulang dari DOM dengan format yang benar (row ID based)
+  await saveBukuKas();
+  await saveLaporanKas();
+
+  showStatus('✅ Data kas berhasil diperbaiki!', '#2e7d5a');
 }
 
 const debounceSaveJamaah = debounce(saveDataJamaah, 1500);
@@ -3054,9 +3092,9 @@ async function loadAll(){
     .select('*').eq('kelompok',kelompok).eq('periode',periode)
     .order('baris');
   if(bk&&bk.length){
-    const trs = document.getElementById('b2').querySelectorAll('tr');
     bk.forEach(row=>{
-      const tr = trs[row.baris-1]; if(!tr) return;
+      // Cari baris berdasarkan id (k7, k8, dst) — tidak terpengaruh baris label di DOM
+      const tr = document.getElementById(`k${row.baris}`); if(!tr) return;
       const td = tr.querySelectorAll('td');
       if(td.length<4) return;
       setCell(td[0], row.tgl);
