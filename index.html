@@ -822,7 +822,7 @@ function num(el){
 }
 function fmt(n){
   if(n===0||isNaN(n)) return '0';
-  return n.toLocaleString('id-ID');
+  return Math.round(n).toLocaleString('id-ID');
 }
 function cel(tag,cls,txt){
   const el=document.createElement(tag);
