@@ -2011,19 +2011,19 @@ function recalc2(){
   if(td30) td30.textContent=fmt(infaqTotal);
   // E31 = D22*3/4
   const td31=document.getElementById('k31')?.querySelectorAll('td')[4];
-  if(td31) td31.textContent=fmt(kd(22)*3/4);
+  if(td31) td31.textContent=fmt(Math.round(kd(22)*3/4));
   // E32 = D23*2/3
   const td32=document.getElementById('k32')?.querySelectorAll('td')[4];
-  if(td32) td32.textContent=fmt(kd(23)*2/3);
+  if(td32) td32.textContent=fmt(Math.round(kd(23)*2/3));
   // E33 = D24*2/3
   const td33=document.getElementById('k33')?.querySelectorAll('td')[4];
-  if(td33) td33.textContent=fmt(kd(24)*2/3);
+  if(td33) td33.textContent=fmt(Math.round(kd(24)*2/3));
   // E34 = D25*1
   const td34=document.getElementById('k34')?.querySelectorAll('td')[4];
   if(td34) td34.textContent=fmt(kd(25));
   // E35 = D27*7/8
   const td35=document.getElementById('k35')?.querySelectorAll('td')[4];
-  if(td35) td35.textContent=fmt(kd(27)*7/8);
+  if(td35) td35.textContent=fmt(Math.round(kd(27)*7/8));
   // E36 = D26*1
   const td36=document.getElementById('k36')?.querySelectorAll('td')[4];
   if(td36) td36.textContent=fmt(kd(26));
@@ -2253,15 +2253,7 @@ function recalc3(){
 
   const set = (id, val) => { 
     const el=document.getElementById(id); 
-    if(el) {
-      // Hanya update jika kolom kosong atau jika ini adalah kolom formula (class 'ref' atau 'auto')
-      const currentValue = el.textContent.trim();
-      const isEmpty = currentValue === '' || currentValue === '0';
-      const isFormula = el.classList.contains('ref') || el.classList.contains('auto');
-      if(isEmpty || isFormula) {
-        el.textContent = fmt(val);
-      }
-    }
+    if(el) el.textContent = fmt(val);
   };
 
   // ── Set Penerimaan (Debet) — otomatis dari Data Jamaah & Buku Kas ──
@@ -2278,11 +2270,11 @@ function recalc3(){
   // ── Set Pengeluaran (Kredit) — formula alokasi ──
   set('l3e22', W35);          // FR 100%       = D8 (setor penuh)
   set('l3e24', Y35);          // Infaq         = D10 (setor penuh)
-  set('l3e25', D22 * 3/4);    // INF Romadhon 3/4
-  set('l3e26', D23 * 2/3);    // INF Jum'at 2/3
-  set('l3e27', D24 * 2/3);    // INF Lailatul Qodar 2/3
+  set('l3e25', Math.round(D22 * 3/4));    // INF Romadhon 3/4
+  set('l3e26', Math.round(D23 * 2/3));    // INF Jum'at 2/3
+  set('l3e27', Math.round(D24 * 2/3));    // INF Lailatul Qodar 2/3
   set('l3e28', D25 * 1);      // INF Hari Raya 100%
-  set('l3e29', D27 * 7/8);    // Warisan ROT 7/8
+  set('l3e29', Math.round(D27 * 7/8));    // Warisan ROT 7/8
 
   // ── Hitung Total Debet & Kredit (semua baris data, skip header/total) ──
   let totD = 0, totK = 0;
