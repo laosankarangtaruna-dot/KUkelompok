@@ -407,18 +407,64 @@ async function saveLaporanKas(){
    Data Jamaah TIDAK tersentuh.
 ══════════════════════════════════════ */
 async function fixKasData(){
-  if(!confirm('Perbaiki data Buku Kas & Laporan Kas di database?\n\nData Jamaah tidak akan terpengaruh.\n\nLanjutkan?')) return;
+  if(!confirm('Perbaiki data Buku Kas & Laporan Kas di database?\n\nProses ini akan:\n✅ Mempertahankan data debet yang sudah diinput\n✅ Membuang kredit yang salah posisi\n✅ Data Jamaah tidak terpengaruh\n\nLanjutkan?')) return;
   const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok = cfg.kelompok||'Gumukrejo';
   const periode  = getPeriodeStr();
 
   showStatus('⏳ Memperbaiki data kas...', '#2e7d5a');
 
-  // 1. Hapus semua data buku_kas & laporan_kas periode ini
+  // 1. Ambil data lama dari DB
+  const {data:bkLama} = await _sb.from('buku_kas')
+    .select('*').eq('kelompok',kelompok).eq('periode',periode).order('baris');
+
+  // 2. Baris mana saja yang punya kredit contenteditable (input manual)
+  const barisKreditInput = new Set();
+  document.getElementById('b2').querySelectorAll('tr').forEach(row=>{
+    if(!row.id || !row.id.match(/^k\d+$/)) return;
+    const baris = parseInt(row.id.replace('k',''));
+    const tds = row.querySelectorAll('td');
+    if(tds[4]?.querySelector('[contenteditable]')) barisKreditInput.add(baris);
+  });
+
+  // 3. Reset DOM buku kas dari data lama — pakai row ID, buang kredit di baris formula
+  if(bkLama && bkLama.length){
+    // Kosongkan semua input dulu
+    document.getElementById('b2').querySelectorAll('tr').forEach(row=>{
+      if(!row.id || !row.id.match(/^k\d+$/)) return;
+      row.querySelectorAll('td').forEach((td,i)=>{
+        if(i===1) return; // skip keterangan
+        const ce = td.querySelector('[contenteditable]');
+        if(ce) ce.textContent = '';
+        else if(i>=3 && i<=5) { td.textContent='0'; delete td.dataset.precise; }
+      });
+    });
+    // Isi dari data DB dengan row ID yang benar
+    bkLama.forEach(r=>{
+      const tr = document.getElementById(`k${r.baris}`);
+      if(!tr) return;
+      const tds = tr.querySelectorAll('td');
+      if(tds[0]?.querySelector('[contenteditable]')) tds[0].querySelector('[contenteditable]').textContent = r.tgl||'';
+      if(tds[2]?.querySelector('[contenteditable]')) tds[2].querySelector('[contenteditable]').textContent = r.code||'';
+      // Debet — selalu isi
+      const dCe = tds[3]?.querySelector('[contenteditable]');
+      if(dCe && r.debet) dCe.textContent = fmt(r.debet);
+      // Kredit — hanya isi jika baris ini memang punya kredit input manual
+      if(barisKreditInput.has(r.baris)){
+        const kCe = tds[4]?.querySelector('[contenteditable]');
+        if(kCe && r.kredit) kCe.textContent = fmt(r.kredit);
+      }
+    });
+  }
+
+  // 4. Hapus data lama dari DB
   await _sb.from('buku_kas').delete().eq('kelompok',kelompok).eq('periode',periode);
   await _sb.from('laporan_kas').delete().eq('kelompok',kelompok).eq('periode',periode);
 
-  // 2. Save ulang dari DOM dengan format yang benar (row ID based)
+  // 5. Recalculate formula
+  recalc1();
+
+  // 6. Save ulang dengan format benar
   await saveBukuKas();
   await saveLaporanKas();
 
