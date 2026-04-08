@@ -1982,14 +1982,13 @@ const kasData=[
   [10,'FR ….',true,false,''],
   [11,'SDQ …..',true,false,''],
   [12,'INF ….',true,false,''],
-  [13,'',true,false,''],[14,'',true,false,''],[15,'',true,false,''],
-  [16,'',true,false,''],[17,'',true,false,''],[18,'',true,false,''],
-  [19,'',true,false,''],[20,'',true,false,''],[21,'',true,false,''],
-  [22,'INF Romadhon',true,false,''],
-  [23,"INF Jum'at",true,false,''],
-  [24,'INF Lailatul Qodar',true,false,''],
-  [25,'INF Hari Raya',true,false,''],
-  [26,'Zakat',true,false,''],
+  [13,'INF Romadhon',true,false,''],
+  [14,"INF Jum'at",true,false,''],
+  [15,'INF Lailatul Qodar',true,false,''],
+  [16,'INF Hari Raya',true,false,''],
+  [17,'Zakat',true,false,''],
+  [18,'',true,false,''],[19,'',true,false,''],[20,'',true,false,''],
+  [21,'',true,false,''],
 ];
 kasData.forEach(([rn,ket,de,ke,hint])=>{
   b2.appendChild(kasRow(rn,ket,de,ke,hint));
@@ -2002,35 +2001,36 @@ const dWR=Object.assign(document.createElement('div'),{contentEditable:'true'});
 dWR.setAttribute('data-ph','Warisan Rod');dWR.id='kas_warisanrod_label';
 tdWR.appendChild(dWR);rowWR.appendChild(tdWR);
 b2.appendChild(rowWR);
-// baris 27 (debet Warisan rod — input, kredit kosong)
-b2.appendChild(kasRow(27,'Warisan rod',true,false,''));
+// baris 22: Warisan rod (debet)
+b2.appendChild(kasRow(22,'Warisan rod',true,false,''));
 
-// Baris 28: Kredit = Data!W35, Debet kosong
-const r28=kasRow(28,'FR 100%',false,false,'=Data!W35 (FR total dari Data)');
+// Baris 23: Kredit = Data!W35 (FR total)
+const r28=kasRow(23,'FR 100%',false,false,'=Data!W35 (FR total dari Data)');
 b2.appendChild(r28);
-// Baris 29: SHODAQOH — kredit manual, debet kosong
-b2.appendChild(kasRow(29,'SHODAQOH',false,true,''));
-// Baris 30: Kredit = Data!Y35, Debet kosong
-const r30=kasRow(30,'INFAQ',false,false,'=Data!Y35 (Infaq total dari Data)');
+// Baris 24: SHODAQOH — kredit manual
+b2.appendChild(kasRow(24,'SHODAQOH',false,true,''));
+// Baris 25: Kredit = Data!Y35 (Infaq total)
+const r30=kasRow(25,'INFAQ',false,false,'=Data!Y35 (Infaq total dari Data)');
 b2.appendChild(r30);
-// Baris 31: Kredit = D22*3/4, Debet kosong
-const r31=kasRow(31,'INF Romadhon 3/4',false,false,'=INF Romadhon × 3/4');b2.appendChild(r31);
-// Baris 32: Kredit = D23*2/3, Debet kosong
-const r32=kasRow(32,"INF JUM'AT 2/3",false,false,"=INF Jum'at × 2/3");b2.appendChild(r32);
-// Baris 33: Kredit = D24*2/3, Debet kosong
-const r33=kasRow(33,'INF Lailatul Qodar 2/3',false,false,'=INF Lailatul Qodar × 2/3');b2.appendChild(r33);
-// Baris 34: Kredit = D25*1, Debet kosong
-const r34=kasRow(34,'INF Hari Raya 100%',false,false,'=INF Hari Raya × 100%');b2.appendChild(r34);
-// Baris 35: Kredit = D27*7/8, Debet kosong
-const r35=kasRow(35,'Warisan rod 7/8',false,false,'=Warisan rod × 7/8');b2.appendChild(r35);
-// Baris 36: Kredit = D26*1, Debet kosong
-const r36=kasRow(36,'Zakat',false,false,'=Zakat × 100%');b2.appendChild(r36);
-// Baris 37: Operasional — kredit manual, debet kosong
-b2.appendChild(kasRow(37,'operasional',false,true,''));
-// Baris 38: Saldo akhir
+// Baris 26: Kredit = D13*3/4
+const r31=kasRow(26,'INF Romadhon 3/4',false,false,'=INF Romadhon × 3/4');b2.appendChild(r31);
+// Baris 27: Kredit = D14*2/3
+const r32=kasRow(27,"INF JUM'AT 2/3",false,false,"=INF Jum'at × 2/3");b2.appendChild(r32);
+// Baris 28: Kredit = D15*2/3
+const r33=kasRow(28,'INF Lailatul Qodar 2/3',false,false,'=INF Lailatul Qodar × 2/3');b2.appendChild(r33);
+// Baris 29: Kredit = D16*1
+const r34=kasRow(29,'INF Hari Raya 100%',false,false,'=INF Hari Raya × 100%');b2.appendChild(r34);
+// Baris 30: Kredit = D22*7/8
+const r35=kasRow(30,'Warisan rod 7/8',false,false,'=Warisan rod × 7/8');b2.appendChild(r35);
+// Baris 31: Kredit = D17*1
+const r36=kasRow(31,'Zakat',false,false,'=Zakat × 100%');b2.appendChild(r36);
+// Baris 32: Operasional — kredit manual
+b2.appendChild(kasRow(32,'operasional',false,true,''));
+// Baris 33: Saldo akhir
+// Baris 33: Saldo akhir
 const rowS38=document.createElement('tr');rowS38.className='rs';
 const tdS38a=cel('td','','Saldo');tdS38a.colSpan=5;tdS38a.style.textAlign='right';rowS38.appendChild(tdS38a);
-const tdS38v=cel('td','form','0');tdS38v.id='ks38';rowS38.appendChild(tdS38v);
+const tdS38v=cel('td','form','0');tdS38v.id='ks33';rowS38.appendChild(tdS38v);
 b2.appendChild(rowS38);
 
 // Helper: get debet/kredit dari baris kas
@@ -2088,44 +2088,34 @@ function numTd(td){
 }
 
 function recalc2(){
-  // Ref kredit dari Data sheet — gunakan bersihkanAngka agar titik ribuan tidak salah baca
-  const frTotal  = bersihkanAngka((document.getElementById('jW')||{textContent:'0'}).textContent);
+  const frTotal    = bersihkanAngka((document.getElementById('jW')||{textContent:'0'}).textContent);
   const infaqTotal = bersihkanAngka((document.getElementById('jY')||{textContent:'0'}).textContent);
 
-  // Helper: set nilai presisi penuh ke dataset, tampilkan bulat
   function setTd(td, val){
     if(!td) return;
     td.textContent = fmt(val);
-    td.dataset.precise = val; // simpan nilai presisi penuh
+    td.dataset.precise = val;
   }
 
-  // E28 = Data!W35 (FR total)
-  setTd(document.getElementById('k28')?.querySelectorAll('td')[4], frTotal);
-  // E30 = Data!Y35 (Infaq total)
-  setTd(document.getElementById('k30')?.querySelectorAll('td')[4], infaqTotal);
-  // E31 = D22*3/4
-  setTd(document.getElementById('k31')?.querySelectorAll('td')[4], kd(22)*3/4);
-  // E32 = D23*2/3
-  setTd(document.getElementById('k32')?.querySelectorAll('td')[4], kd(23)*2/3);
-  // E33 = D24*2/3
-  setTd(document.getElementById('k33')?.querySelectorAll('td')[4], kd(24)*2/3);
-  // E34 = D25*1
-  setTd(document.getElementById('k34')?.querySelectorAll('td')[4], kd(25));
-  // E35 = D27*7/8
-  setTd(document.getElementById('k35')?.querySelectorAll('td')[4], kd(27)*7/8);
-  // E36 = D26*1
-  setTd(document.getElementById('k36')?.querySelectorAll('td')[4], kd(26));
+  // Kredit formula — nomor baris baru
+  setTd(document.getElementById('k23')?.querySelectorAll('td')[4], frTotal);          // FR 100%
+  setTd(document.getElementById('k25')?.querySelectorAll('td')[4], infaqTotal);       // INFAQ
+  setTd(document.getElementById('k26')?.querySelectorAll('td')[4], kd(13)*3/4);       // INF Romadhon 3/4
+  setTd(document.getElementById('k27')?.querySelectorAll('td')[4], kd(14)*2/3);       // INF JUM'AT 2/3
+  setTd(document.getElementById('k28')?.querySelectorAll('td')[4], kd(15)*2/3);       // INF Lailatul Qodar 2/3
+  setTd(document.getElementById('k29')?.querySelectorAll('td')[4], kd(16));           // INF Hari Raya 100%
+  setTd(document.getElementById('k30')?.querySelectorAll('td')[4], kd(22)*7/8);       // Warisan rod 7/8
+  setTd(document.getElementById('k31')?.querySelectorAll('td')[4], kd(17));           // Zakat 100%
 
-  // ── Saldo Berjalan: pakai nilai presisi penuh dari dataset jika ada ──
+  // Saldo berjalan
   const s6El = document.getElementById('k6saldo');
   let saldo = numTd(s6El);
 
-  for(let i=7; i<=38; i++){
+  for(let i=7; i<=33; i++){
     const row = document.getElementById(`k${i}`);
     if(!row) continue;
     const tds = row.querySelectorAll('td');
-    const debet  = numTd(tds[3]);
-    // Baca kredit dari dataset.precise jika ada (formula pecahan), else baca biasa
+    const debet = numTd(tds[3]);
     const kreditTd = tds[4];
     const kredit = kreditTd?.dataset?.precise !== undefined
       ? parseFloat(kreditTd.dataset.precise) || 0
@@ -2134,6 +2124,9 @@ function recalc2(){
     const sEl = document.getElementById(`ks${i}`);
     if(sEl) sEl.textContent = fmt(saldo);
   }
+  // Saldo akhir
+  const sAkh = document.getElementById('ks33');
+  if(sAkh) sAkh.textContent = fmt(saldo);
 }
 
 document.getElementById('t2').addEventListener('input',()=>{recalc2();recalc3();debounceSaveKas();debounceSaveLap();});
@@ -2335,19 +2328,19 @@ function recalc3(){
   const Y35 = getN('jY');   // Infaq total
 
   // ── Tarik dari Buku Kas (debet baris tertentu) ──
-  const D22 = numTd(document.getElementById('k22')?.querySelectorAll('td')[3]);
-  const D23 = numTd(document.getElementById('k23')?.querySelectorAll('td')[3]);
-  const D24 = numTd(document.getElementById('k24')?.querySelectorAll('td')[3]);
-  const D25 = numTd(document.getElementById('k25')?.querySelectorAll('td')[3]);
-  const D26 = numTd(document.getElementById('k26')?.querySelectorAll('td')[3]);
-  const D27 = numTd(document.getElementById('k27')?.querySelectorAll('td')[3]);
+  const D13 = numTd(document.getElementById('k13')?.querySelectorAll('td')[3]); // INF Romadhon
+  const D14 = numTd(document.getElementById('k14')?.querySelectorAll('td')[3]); // INF Jum'at
+  const D15 = numTd(document.getElementById('k15')?.querySelectorAll('td')[3]); // INF Lailatul Qodar
+  const D16 = numTd(document.getElementById('k16')?.querySelectorAll('td')[3]); // INF Hari Raya
+  const D17 = numTd(document.getElementById('k17')?.querySelectorAll('td')[3]); // Zakat
+  const D22 = numTd(document.getElementById('k22')?.querySelectorAll('td')[3]); // Warisan rod
 
   // Hitung nilai presisi penuh untuk formula pecahan
   const preciseVals = {
-    'l3e25': D22 * 3/4,
-    'l3e26': D23 * 2/3,
-    'l3e27': D24 * 2/3,
-    'l3e29': D27 * 7/8,
+    'l3e25': D13 * 3/4,
+    'l3e26': D14 * 2/3,
+    'l3e27': D15 * 2/3,
+    'l3e29': D22 * 7/8,
   };
 
   // Helper: tampilkan bulat, simpan nilai presisi penuh di dataset
@@ -2355,7 +2348,7 @@ function recalc3(){
     const el=document.getElementById(id); 
     if(el){
       el.textContent = fmt(val);
-      el.dataset.precise = val; // simpan presisi penuh untuk kalkulasi total
+      el.dataset.precise = val;
     }
   };
 
@@ -2363,21 +2356,21 @@ function recalc3(){
   set('l3d8',  W35);
   set('l3d9',  X35);
   set('l3d10', Y35);
-  set('l3d11', D22);
-  set('l3d12', D23);
-  set('l3d13', D24);
-  set('l3d14', D25);
-  set('l3d15', D27);
-  set('l3d16', D26);
+  set('l3d11', D13);
+  set('l3d12', D14);
+  set('l3d13', D15);
+  set('l3d14', D16);
+  set('l3d15', D22);
+  set('l3d16', D17);
 
-  // ── Set Pengeluaran (Kredit) — formula alokasi, presisi penuh ──
+  // ── Set Pengeluaran (Kredit) ──
   set('l3e22', W35);
   set('l3e24', Y35);
-  set('l3e25', preciseVals['l3e25']);   // D22 * 3/4
-  set('l3e26', preciseVals['l3e26']);   // D23 * 2/3
-  set('l3e27', preciseVals['l3e27']);   // D24 * 2/3
-  set('l3e28', D25);
-  set('l3e29', preciseVals['l3e29']);   // D27 * 7/8
+  set('l3e25', preciseVals['l3e25']);   // D13 * 3/4
+  set('l3e26', preciseVals['l3e26']);   // D14 * 2/3
+  set('l3e27', preciseVals['l3e27']);   // D15 * 2/3
+  set('l3e28', D16);
+  set('l3e29', preciseVals['l3e29']);   // D22 * 7/8
 
   // ── Hitung Total: gunakan dataset.precise jika ada, fallback ke numTd ──
   let totD = 0, totK = 0;
@@ -3143,9 +3136,9 @@ async function loadAll(){
     .order('baris');
 
   // Baris yang hanya boleh punya Debet (kredit harus 0)
-  const BARIS_DEBET_ONLY = new Set([7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]);
+  const BARIS_DEBET_ONLY = new Set([7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]);
   // Baris yang hanya boleh punya Kredit (debet harus 0)
-  const BARIS_KREDIT_ONLY = new Set([28,30,31,32,33,34,35,36,37]);
+  const BARIS_KREDIT_ONLY = new Set([23,25,26,27,28,29,30,31,32]);
 
   if(bk&&bk.length){
     // Bersihkan data yang salah posisi di DB
