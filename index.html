@@ -1948,10 +1948,14 @@ function kasRow(rowNum,ket,debEdit=true,kreEdit=true,kreFormulaHint=''){
   // Kredit
   if(kreEdit){
     const t=tdInp('inp','0');
-    if(kreFormulaHint){t.className='inp';t.title=kreFormulaHint;}
+    if(kreFormulaHint){t.className='ref';t.title=kreFormulaHint;}
     row.appendChild(t);
+  } else if(kreFormulaHint){
+    // Kredit formula (baris pengeluaran)
+    const t=cel('td','ref','0');t.title=kreFormulaHint;row.appendChild(t);
   } else {
-    const t=cel('td','ref','0');t.title=kreFormulaHint||'Formula';row.appendChild(t);
+    // Kredit kosong (baris penerimaan/debet)
+    const t=cel('td','','');t.style.background='#f5f2ea';row.appendChild(t);
   }
   // Saldo
   const tSld=cel('td','form','0');tSld.id=`ks${rowNum}`;row.appendChild(tSld);
@@ -1970,22 +1974,22 @@ tdSBV.appendChild(divSBV);
 rowSaldoBulan.appendChild(tdSBV);
 b2.appendChild(rowSaldoBulan);
 
-// Data baris kas
+// Data baris kas — semua baris debet: kredit TIDAK bisa diisi (false)
 const kasData=[
-  [7,'FR ….',true,true,''],
-  [8,'SDQ …..',true,true,''],
-  [9,'INF….',true,true,''],
-  [10,'FR ….',true,true,''],
-  [11,'SDQ …..',true,true,''],
-  [12,'INF ….',true,true,''],
-  [13,'',true,true,''],[14,'',true,true,''],[15,'',true,true,''],
-  [16,'',true,true,''],[17,'',true,true,''],[18,'',true,true,''],
-  [19,'',true,true,''],[20,'',true,true,''],[21,'',true,true,''],
-  [22,'INF Romadhon',true,true,''],
-  [23,"INF Jum'at",true,true,''],
-  [24,'INF Lailatul Qodar',true,true,''],
-  [25,'INF Hari Raya',true,true,''],
-  [26,'Zakat',true,true,''],
+  [7,'FR ….',true,false,''],
+  [8,'SDQ …..',true,false,''],
+  [9,'INF….',true,false,''],
+  [10,'FR ….',true,false,''],
+  [11,'SDQ …..',true,false,''],
+  [12,'INF ….',true,false,''],
+  [13,'',true,false,''],[14,'',true,false,''],[15,'',true,false,''],
+  [16,'',true,false,''],[17,'',true,false,''],[18,'',true,false,''],
+  [19,'',true,false,''],[20,'',true,false,''],[21,'',true,false,''],
+  [22,'INF Romadhon',true,false,''],
+  [23,"INF Jum'at",true,false,''],
+  [24,'INF Lailatul Qodar',true,false,''],
+  [25,'INF Hari Raya',true,false,''],
+  [26,'Zakat',true,false,''],
 ];
 kasData.forEach(([rn,ket,de,ke,hint])=>{
   b2.appendChild(kasRow(rn,ket,de,ke,hint));
@@ -1998,8 +2002,8 @@ const dWR=Object.assign(document.createElement('div'),{contentEditable:'true'});
 dWR.setAttribute('data-ph','Warisan Rod');dWR.id='kas_warisanrod_label';
 tdWR.appendChild(dWR);rowWR.appendChild(tdWR);
 b2.appendChild(rowWR);
-// baris 27 (debet Warisan rod — input)
-b2.appendChild(kasRow(27,'Warisan rod',true,true,''));
+// baris 27 (debet Warisan rod — input, kredit kosong)
+b2.appendChild(kasRow(27,'Warisan rod',true,false,''));
 
 // Baris 28: Kredit = Data!W35, Debet kosong
 const r28=kasRow(28,'FR 100%',false,false,'=Data!W35 (FR total dari Data)');
@@ -2021,8 +2025,8 @@ const r34=kasRow(34,'INF Hari Raya 100%',false,false,'=INF Hari Raya × 100%');b
 const r35=kasRow(35,'Warisan rod 7/8',false,false,'=Warisan rod × 7/8');b2.appendChild(r35);
 // Baris 36: Kredit = D26*1, Debet kosong
 const r36=kasRow(36,'Zakat',false,false,'=Zakat × 100%');b2.appendChild(r36);
-// Baris 37: Operasional (normal)
-b2.appendChild(kasRow(37,'operasional',true,true,''));
+// Baris 37: Operasional — kredit manual, debet kosong
+b2.appendChild(kasRow(37,'operasional',false,true,''));
 // Baris 38: Saldo akhir
 const rowS38=document.createElement('tr');rowS38.className='rs';
 const tdS38a=cel('td','','Saldo');tdS38a.colSpan=5;tdS38a.style.textAlign='right';rowS38.appendChild(tdS38a);
@@ -3187,6 +3191,8 @@ async function loadAll(){
   terapkanKelasKeData(); // isi kolom kelas — memanggil recalc1 di akhir
   recalc2();
   recalc3();
+  // Simpan ulang buku kas untuk membersihkan data kredit lama yang salah posisi
+  if(bk && bk.length) saveBukuKas();
 }
 
 /* ══════════════════════════════════════
