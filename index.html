@@ -1944,7 +1944,7 @@ function kasRow(rowNum,ket,debEdit=true,kreEdit=true,kreFormulaHint=''){
   row.appendChild(tdInp('inp',''));
   // Debet
   if(debEdit){row.appendChild(tdInp('inp','0'));}
-  else{const t=cel('td','ref','0');t.title='Formula otomatis';row.appendChild(t);}
+  else{const t=cel('td','','');t.style.background='#f5f2ea';row.appendChild(t);}
   // Kredit
   if(kreEdit){
     const t=tdInp('inp','0');
@@ -2001,26 +2001,26 @@ b2.appendChild(rowWR);
 // baris 27 (debet Warisan rod — input)
 b2.appendChild(kasRow(27,'Warisan rod',true,true,''));
 
-// Baris 28: E = Data!W35
-const r28=kasRow(28,'FR 100%',true,false,'=Data!W35 (FR total dari Data)');
+// Baris 28: Kredit = Data!W35, Debet kosong
+const r28=kasRow(28,'FR 100%',false,false,'=Data!W35 (FR total dari Data)');
 b2.appendChild(r28);
-// Baris 29: normal
-b2.appendChild(kasRow(29,'SHODAQOH',true,true,''));
-// Baris 30: E = Data!Y35
-const r30=kasRow(30,'INFAQ',true,false,'=Data!Y35 (Infaq total dari Data)');
+// Baris 29: SHODAQOH — kredit manual, debet kosong
+b2.appendChild(kasRow(29,'SHODAQOH',false,true,''));
+// Baris 30: Kredit = Data!Y35, Debet kosong
+const r30=kasRow(30,'INFAQ',false,false,'=Data!Y35 (Infaq total dari Data)');
 b2.appendChild(r30);
-// Baris 31: E = D22*3/4
-const r31=kasRow(31,'INF Romadhon 3/4',true,false,'=INF Romadhon × 3/4');b2.appendChild(r31);
-// Baris 32: E = D23*2/3
-const r32=kasRow(32,"INF JUM'AT 2/3",true,false,"=INF Jum'at × 2/3");b2.appendChild(r32);
-// Baris 33: E = D24*2/3
-const r33=kasRow(33,'INF Lailatul Qodar 2/3',true,false,'=INF Lailatul Qodar × 2/3');b2.appendChild(r33);
-// Baris 34: E = D25*1
-const r34=kasRow(34,'INF Hari Raya 100%',true,false,'=INF Hari Raya × 100%');b2.appendChild(r34);
-// Baris 35: E = D27*7/8
-const r35=kasRow(35,'Warisan rod 7/8',true,false,'=Warisan rod × 7/8');b2.appendChild(r35);
-// Baris 36: E = D26*1
-const r36=kasRow(36,'Zakat',true,false,'=Zakat × 100%');b2.appendChild(r36);
+// Baris 31: Kredit = D22*3/4, Debet kosong
+const r31=kasRow(31,'INF Romadhon 3/4',false,false,'=INF Romadhon × 3/4');b2.appendChild(r31);
+// Baris 32: Kredit = D23*2/3, Debet kosong
+const r32=kasRow(32,"INF JUM'AT 2/3",false,false,"=INF Jum'at × 2/3");b2.appendChild(r32);
+// Baris 33: Kredit = D24*2/3, Debet kosong
+const r33=kasRow(33,'INF Lailatul Qodar 2/3',false,false,'=INF Lailatul Qodar × 2/3');b2.appendChild(r33);
+// Baris 34: Kredit = D25*1, Debet kosong
+const r34=kasRow(34,'INF Hari Raya 100%',false,false,'=INF Hari Raya × 100%');b2.appendChild(r34);
+// Baris 35: Kredit = D27*7/8, Debet kosong
+const r35=kasRow(35,'Warisan rod 7/8',false,false,'=Warisan rod × 7/8');b2.appendChild(r35);
+// Baris 36: Kredit = D26*1, Debet kosong
+const r36=kasRow(36,'Zakat',false,false,'=Zakat × 100%');b2.appendChild(r36);
 // Baris 37: Operasional (normal)
 b2.appendChild(kasRow(37,'operasional',true,true,''));
 // Baris 38: Saldo akhir
@@ -3145,7 +3145,8 @@ async function loadAll(){
       if(td.length<4) return;
       setCell(td[0], row.tgl);
       setCell(td[2], row.code);
-      setCell(td[3], row.debet ? String(row.debet) : '');
+      // Debet — hanya isi jika ada contenteditable (bukan baris kredit formula)
+      if(td[3]?.querySelector('[contenteditable]')) setCell(td[3], row.debet ? String(row.debet) : '');
       // kredit hanya isi kalau bukan formula (ada contenteditable)
       if(td[4]?.querySelector('[contenteditable]')) setCell(td[4], row.kredit ? String(row.kredit) : '');
     });
