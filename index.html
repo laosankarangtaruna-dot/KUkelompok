@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Laporan Keuangan – Kelompok Laosan</title>
+<title>Laporan Keuangan â€“ Kelompok Laosan</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--hijau:#1a4d3a;--hijau2:#2e7d5a;--emas:#c8a951;--emas2:#e8c97a;--krem:#f9f5ee;--border:#d4c89a}
@@ -101,35 +101,35 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
 
 <div class="toolbar">
   <span style="flex:1"></span>
-  <button class="btn btn-p" onclick="downloadExcel()">⬇️ Download Excel</button>
-  <button class="btn" style="background:#e67e22;color:#fff" onclick="fixKasData()">🔧 Perbaiki Data Kas</button>
-  <button class="btn btn-r" onclick="resetAll()">🗑️ Reset</button>
+  <button class="btn btn-p" onclick="downloadExcel()">â¬‡ï¸ Download Excel</button>
+  <button class="btn" style="background:#e67e22;color:#fff" onclick="fixKasData()">ðŸ”§ Perbaiki Data Kas</button>
+  <button class="btn btn-r" onclick="resetAll()">ðŸ—‘ï¸ Reset</button>
 </div>
 
 <div class="tabs">
-  <button class="tab on" onclick="showTab('data',this)">📋 Data Jamaah</button>
-  <button class="tab" onclick="showTab('kas',this)">💰 Buku Kas</button>
-  <button class="tab" onclick="showTab('lapkas',this)">📊 Laporan Kas</button>
-  <button class="tab" onclick="showTab('setting',this)">⚙️ Setting</button>
-  <button class="tab" onclick="showTab('kelas',this)">🏷️ Kelas</button>
+  <button class="tab on" onclick="showTab('data',this)">ðŸ“‹ Data Jamaah</button>
+  <button class="tab" onclick="showTab('kas',this)">ðŸ’° Buku Kas</button>
+  <button class="tab" onclick="showTab('lapkas',this)">ðŸ“Š Laporan Kas</button>
+  <button class="tab" onclick="showTab('setting',this)">âš™ï¸ Setting</button>
+  <button class="tab" onclick="showTab('kelas',this)">ðŸ·ï¸ Kelas</button>
 </div>
 
-<!-- ══════════════════════════════════════
-     SHEET 1 — DATA JAMAAH
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     SHEET 1 â€” DATA JAMAAH
      Formula Excel:
        W = D  (FR = IR)
        X = SUM(E:P)  (Shodaqoh = sum YPK..STIA)
        Y = SUM(Q:V)  (Infaq = sum RT..Dana Sehat)
        Z = SUM(W:Y)  (Jumlah = FR+Shodaqoh+Infaq)
        Baris 35: SUM tiap kolom
-══════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="p-data" class="panel on">
   <div class="ptitle">Data Semua Jamaah Kelompok</div>
-  <div class="psub">Kelompok Gumukrejo · Desember 2025</div>
+  <div class="psub">Kelompok Gumukrejo Â· Desember 2025</div>
   <div class="div"></div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
-    <button class="btn btn-p" onclick="tambahAnggotaBaru()" style="background:var(--hijau2)">➕ Tambah Anggota</button>
-    <button class="btn btn-p" onclick="tambahKKBaru()">🏠 Tambah KK Baru</button>
+    <button class="btn btn-p" onclick="tambahAnggotaBaru()" style="background:var(--hijau2)">âž• Tambah Anggota</button>
+    <button class="btn btn-p" onclick="tambahKKBaru()">ðŸ  Tambah KK Baru</button>
     <span style="font-size:11px;color:#888">Klik kanan pada baris untuk opsi sisip/hapus</span>
   </div>
   <div class="tbl-wrap tbl-wrap-data-jamaah">
@@ -152,8 +152,8 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SHEET 2 — BUKU KAS
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     SHEET 2 â€” BUKU KAS
      Formula Excel:
        F = saldo berjalan: F_prev + D - E
        E28 = Data!W35 (FR total dari sheet Data)
@@ -164,14 +164,14 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
        E34 = D25*1
        E35 = D27*7/8
        E36 = D26*1
-══════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="p-kas" class="panel">
   <div class="ptitle">Buku Kas Kelompok</div>
-  <div class="psub">Kelompok Gumukrejo · Desember 2025</div>
+  <div class="psub">Kelompok Gumukrejo Â· Desember 2025</div>
   <div class="div"></div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
-    <button class="btn btn-p" onclick="tambahBarisBukuKas()" style="background:var(--hijau2)">➕ Tambah Baris</button>
-    <button class="btn btn-r" onclick="resetBukuKasDB()" style="font-size:11px;padding:4px 10px">�️ Reset Data Kas DB</button>
+    <button class="btn btn-p" onclick="tambahBarisBukuKas()" style="background:var(--hijau2)">+ Tambah Baris</button>
+    <button class="btn btn-r" onclick="resetBukuKasDB()" style="font-size:11px;padding:4px 10px">Reset Data Kas DB</button>
     <span style="font-size:11px;color:#888">Klik kanan pada baris untuk opsi hapus</span>
   </div>
   <div class="legend">
@@ -196,16 +196,16 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SHEET 3 — LAPORAN KAS
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     SHEET 3 â€” LAPORAN KAS
      Campuran: Otomatis (FR, Shodaqoh, Infaq, INF) + Manual (Hibah, Laba, SHODAQOH, Zakat, Operasional)
-══════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="p-lapkas" class="panel">
   <div class="ptitle">Laporan Kas Kelompok</div>
-  <div class="psub">Kelompok Gumukrejo · Desember 2025</div>
+  <div class="psub">Kelompok Gumukrejo Â· Desember 2025</div>
   <div class="div"></div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
-    <button class="btn btn-p" onclick="tambahBarisLaporanKas()" style="background:var(--hijau2)">➕ Tambah Baris</button>
+    <button class="btn btn-p" onclick="tambahBarisLaporanKas()" style="background:var(--hijau2)">âž• Tambah Baris</button>
     <span style="font-size:11px;color:#888">Klik kanan pada baris untuk opsi hapus</span>
   </div>
   <div class="legend">
@@ -247,8 +247,8 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
         <input id="cfg-periode" type="text" value="Desember 2025" style="display:block;width:100%;margin-top:4px;padding:6px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:inherit">
       </label>
       <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="btn btn-p" onclick="tampilkanSemuaPeriode()" style="font-size:11px;padding:4px 10px">📋 Lihat Semua Periode</button>
-        <button class="btn btn-p" onclick="refreshPeriodeAktif()" style="font-size:11px;padding:4px 10px">🔄 Refresh</button>
+        <button class="btn btn-p" onclick="tampilkanSemuaPeriode()" style="font-size:11px;padding:4px 10px">ðŸ“‹ Lihat Semua Periode</button>
+        <button class="btn btn-p" onclick="refreshPeriodeAktif()" style="font-size:11px;padding:4px 10px">ðŸ”„ Refresh</button>
       </div>
     </div>
 
@@ -262,12 +262,12 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
       </label>
     </div>
 
-    <button onclick="simpanSetting()" class="btn btn-p" style="align-self:flex-start;padding:8px 24px;font-size:13px">💾 Simpan Setting</button>
+    <button onclick="simpanSetting()" class="btn btn-p" style="align-self:flex-start;padding:8px 24px;font-size:13px">ðŸ’¾ Simpan Setting</button>
     <div id="cfg-status" style="font-size:12px;color:var(--hijau2);display:none"></div>
   </div>
 </div>
 
-<footer id="footer-text">Laporan Keuangan Kelompok Gumukrejo — Desember 2025 | Formula sesuai Excel asli</footer>
+<footer id="footer-text">Laporan Keuangan Kelompok Gumukrejo â€” Desember 2025 | Formula sesuai Excel asli</footer>
 
 <!-- PANEL KELAS -->
 <div id="p-kelas" class="panel">
@@ -276,8 +276,8 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
   <div class="div"></div>
 
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px">
-    <button class="btn btn-p" onclick="tambahKelas()">➕ Tambah Kelas</button>
-    <button class="btn btn-p" onclick="simpanKelas()" style="background:var(--hijau2)">💾 Simpan</button>
+    <button class="btn btn-p" onclick="tambahKelas()">âž• Tambah Kelas</button>
+    <button class="btn btn-p" onclick="simpanKelas()" style="background:var(--hijau2)">ðŸ’¾ Simpan</button>
     <span id="kelas-status" style="font-size:12px;color:var(--hijau2);display:none"></span>
   </div>
 
@@ -290,14 +290,14 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
 <!-- Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ═══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    KELAS SETORAN
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 // Debounce agar tidak spam request
 function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
 
-/* ── Ambil nilai dari div contenteditable atau td biasa ── */
+/* â”€â”€ Ambil nilai dari div contenteditable atau td biasa â”€â”€ */
 function getVal(el){
   if(!el) return '';
   const d=el.querySelector('[contenteditable]');
@@ -305,9 +305,9 @@ function getVal(el){
 }
 function getNum(el){ return bersihkanAngka(getVal(el)); }
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SAVE DATA JAMAAH
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 async function saveDataJamaah(){
   const cfg=JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok=cfg.kelompok||'Gumukrejo';
@@ -333,16 +333,16 @@ async function saveDataJamaah(){
       updated_at: new Date().toISOString()
     });
   });
-  // Hapus semua dulu lalu insert ulang — agar baris yang dihapus ikut terhapus dari DB
+  // Hapus semua dulu lalu insert ulang â€” agar baris yang dihapus ikut terhapus dari DB
   await _sb.from('data_jamaah').delete().eq('kelompok',kelompok).eq('periode',periode);
   const {error}=await _sb.from('data_jamaah').insert(rows);
-  if(error){ console.error('data_jamaah error:', error.message, error.details, error.hint); showStatus('❌ '+error.message, '#c0392b'); }
-  else showStatus('✅ Tersimpan', '#2e7d5a');
+  if(error){ console.error('data_jamaah error:', error.message, error.details, error.hint); showStatus('âŒ '+error.message, '#c0392b'); }
+  else showStatus('âœ… Tersimpan', '#2e7d5a');
 }
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SAVE BUKU KAS
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 async function saveBukuKas(){
   const cfg=JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok=cfg.kelompok||'Gumukrejo';
@@ -351,7 +351,7 @@ async function saveBukuKas(){
   document.getElementById('b2').querySelectorAll('tr').forEach((row)=>{
     const td=row.querySelectorAll('td');
     if(td.length<4) return;
-    // Ambil nomor baris dari id row (k7, k8, dst) — skip baris tanpa id (label/header)
+    // Ambil nomor baris dari id row (k7, k8, dst) â€” skip baris tanpa id (label/header)
     const rowId = row.id;
     if(!rowId || !rowId.match(/^k\d+$/)) return;
     const baris = parseInt(rowId.replace('k',''));
@@ -368,13 +368,13 @@ async function saveBukuKas(){
   });
   const {error}=await _sb.from('buku_kas')
     .upsert(rows, {onConflict:'kelompok,periode,baris'});
-  if(error){ console.error('buku_kas error:', error.message, error.details, error.hint); showStatus('❌ '+error.message, '#c0392b'); }
-  else showStatus('✅ Tersimpan', '#2e7d5a');
+  if(error){ console.error('buku_kas error:', error.message, error.details, error.hint); showStatus('âŒ '+error.message, '#c0392b'); }
+  else showStatus('âœ… Tersimpan', '#2e7d5a');
 }
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SAVE LAPORAN KAS
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 async function saveLaporanKas(){
   const cfg=JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok=cfg.kelompok||'Gumukrejo';
@@ -397,22 +397,22 @@ async function saveLaporanKas(){
   });
   const {error}=await _sb.from('laporan_kas')
     .upsert(rows, {onConflict:'kelompok,periode,baris'});
-  if(error){ console.error('laporan_kas error:', error.message, error.details, error.hint); showStatus('❌ '+error.message, '#c0392b'); }
-  else showStatus('✅ Tersimpan', '#2e7d5a');
+  if(error){ console.error('laporan_kas error:', error.message, error.details, error.hint); showStatus('âŒ '+error.message, '#c0392b'); }
+  else showStatus('âœ… Tersimpan', '#2e7d5a');
 }
 
-/* ══════════════════════════════════════
-   PERBAIKI DATA KAS — hapus data lama yang salah posisi,
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   PERBAIKI DATA KAS â€” hapus data lama yang salah posisi,
    simpan ulang dari DOM dengan format row ID yang benar.
    Data Jamaah TIDAK tersentuh.
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 async function fixKasData(){
-  if(!confirm('Perbaiki data Buku Kas & Laporan Kas di database?\n\nProses ini akan:\n✅ Mempertahankan data debet yang sudah diinput\n✅ Membuang kredit yang salah posisi\n✅ Data Jamaah tidak terpengaruh\n\nLanjutkan?')) return;
+  if(!confirm('Perbaiki data Buku Kas & Laporan Kas di database?\n\nProses ini akan:\nâœ… Mempertahankan data debet yang sudah diinput\nâœ… Membuang kredit yang salah posisi\nâœ… Data Jamaah tidak terpengaruh\n\nLanjutkan?')) return;
   const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok = cfg.kelompok||'Gumukrejo';
   const periode  = getPeriodeStr();
 
-  showStatus('⏳ Memperbaiki data kas...', '#2e7d5a');
+  showStatus('â³ Memperbaiki data kas...', '#2e7d5a');
 
   // 1. Ambil data lama dari DB
   const {data:bkLama} = await _sb.from('buku_kas')
@@ -427,7 +427,7 @@ async function fixKasData(){
     if(tds[4]?.querySelector('[contenteditable]')) barisKreditInput.add(baris);
   });
 
-  // 3. Reset DOM buku kas dari data lama — pakai row ID, buang kredit di baris formula
+  // 3. Reset DOM buku kas dari data lama â€” pakai row ID, buang kredit di baris formula
   if(bkLama && bkLama.length){
     // Kosongkan semua input dulu
     document.getElementById('b2').querySelectorAll('tr').forEach(row=>{
@@ -446,10 +446,10 @@ async function fixKasData(){
       const tds = tr.querySelectorAll('td');
       if(tds[0]?.querySelector('[contenteditable]')) tds[0].querySelector('[contenteditable]').textContent = r.tgl||'';
       if(tds[2]?.querySelector('[contenteditable]')) tds[2].querySelector('[contenteditable]').textContent = r.code||'';
-      // Debet — selalu isi
+      // Debet â€” selalu isi
       const dCe = tds[3]?.querySelector('[contenteditable]');
       if(dCe && r.debet) dCe.textContent = fmt(r.debet);
-      // Kredit — hanya isi jika baris ini memang punya kredit input manual
+      // Kredit â€” hanya isi jika baris ini memang punya kredit input manual
       if(barisKreditInput.has(r.baris)){
         const kCe = tds[4]?.querySelector('[contenteditable]');
         if(kCe && r.kredit) kCe.textContent = fmt(r.kredit);
@@ -468,18 +468,18 @@ async function fixKasData(){
   await saveBukuKas();
   await saveLaporanKas();
 
-  showStatus('✅ Data kas berhasil diperbaiki!', '#2e7d5a');
+  showStatus('âœ… Data kas berhasil diperbaiki!', '#2e7d5a');
 }
 
 const debounceSaveJamaah = debounce(saveDataJamaah, 1500);
 const debounceSaveKas    = debounce(saveBukuKas, 1500);
 const debounceSaveLap    = debounce(saveLaporanKas, 1500);
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SAVE / LOAD SALDO AWAL (tabel terpisah)
    Key: kelompok + periode
    Tidak ikut terhapus saat reset data
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 async function saveSaldoAwal(){
   const cfg  = JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok = cfg.kelompok||'Gumukrejo';
@@ -489,8 +489,8 @@ async function saveSaldoAwal(){
   const {error} = await _sb.from('saldo_awal')
     .upsert([{ kelompok, periode, saldo_kas: kas, saldo_lap: lap, updated_at: new Date().toISOString() }],
             {onConflict:'kelompok,periode'});
-  if(error){ console.error('saldo_awal error:', error.message); showStatus('❌ '+error.message,'#c0392b'); }
-  else showStatus('✅ Saldo awal tersimpan','#2e7d5a');
+  if(error){ console.error('saldo_awal error:', error.message); showStatus('âŒ '+error.message,'#c0392b'); }
+  else showStatus('âœ… Saldo awal tersimpan','#2e7d5a');
 }
 
 async function loadSaldoAwal(){
@@ -511,12 +511,12 @@ async function loadSaldoAwal(){
 
 const debounceSaveSaldo = debounce(saveSaldoAwal, 1000);
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    KELAS SETORAN
    - Setiap kelas punya: nama, nominal (satu angka), anggota (array nama)
    - Nominal diisi ke semua kolom SUDR s/d STIA milik anggota tsb
    - Simpan ke Supabase tabel 'kelas_setoran' + 'kelas_anggota'
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 // [{nama:'Kelas A', nominal:1000, kolom:['sudr','ypk',...], anggota:['SUNARNO',...]}, ...]
 let _kelasList = [];
@@ -565,7 +565,7 @@ function renderKelas(){
     const card = document.createElement('div');
     card.style.cssText = 'background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;max-width:900px;margin-bottom:4px';
 
-    // ── Baris atas: nama, nominal, hapus ──
+    // â”€â”€ Baris atas: nama, nominal, hapus â”€â”€
     const hdr = document.createElement('div');
     hdr.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap';
 
@@ -587,17 +587,17 @@ function renderKelas(){
     hdr.appendChild(inpNom);
 
     const btnDel=document.createElement('button');
-    btnDel.textContent='🗑️ Hapus'; btnDel.className='btn btn-r';
+    btnDel.textContent='ðŸ—‘ï¸ Hapus'; btnDel.className='btn btn-r';
     btnDel.style.cssText='margin-left:auto;padding:4px 12px;font-size:11px';
     btnDel.onclick=()=>{ _kelasList.splice(idx,1); renderKelas(); };
     hdr.appendChild(btnDel);
     card.appendChild(hdr);
 
-    // ── Body: 2 kolom (pilih kolom | pilih anggota) ──
+    // â”€â”€ Body: 2 kolom (pilih kolom | pilih anggota) â”€â”€
     const body=document.createElement('div');
     body.style.cssText='display:flex;gap:16px;align-items:flex-start';
 
-    // Panel kiri — pilih kolom
+    // Panel kiri â€” pilih kolom
     const panelKol=document.createElement('div');
     panelKol.style.cssText='flex:1;min-width:220px';
 
@@ -610,7 +610,7 @@ function renderKelas(){
     const btnAll=document.createElement('button');
     const allKeys=KELAS_KOLOM_DEF.map(d=>d.key);
     const allChecked=allKeys.every(k2=>(_kelasList[idx].kolom||[]).includes(k2));
-    btnAll.textContent=allChecked?'✖ Hapus Semua':'✔ Pilih Semua';
+    btnAll.textContent=allChecked?'âœ– Hapus Semua':'âœ” Pilih Semua';
     btnAll.className='btn btn-p';
     btnAll.style.cssText='padding:3px 10px;font-size:10px;margin-bottom:8px;width:100%;background:'+(allChecked?'#c0392b':'var(--hijau2)');
     btnAll.onclick=()=>{
@@ -619,7 +619,7 @@ function renderKelas(){
     };
     panelKol.appendChild(btnAll);
 
-    // Grid checkbox kolom — 2 kolom
+    // Grid checkbox kolom â€” 2 kolom
     const gridKol=document.createElement('div');
     gridKol.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;padding:10px;background:#f0f4ff;border:1px solid #c0c8e8;border-radius:6px';
     KELAS_KOLOM_DEF.forEach(def=>{
@@ -648,7 +648,7 @@ function renderKelas(){
     div.style.cssText='width:1px;background:var(--border);align-self:stretch;flex-shrink:0';
     body.appendChild(div);
 
-    // Panel kanan — pilih anggota
+    // Panel kanan â€” pilih anggota
     const panelAng=document.createElement('div');
     panelAng.style.cssText='width:200px;flex-shrink:0';
 
@@ -660,7 +660,7 @@ function renderKelas(){
     // Tombol Pilih Semua / Hapus Semua anggota
     const btnAllAng=document.createElement('button');
     const semuaDipilih = semuaNama.length>0 && semuaNama.every(n=>(_kelasList[idx].anggota||[]).includes(n));
-    btnAllAng.textContent = semuaDipilih ? '✖ Hapus Semua' : '✔ Pilih Semua';
+    btnAllAng.textContent = semuaDipilih ? 'âœ– Hapus Semua' : 'âœ” Pilih Semua';
     btnAllAng.className='btn btn-p';
     btnAllAng.style.cssText='padding:3px 10px;font-size:10px;margin-bottom:4px;width:100%;background:'+(semuaDipilih?'#c0392b':'var(--hijau2)');
     btnAllAng.onclick=()=>{
@@ -671,7 +671,7 @@ function renderKelas(){
 
     // Tombol Pilih KK Saja
     const btnKKSaja=document.createElement('button');
-    btnKKSaja.textContent='🏠 Pilih KK Saja';
+    btnKKSaja.textContent='ðŸ  Pilih KK Saja';
     btnKKSaja.className='btn btn-p';
     btnKKSaja.style.cssText='padding:3px 10px;font-size:10px;margin-bottom:8px;width:100%;background:var(--hijau)';
     btnKKSaja.onclick=()=>{
@@ -757,8 +757,8 @@ async function simpanKelas(){
   }
 
   const st = document.getElementById('kelas-status');
-  if(kErr){ st.textContent='❌ '+kErr.message; st.style.color='#c0392b'; }
-  else { st.textContent='✅ Tersimpan'; st.style.color='var(--hijau2)'; }
+  if(kErr){ st.textContent='âŒ '+kErr.message; st.style.color='#c0392b'; }
+  else { st.textContent='âœ… Tersimpan'; st.style.color='var(--hijau2)'; }
   st.style.display='block';
   setTimeout(()=>st.style.display='none',2500);
 
@@ -786,13 +786,13 @@ async function loadKelas(){
     if(cached) _kelasList = JSON.parse(cached);
   }
   renderKelas();
-  // Tidak panggil terapkanKelasKeData di sini — dipanggil setelah loadAll selesai
+  // Tidak panggil terapkanKelasKeData di sini â€” dipanggil setelah loadAll selesai
 }
 
 // Terapkan nominal kelas ke kolom SUDR-STIA di Data Jamaah
 // Logika: sisa = SETOR - IR, lalu sisa dibagi ke kolom kelas yang dipilih
 function terapkanKelasKeData(){
-  // Map key kolom → index td di baris Data Jamaah
+  // Map key kolom â†’ index td di baris Data Jamaah
   const COLS_IDX = {
     sudr:7, ypk:8, donpns:9, jatdes:10, suds:11, satpam:12,
     asad:13, tanah:14, dapur:15, sdqremaja:16, bata:17, stia:18,
@@ -820,7 +820,7 @@ function terapkanKelasKeData(){
     });
   });
 
-  // Buat map: nama anggota → array [{nominal, kolom[]}] dari semua kelas
+  // Buat map: nama anggota â†’ array [{nominal, kolom[]}] dari semua kelas
   const namaToKelas = {};
   _kelasList.forEach(k=>{
     (k.anggota||[]).forEach(nama=>{
@@ -857,9 +857,9 @@ function terapkanKelasKeData(){
 </script>
 
 <script>
-/* ═══════════════════════════════════════
-   SUPABASE CONFIG — ganti dengan milik kamu
-═══════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   SUPABASE CONFIG â€” ganti dengan milik kamu
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const SUPABASE_URL = 'https://mdgpewanggcfpxxeeqyr.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kZ3Bld2FuZ2djZnB4eGVlcXlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMTQ5MzcsImV4cCI6MjA5MDU5MDkzN30.dD5p6xjKhEwY7wzdwE5C28nmeuHXHEh8a_pg7zUrdPY';
 let _sb = null;
@@ -868,7 +868,7 @@ let _sb = null;
 function initSupabase(){
   if(!_sb && SUPABASE_URL && SUPABASE_KEY){
     _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    console.log('✅ Supabase client initialized');
+    console.log('âœ… Supabase client initialized');
   }
   return _sb;
 }
@@ -886,9 +886,9 @@ function showStatus(msg, color){
   setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
 }
 
-/* ═══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    UTILITIES
-═══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function v(id){
   const el=document.getElementById(id);
   if(!el) return 0;
@@ -941,13 +941,13 @@ function tr(...tds){
 }
 function trCls(cls,...tds){const r=tr(...tds);r.className=cls;return r;}
 
-/* ═══════════════════════════════════════
-   SHEET 1 — DATA JAMAAH
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   SHEET 1 â€” DATA JAMAAH
    Kolom: A=KK B=Anggota C=Nama D=IR E=SUDR F=YPK G=DONPNS H=JATDES
           I=SUDS J=SATPAM K=ASAD L=TANAH M=DAPUR N=SDQREMAJA O=BATA P=STIA
           Q=RT R=TK S=SYM T=YTM U=OR V=DANASEHAT
           W=FR(=D) X=SHODAQOH(=E:P) Y=INFAQ(=Q:V) Z=JUMLAH(=W:Y)
-═══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const b1=document.getElementById('b1');
 
 // Fungsi buat satu baris DOM (dipakai saat load data & tambah manual)
@@ -966,10 +966,10 @@ function buatBarisDOM(isKK=false){
   tKK.className='inp';
   tKK.style.cssText='cursor:pointer;text-align:center;font-size:16px;user-select:none';
   tKK.title='Klik untuk centang/hapus';
-  if(isKK){tKK.dataset.checked='1';tKK.textContent='✔';}
+  if(isKK){tKK.dataset.checked='1';tKK.textContent='âœ”';}
   tKK.addEventListener('click',()=>{
     tKK.dataset.checked=tKK.dataset.checked==='1'?'0':'1';
-    tKK.textContent=tKK.dataset.checked==='1'?'✔':'';
+    tKK.textContent=tKK.dataset.checked==='1'?'âœ”':'';
     recalc1();debounceSaveJamaah();
   });
   row.appendChild(tKK);
@@ -1088,7 +1088,7 @@ function recalc1(){
       xSum+=v;
     }
 
-    // Q..V = RT..DANASEHAT (td[19]..td[24]), TPK (td[25]) — semua masuk INFAQ
+    // Q..V = RT..DANASEHAT (td[19]..td[24]), TPK (td[25]) â€” semua masuk INFAQ
     let ySum=0;
     for(let c=19;c<=25;c++){
       const v=numTd(td[c]);
@@ -1145,11 +1145,11 @@ document.getElementById('t1').addEventListener('input', e=>{
   debounceSaveJamaah();
 });
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TAMBAH / SISIP / HAPUS BARIS DATA JAMAAH
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-// Tambah anggota — tampilkan pilihan KK dulu
+// Tambah anggota â€” tampilkan pilihan KK dulu
 function tambahAnggotaBaru(){
   // Kumpulkan semua KK yang ada (baris yang dicentang + punya nama)
   const trs = Array.from(b1.querySelectorAll('tr'));
@@ -1253,13 +1253,13 @@ function ctxItem(label, fn){
 
 function tampilContextMenu(e, row){
   ctxMenu.innerHTML='';
-  ctxMenu.appendChild(ctxItem('➕ Sisip baris di bawah', ()=>{
+  ctxMenu.appendChild(ctxItem('âž• Sisip baris di bawah', ()=>{
     const baris=buatBarisDOM(false);
     row.after(baris);
     recalc1();
     baris.querySelectorAll('td')[5]?.querySelector('[contenteditable]')?.focus();
   }));
-  ctxMenu.appendChild(ctxItem('🏠 Sisip KK baru di bawah', ()=>{
+  ctxMenu.appendChild(ctxItem('ðŸ  Sisip KK baru di bawah', ()=>{
     const baris=buatBarisDOM(true);
     row.after(baris);
     recalc1();
@@ -1269,7 +1269,7 @@ function tampilContextMenu(e, row){
   const div=document.createElement('div');
   div.style.cssText='height:1px;background:var(--border);margin:2px 0';
   ctxMenu.appendChild(div);
-  ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', ()=>{
+  ctxMenu.appendChild(ctxItem('ðŸ—‘ï¸ Hapus baris ini', ()=>{
     if(confirm('Hapus baris ini?')){ row.remove(); recalc1(); saveDataJamaah(); }
   }));
   ctxMenu.style.display='block';
@@ -1280,9 +1280,9 @@ function tampilContextMenu(e, row){
   ctxMenu.style.top=y+'px';
 }
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TAMBAH / HAPUS BARIS BUKU KAS
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 // Tambah baris baru di Buku Kas
 function tambahBarisBukuKas(){
@@ -1298,7 +1298,7 @@ function tambahBarisBukuKas(){
 async function hapusBarisBukuKas(row) {
   const sb = initSupabase();
   if(!sb) {
-    console.warn('❌ Supabase tidak terkoneksi');
+    console.warn('âŒ Supabase tidak terkoneksi');
     return;
   }
 
@@ -1309,7 +1309,7 @@ async function hapusBarisBukuKas(row) {
   // Ambil data dari baris yang akan dihapus
   const cells = row.querySelectorAll('td');
   if(cells.length < 6) {
-    console.warn('⚠️ Baris tidak valid untuk dihapus');
+    console.warn('âš ï¸ Baris tidak valid untuk dihapus');
     return;
   }
 
@@ -1348,7 +1348,7 @@ async function hapusBarisBukuKas(row) {
     barisNum = parseInt(row.getAttribute('data-baris')) || null;
   }
 
-  console.log(`🗑️ Data baris yang akan dihapus:`);
+  console.log(`ðŸ—‘ï¸ Data baris yang akan dihapus:`);
   console.log(`  - Baris: ${barisNum} (type: ${typeof barisNum})`);
   console.log(`  - Keterangan: "${keterangan}"`);
   console.log(`  - Debet: ${debet}`);
@@ -1359,7 +1359,7 @@ async function hapusBarisBukuKas(row) {
   try {
     // Strategy 1: Hapus by baris number (jika valid)
     if(barisNum && !isNaN(barisNum)) {
-      console.log(`🔍 Strategy 1: Hapus by baris ${barisNum}`);
+      console.log(`ðŸ” Strategy 1: Hapus by baris ${barisNum}`);
       const { data: barisData, error: barisError } = await sb.from('buku_kas')
         .select('*')
         .eq('kelompok', kelompok)
@@ -1367,8 +1367,8 @@ async function hapusBarisBukuKas(row) {
         .eq('baris', barisNum);
 
       if(!barisError && barisData && barisData.length > 0) {
-        console.log(`📊 Ditemukan ${barisData.length} record by baris number`);
-        console.log('🗑️ Menghapus by baris number...');
+        console.log(`ðŸ“Š Ditemukan ${barisData.length} record by baris number`);
+        console.log('ðŸ—‘ï¸ Menghapus by baris number...');
         
         const { error: deleteError } = await sb.from('buku_kas')
           .delete()
@@ -1377,20 +1377,20 @@ async function hapusBarisBukuKas(row) {
           .eq('baris', barisNum);
 
         if(!deleteError) {
-          console.log(`✅ Berhasil menghapus ${barisData.length} record by baris number`);
-          showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+          console.log(`âœ… Berhasil menghapus ${barisData.length} record by baris number`);
+          showStatus('âœ… Baris berhasil dihapus dari database', '#2e7d5a');
           return;
         } else {
-          console.error('❌ Error hapus by baris:', deleteError);
+          console.error('âŒ Error hapus by baris:', deleteError);
         }
       } else {
-        console.log('📭 Tidak ada data by baris number');
+        console.log('ðŸ“­ Tidak ada data by baris number');
       }
     }
 
     // Strategy 2: Hapus by keterangan + debet + kredit
     if(keterangan) {
-      console.log(`🔍 Strategy 2: Hapus by keterangan+debet+kredit`);
+      console.log(`ðŸ” Strategy 2: Hapus by keterangan+debet+kredit`);
       const { data: existingData, error: findError } = await sb.from('buku_kas')
         .select('*')
         .eq('kelompok', kelompok)
@@ -1400,8 +1400,8 @@ async function hapusBarisBukuKas(row) {
         .eq('kredit', kredit);
 
       if(!findError && existingData && existingData.length > 0) {
-        console.log(`📊 Ditemukan ${existingData.length} record by keterangan+debet+kredit`);
-        console.log('🗑️ Menghapus by keterangan+debet+kredit...');
+        console.log(`ðŸ“Š Ditemukan ${existingData.length} record by keterangan+debet+kredit`);
+        console.log('ðŸ—‘ï¸ Menghapus by keterangan+debet+kredit...');
         
         const { error: deleteError } = await sb.from('buku_kas')
           .delete()
@@ -1412,20 +1412,20 @@ async function hapusBarisBukuKas(row) {
           .eq('kredit', kredit);
 
         if(!deleteError) {
-          console.log(`✅ Berhasil menghapus ${existingData.length} record`);
-          showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+          console.log(`âœ… Berhasil menghapus ${existingData.length} record`);
+          showStatus('âœ… Baris berhasil dihapus dari database', '#2e7d5a');
           return;
         } else {
-          console.error('❌ Error hapus by keterangan:', deleteError);
+          console.error('âŒ Error hapus by keterangan:', deleteError);
         }
       } else {
-        console.log('📭 Tidak ada data by keterangan+debet+kredit');
+        console.log('ðŸ“­ Tidak ada data by keterangan+debet+kredit');
       }
     }
 
     // Strategy 3: Hapus semua dengan debet=0 dan kredit=0 (untuk baris kosong)
     if(debet === 0 && kredit === 0 && (!keterangan || keterangan.trim() === '')) {
-      console.log(`🔍 Strategy 3: Hapus semua dengan debet=0 dan kredit=0`);
+      console.log(`ðŸ” Strategy 3: Hapus semua dengan debet=0 dan kredit=0`);
       const { error } = await sb.from('buku_kas')
         .delete()
         .eq('kelompok', kelompok)
@@ -1434,23 +1434,23 @@ async function hapusBarisBukuKas(row) {
         .eq('kredit', 0);
 
       if(!error) {
-        console.log('✅ Strategy 3 berhasil - Hapus debet=kredit=0');
-        showStatus('✅ Baris berhasil dihapus (debet=kredit=0)', '#2e7d5a');
+        console.log('âœ… Strategy 3 berhasil - Hapus debet=kredit=0');
+        showStatus('âœ… Baris berhasil dihapus (debet=kredit=0)', '#2e7d5a');
         return;
       } else {
-        console.log('❌ Strategy 3 gagal:', error);
+        console.log('âŒ Strategy 3 gagal:', error);
       }
     }
 
     // Strategy 4: Get all data dan hapus yang cocok
-    console.log('🔍 Strategy 4: Get all data and find match...');
+    console.log('ðŸ” Strategy 4: Get all data and find match...');
     const { data: allData, error: allError } = await sb.from('buku_kas')
       .select('*')
       .eq('kelompok', kelompok)
       .eq('periode', periode);
 
     if(!allError && allData) {
-      console.log(`📊 Total ${allData.length} records di database`);
+      console.log(`ðŸ“Š Total ${allData.length} records di database`);
       
       // Cari record yang cocok
       const matchRecord = allData.find(record => {
@@ -1463,37 +1463,37 @@ async function hapusBarisBukuKas(row) {
       });
 
       if(matchRecord) {
-        console.log('📋 Record yang cocok ditemukan:', matchRecord);
-        console.log('🗑️ Menghapus record yang cocok...');
+        console.log('ðŸ“‹ Record yang cocok ditemukan:', matchRecord);
+        console.log('ðŸ—‘ï¸ Menghapus record yang cocok...');
         
         const { error: deleteError } = await sb.from('buku_kas')
           .delete()
           .eq('id', matchRecord.id); // Hapus by primary key
 
         if(!deleteError) {
-          console.log('✅ Berhasil menghapus record yang cocok');
-          showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+          console.log('âœ… Berhasil menghapus record yang cocok');
+          showStatus('âœ… Baris berhasil dihapus dari database', '#2e7d5a');
           return;
         } else {
-          console.error('❌ Error hapus by id:', deleteError);
+          console.error('âŒ Error hapus by id:', deleteError);
         }
       } else {
-        console.log('📭 Tidak ada record yang cocok di semua data');
+        console.log('ðŸ“­ Tidak ada record yang cocok di semua data');
         
         // Tampilkan semua data untuk debugging
-        console.log('📋 Semua data di database:');
+        console.log('ðŸ“‹ Semua data di database:');
         allData.forEach((record, idx) => {
           console.log(`  ${idx + 1}. baris:${record.baris}, ket:"${record.keterangan}", D:${record.debet}, K:${record.kredit}`);
         });
       }
     }
 
-    console.log('📭 Tidak ada data yang cocok untuk dihapus (baris mungkin belum tersimpan di DB)');
-    // Tidak perlu alert — baris kosong memang belum tentu ada di database
+    console.log('ðŸ“­ Tidak ada data yang cocok untuk dihapus (baris mungkin belum tersimpan di DB)');
+    // Tidak perlu alert â€” baris kosong memang belum tentu ada di database
 
   } catch(e) {
-    console.error('❌ Error hapus baris Buku Kas:', e);
-    alert('❌ Terjadi kesalahan saat menghapus data');
+    console.error('âŒ Error hapus baris Buku Kas:', e);
+    alert('âŒ Terjadi kesalahan saat menghapus data');
   }
 }
 
@@ -1501,7 +1501,7 @@ async function hapusBarisBukuKas(row) {
 async function debugBukuKasStructure() {
   const sb = initSupabase();
   if(!sb) {
-    console.warn('❌ Supabase tidak terkoneksi');
+    console.warn('âŒ Supabase tidak terkoneksi');
     return;
   }
 
@@ -1509,7 +1509,7 @@ async function debugBukuKasStructure() {
   const kelompok = cfg.kelompok||'Gumukrejo';
   const periode = getPeriodeStr();
 
-  console.log(`🔍 Debug struktur Buku Kas untuk ${kelompok} - ${periode}`);
+  console.log(`ðŸ” Debug struktur Buku Kas untuk ${kelompok} - ${periode}`);
   
   try {
     // Ambil semua data tanpa filter
@@ -1520,19 +1520,19 @@ async function debugBukuKasStructure() {
       .order('baris');
 
     if(error) {
-      console.error('❌ Error mengambil data:', error);
+      console.error('âŒ Error mengambil data:', error);
       return;
     }
 
-    console.log(`📊 Total ${data?.length || 0} record di database`);
+    console.log(`ðŸ“Š Total ${data?.length || 0} record di database`);
     
     if(data && data.length > 0) {
-      console.log('📋 Struktur data (sample record):', data[0]);
-      console.log('📋 Semua data:', data);
+      console.log('ðŸ“‹ Struktur data (sample record):', data[0]);
+      console.log('ðŸ“‹ Semua data:', data);
       
       // Tampilkan baris numbers yang ada
       const barisNumbers = data.map(d => d.baris);
-      console.log('📊 Baris numbers yang ada:', barisNumbers);
+      console.log('ðŸ“Š Baris numbers yang ada:', barisNumbers);
       
       // Group by baris
       const byBaris = {};
@@ -1540,11 +1540,11 @@ async function debugBukuKasStructure() {
         if(!byBaris[item.baris]) byBaris[item.baris] = [];
         byBaris[item.baris].push(item);
       });
-      console.log('📋 Data by baris:', byBaris);
+      console.log('ðŸ“‹ Data by baris:', byBaris);
     }
 
   } catch(e) {
-    console.error('❌ Error debug:', e);
+    console.error('âŒ Error debug:', e);
   }
 }
 
@@ -1552,7 +1552,7 @@ async function debugBukuKasStructure() {
 async function hapusBarisBukuKasAgresif(row) {
   const sb = initSupabase();
   if(!sb) {
-    console.warn('❌ Supabase tidak terkoneksi');
+    console.warn('âŒ Supabase tidak terkoneksi');
     return;
   }
 
@@ -1567,12 +1567,12 @@ async function hapusBarisBukuKasAgresif(row) {
   const debet = bersihkanAngka(getVal(cells[2]) || '0');
   const kredit = bersihkanAngka(getVal(cells[3]) || '0');
 
-  console.log(`🗑️ HAPUS AGRESIF - Baris: ${barisNum}, Keterangan: "${keterangan}", D: ${debet}, K: ${kredit}`);
+  console.log(`ðŸ—‘ï¸ HAPUS AGRESIF - Baris: ${barisNum}, Keterangan: "${keterangan}", D: ${debet}, K: ${kredit}`);
 
   try {
     // Strategy 1: Hapus by baris number
     if(barisNum) {
-      console.log(`🔍 Strategy 1: Hapus by baris ${barisNum}`);
+      console.log(`ðŸ” Strategy 1: Hapus by baris ${barisNum}`);
       const { error } = await sb.from('buku_kas')
         .delete()
         .eq('kelompok', kelompok)
@@ -1580,17 +1580,17 @@ async function hapusBarisBukuKasAgresif(row) {
         .eq('baris', parseInt(barisNum));
 
       if(!error) {
-        console.log('✅ Strategy 1 berhasil - Hapus by baris number');
-        showStatus('✅ Baris berhasil dihapus (by baris)', '#2e7d5a');
+        console.log('âœ… Strategy 1 berhasil - Hapus by baris number');
+        showStatus('âœ… Baris berhasil dihapus (by baris)', '#2e7d5a');
         return;
       } else {
-        console.log('❌ Strategy 1 gagal:', error);
+        console.log('âŒ Strategy 1 gagal:', error);
       }
     }
 
     // Strategy 2: Hapus semua dengan keterangan kosong
     if(!keterangan) {
-      console.log('🔍 Strategy 2: Hapus semua dengan keterangan kosong');
+      console.log('ðŸ” Strategy 2: Hapus semua dengan keterangan kosong');
       const { error } = await sb.from('buku_kas')
         .delete()
         .eq('kelompok', kelompok)
@@ -1598,17 +1598,17 @@ async function hapusBarisBukuKasAgresif(row) {
         .is('keterangan', null);
 
       if(!error) {
-        console.log('✅ Strategy 2 berhasil - Hapus keterangan kosong');
-        showStatus('✅ Baris berhasil dihapus (keterangan kosong)', '#2e7d5a');
+        console.log('âœ… Strategy 2 berhasil - Hapus keterangan kosong');
+        showStatus('âœ… Baris berhasil dihapus (keterangan kosong)', '#2e7d5a');
         return;
       } else {
-        console.log('❌ Strategy 2 gagal:', error);
+        console.log('âŒ Strategy 2 gagal:', error);
       }
     }
 
     // Strategy 3: Hapus semua dengan debet=0 dan kredit=0
     if(debet === 0 && kredit === 0) {
-      console.log('🔍 Strategy 3: Hapus semua dengan debet=0 dan kredit=0');
+      console.log('ðŸ” Strategy 3: Hapus semua dengan debet=0 dan kredit=0');
       const { error } = await sb.from('buku_kas')
         .delete()
         .eq('kelompok', kelompok)
@@ -1617,23 +1617,23 @@ async function hapusBarisBukuKasAgresif(row) {
         .eq('kredit', 0);
 
       if(!error) {
-        console.log('✅ Strategy 3 berhasil - Hapus debet=kredit=0');
-        showStatus('✅ Baris berhasil dihapus (debet=kredit=0)', '#2e7d5a');
+        console.log('âœ… Strategy 3 berhasil - Hapus debet=kredit=0');
+        showStatus('âœ… Baris berhasil dihapus (debet=kredit=0)', '#2e7d5a');
         return;
       } else {
-        console.log('❌ Strategy 3 gagal:', error);
+        console.log('âŒ Strategy 3 gagal:', error);
       }
     }
 
     // Strategy 4: Ambil semua data dan hapus yang cocok manual
-    console.log('🔍 Strategy 4: Manual matching');
+    console.log('ðŸ” Strategy 4: Manual matching');
     const { data: allData, error: allError } = await sb.from('buku_kas')
       .select('*')
       .eq('kelompok', kelompok)
       .eq('periode', periode);
 
     if(!allError && allData) {
-      console.log(`📊 Total ${allData.length} records untuk dicek`);
+      console.log(`ðŸ“Š Total ${allData.length} records untuk dicek`);
       
       for(const record of allData) {
         const match = (
@@ -1644,28 +1644,28 @@ async function hapusBarisBukuKasAgresif(row) {
         );
         
         if(match) {
-          console.log('🗑️ Menghapus record yang cocok:', record);
+          console.log('ðŸ—‘ï¸ Menghapus record yang cocok:', record);
           const { error: deleteError } = await sb.from('buku_kas')
             .delete()
             .eq('id', record.id);
 
           if(!deleteError) {
-            console.log('✅ Strategy 4 berhasil - Hapus manual matching');
-            showStatus('✅ Baris berhasil dihapus (manual)', '#2e7d5a');
+            console.log('âœ… Strategy 4 berhasil - Hapus manual matching');
+            showStatus('âœ… Baris berhasil dihapus (manual)', '#2e7d5a');
             return;
           } else {
-            console.log('❌ Error hapus manual:', deleteError);
+            console.log('âŒ Error hapus manual:', deleteError);
           }
         }
       }
     }
 
-    console.log('❌ Semua strategy gagal');
-    alert('❌ Tidak dapat menghapus baris - semua strategy gagal');
+    console.log('âŒ Semua strategy gagal');
+    alert('âŒ Tidak dapat menghapus baris - semua strategy gagal');
 
   } catch(e) {
-    console.error('❌ Error hapus agresif:', e);
-    alert('❌ Terjadi kesalahan saat menghapus data');
+    console.error('âŒ Error hapus agresif:', e);
+    alert('âŒ Terjadi kesalahan saat menghapus data');
   }
 }
 
@@ -1677,7 +1677,7 @@ window.hapusAgresif = async function() {
   if(selectedRow) {
     await hapusBarisBukuKasAgresif(selectedRow);
   } else {
-    alert('❌ Hover dulu pada baris yang ingin dihapus, lalu jalankan hapusAgresif()');
+    alert('âŒ Hover dulu pada baris yang ingin dihapus, lalu jalankan hapusAgresif()');
   }
 };
 
@@ -1687,19 +1687,19 @@ async function resetBukuKasDB(){
   const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok = cfg.kelompok||'Gumukrejo';
   const periode = getPeriodeStr();
-  showStatus('⏳ Reset data kas...', '#e67e22');
+  showStatus('â³ Reset data kas...', '#e67e22');
   // Hapus semua data lama
   await _sb.from('buku_kas').delete().eq('kelompok',kelompok).eq('periode',periode);
   // Simpan ulang dari DOM (struktur baru)
   await saveBukuKas();
-  showStatus('✅ Data kas direset & disimpan ulang', '#2e7d5a');
+  showStatus('âœ… Data kas direset & disimpan ulang', '#2e7d5a');
 }
 
 // Debug: Lihat semua data Buku Kas di database
 async function debugBukuKasData() {
   const sb = initSupabase();
   if(!sb) {
-    console.warn('❌ Supabase tidak terkoneksi');
+    console.warn('âŒ Supabase tidak terkoneksi');
     return;
   }
 
@@ -1707,7 +1707,7 @@ async function debugBukuKasData() {
   const kelompok = cfg.kelompok||'Gumukrejo';
   const periode = getPeriodeStr();
 
-  console.log(`🔍 Debug: Melihat semua data Buku Kas untuk ${kelompok} - ${periode}`);
+  console.log(`ðŸ” Debug: Melihat semua data Buku Kas untuk ${kelompok} - ${periode}`);
   
   try {
     const { data, error } = await sb.from('buku_kas')
@@ -1717,13 +1717,13 @@ async function debugBukuKasData() {
       .order('baris');
 
     if(error) {
-      console.error('❌ Error mengambil data:', error);
+      console.error('âŒ Error mengambil data:', error);
       return;
     }
 
-    console.log(`📊 Total data di database: ${data?.length || 0} record`);
+    console.log(`ðŸ“Š Total data di database: ${data?.length || 0} record`);
     if(data && data.length > 0) {
-      console.log('📋 Data lengkap:', data);
+      console.log('ðŸ“‹ Data lengkap:', data);
       
       // Group by keterangan
       const byKeterangan = {};
@@ -1733,11 +1733,11 @@ async function debugBukuKasData() {
         byKeterangan[key].push(item);
       });
       
-      console.log('📋 Data grouped by keterangan:', byKeterangan);
+      console.log('ðŸ“‹ Data grouped by keterangan:', byKeterangan);
     }
 
   } catch(e) {
-    console.error('❌ Error debug:', e);
+    console.error('âŒ Error debug:', e);
   }
 }
 
@@ -1746,7 +1746,7 @@ window.debugBukuKas = debugBukuKasData;
 window.debugAllTables = async function() {
   const sb = initSupabase();
   if(!sb) {
-    console.warn('❌ Supabase tidak terkoneksi');
+    console.warn('âŒ Supabase tidak terkoneksi');
     return;
   }
 
@@ -1754,7 +1754,7 @@ window.debugAllTables = async function() {
   const kelompok = cfg.kelompok||'Gumukrejo';
   const periode = getPeriodeStr();
 
-  console.log(`🔍 Debug ALL TABLES untuk ${kelompok} - ${periode}`);
+  console.log(`ðŸ” Debug ALL TABLES untuk ${kelompok} - ${periode}`);
   
   const tables = ['data_jamaah', 'buku_kas', 'laporan_kas', 'saldo_awal'];
   
@@ -1766,20 +1766,20 @@ window.debugAllTables = async function() {
         .eq('periode', periode);
 
       if(error) {
-        console.error(`❌ Error ${table}:`, error);
+        console.error(`âŒ Error ${table}:`, error);
       } else {
-        console.log(`📊 ${table}: ${data?.length || 0} record`);
+        console.log(`ðŸ“Š ${table}: ${data?.length || 0} record`);
         if(data && data.length > 0) {
-          console.log(`📋 ${table} data:`, data);
+          console.log(`ðŸ“‹ ${table} data:`, data);
         }
       }
     } catch(e) {
-      console.error(`❌ Error debug ${table}:`, e);
+      console.error(`âŒ Error debug ${table}:`, e);
     }
   }
 };
 
-/* ── Manajemen baris Buku Kas yang dihapus (disimpan di localStorage) ── */
+/* â”€â”€ Manajemen baris Buku Kas yang dihapus (disimpan di localStorage) â”€â”€ */
 function getHapusKey(){
   const cfg=JSON.parse(localStorage.getItem('cfg')||'{}');
   return 'hapus_kas_'+(cfg.kelompok||'Gumukrejo')+'_'+(getPeriodeStr().replace(' ','_'));
@@ -1799,15 +1799,15 @@ function hapusSemuaBarisHapus(){
 // Context menu untuk Buku Kas
 function tampilContextMenuBukuKas(e, row){
   ctxMenu.innerHTML='';
-  ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', async ()=>{
+  ctxMenu.appendChild(ctxItem('ðŸ—‘ï¸ Hapus baris ini', async ()=>{
     if(confirm('Hapus baris ini?')){ 
       // Catat row id agar tidak muncul lagi saat refresh
       if(row.id) tambahBarisHapus(row.id);
       try {
-        // Coba hapus dari database (baris kosong mungkin tidak ada di DB — tidak masalah)
+        // Coba hapus dari database (baris kosong mungkin tidak ada di DB â€” tidak masalah)
         await hapusBarisBukuKas(row);
       } catch(err) {
-        console.warn('⚠️ Hapus dari DB gagal (mungkin baris kosong):', err);
+        console.warn('âš ï¸ Hapus dari DB gagal (mungkin baris kosong):', err);
       }
       // Selalu hapus dari DOM meskipun DB gagal
       row.remove(); 
@@ -1823,9 +1823,9 @@ function tampilContextMenuBukuKas(e, row){
   ctxMenu.style.top=y+'px';
 }
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TAMBAH / HAPUS BARIS LAPORAN KAS
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 // Tambah baris baru di Laporan Kas
 function tambahBarisLaporanKas(){
@@ -1839,7 +1839,7 @@ function tambahBarisLaporanKas(){
 async function hapusBarisLaporanKas(row) {
   const sb = initSupabase();
   if(!sb) {
-    console.warn('❌ Supabase tidak terkoneksi');
+    console.warn('âŒ Supabase tidak terkoneksi');
     return;
   }
 
@@ -1850,7 +1850,7 @@ async function hapusBarisLaporanKas(row) {
   // Ambil data dari baris yang akan dihapus
   const cells = row.querySelectorAll('td');
   if(cells.length < 6) {
-    console.warn('⚠️ Baris tidak valid untuk dihapus');
+    console.warn('âš ï¸ Baris tidak valid untuk dihapus');
     return;
   }
 
@@ -1859,7 +1859,7 @@ async function hapusBarisLaporanKas(row) {
   const kredit = bersihkanAngka(getVal(cells[3]) || '0');
   // Tidak menggunakan saldo karena tidak ada di database
 
-  console.log(`🗑️ Menghapus baris Laporan Kas: ${keterangan} | D:${debet} K:${kredit}`);
+  console.log(`ðŸ—‘ï¸ Menghapus baris Laporan Kas: ${keterangan} | D:${debet} K:${kredit}`);
 
   try {
     // Cari record yang cocok di database (tanpa saldo)
@@ -1872,12 +1872,12 @@ async function hapusBarisLaporanKas(row) {
       .eq('kredit', kredit);
 
     if(findError) {
-      console.error('❌ Error mencari data:', findError);
+      console.error('âŒ Error mencari data:', findError);
       return;
     }
 
     if(!existingData || existingData.length === 0) {
-      console.log('📭 Tidak ada data yang cocok di database untuk dihapus');
+      console.log('ðŸ“­ Tidak ada data yang cocok di database untuk dihapus');
       return;
     }
 
@@ -1891,24 +1891,24 @@ async function hapusBarisLaporanKas(row) {
       .eq('kredit', kredit);
 
     if(deleteError) {
-      console.error('❌ Error menghapus data:', deleteError);
-      alert('❌ Gagal menghapus data dari database');
+      console.error('âŒ Error menghapus data:', deleteError);
+      alert('âŒ Gagal menghapus data dari database');
       return;
     }
 
-    console.log(`✅ Berhasil menghapus ${existingData.length} record dari database`);
-    showStatus('✅ Baris berhasil dihapus dari database', '#2e7d5a');
+    console.log(`âœ… Berhasil menghapus ${existingData.length} record dari database`);
+    showStatus('âœ… Baris berhasil dihapus dari database', '#2e7d5a');
 
   } catch(e) {
-    console.error('❌ Error hapus baris Laporan Kas:', e);
-    alert('❌ Terjadi kesalahan saat menghapus data');
+    console.error('âŒ Error hapus baris Laporan Kas:', e);
+    alert('âŒ Terjadi kesalahan saat menghapus data');
   }
 }
 
 // Context menu untuk Laporan Kas
 function tampilContextMenuLaporanKas(e, row){
   ctxMenu.innerHTML='';
-  ctxMenu.appendChild(ctxItem('🗑️ Hapus baris ini', async ()=>{
+  ctxMenu.appendChild(ctxItem('ðŸ—‘ï¸ Hapus baris ini', async ()=>{
     if(confirm('Hapus baris ini?')){ 
       // Hapus dari database dulu
       await hapusBarisLaporanKas(row);
@@ -1926,8 +1926,8 @@ function tampilContextMenuLaporanKas(e, row){
   ctxMenu.style.top=y+'px';
 }
 
-/* ══════════════════════════════════════
-   SHEET 2 — BUKU KAS
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   SHEET 2 â€” BUKU KAS
    Saldo berjalan: F = F_prev + D - E
    E28 = Data!W35  (FR total)
    E30 = Data!Y35  (Infaq total)
@@ -1937,7 +1937,7 @@ function tampilContextMenuLaporanKas(e, row){
    E34 = D25 * 1
    E35 = D27 * 7/8
    E36 = D26 * 1
-═══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const b2=document.getElementById('b2');
 
 // Row builder untuk buku kas
@@ -1973,12 +1973,12 @@ function kasRow(rowNum,ket,debEdit=true,kreEdit=true,kreFormulaHint=''){
   }
   // Saldo
   const tSld=cel('td','form','0');tSld.id=`ks${rowNum}`;row.appendChild(tSld);
-  // Context menu — klik kanan untuk hapus baris
+  // Context menu â€” klik kanan untuk hapus baris
   row.addEventListener('contextmenu',e=>{e.preventDefault();tampilContextMenuBukuKas(e,row);});
   return row;
 }
 
-// Saldo bulan sebelumnya (baris 6) — label dinamis, input di kolom SALDO (persis Excel F6)
+// Saldo bulan sebelumnya (baris 6) â€” label dinamis, input di kolom SALDO (persis Excel F6)
 const rowSaldoBulan=document.createElement('tr');rowSaldoBulan.className='rl';
 const tdSB=document.createElement('td');tdSB.colSpan=5;tdSB.id='lbl-saldo-awal-kas';tdSB.textContent='Saldo Awal';rowSaldoBulan.appendChild(tdSB);
 // Input saldo awal di kolom Saldo (kolom F), bukan Kredit
@@ -1988,14 +1988,14 @@ tdSBV.appendChild(divSBV);
 rowSaldoBulan.appendChild(tdSBV);
 b2.appendChild(rowSaldoBulan);
 
-// Data baris kas — semua baris debet: kredit TIDAK bisa diisi (false)
+// Data baris kas â€” semua baris debet: kredit TIDAK bisa diisi (false)
 const kasData=[
-  [7,'FR ….',true,false,''],
-  [8,'SDQ …..',true,false,''],
-  [9,'INF….',true,false,''],
-  [10,'FR ….',true,false,''],
-  [11,'SDQ …..',true,false,''],
-  [12,'INF ….',true,false,''],
+  [7,'FR â€¦.',true,false,''],
+  [8,'SDQ â€¦..',true,false,''],
+  [9,'INFâ€¦.',true,false,''],
+  [10,'FR â€¦.',true,false,''],
+  [11,'SDQ â€¦..',true,false,''],
+  [12,'INF â€¦.',true,false,''],
   [13,'INF Romadhon',true,false,''],
   [14,"INF Jum'at",true,false,''],
   [15,'INF Lailatul Qodar',true,false,''],
@@ -2021,24 +2021,24 @@ b2.appendChild(kasRow(22,'Warisan rod',true,false,''));
 // Baris 23: Kredit = Data!W35 (FR total)
 const r28=kasRow(23,'FR 100%',false,false,'=Data!W35 (FR total dari Data)');
 b2.appendChild(r28);
-// Baris 24: SHODAQOH — kredit manual
+// Baris 24: SHODAQOH â€” kredit manual
 b2.appendChild(kasRow(24,'SHODAQOH',false,true,''));
 // Baris 25: Kredit = Data!Y35 (Infaq total)
 const r30=kasRow(25,'INFAQ',false,false,'=Data!Y35 (Infaq total dari Data)');
 b2.appendChild(r30);
 // Baris 26: Kredit = D13*3/4
-const r31=kasRow(26,'INF Romadhon 3/4',false,false,'=INF Romadhon × 3/4');b2.appendChild(r31);
+const r31=kasRow(26,'INF Romadhon 3/4',false,false,'=INF Romadhon Ã— 3/4');b2.appendChild(r31);
 // Baris 27: Kredit = D14*2/3
-const r32=kasRow(27,"INF JUM'AT 2/3",false,false,"=INF Jum'at × 2/3");b2.appendChild(r32);
+const r32=kasRow(27,"INF JUM'AT 2/3",false,false,"=INF Jum'at Ã— 2/3");b2.appendChild(r32);
 // Baris 28: Kredit = D15*2/3
-const r33=kasRow(28,'INF Lailatul Qodar 2/3',false,false,'=INF Lailatul Qodar × 2/3');b2.appendChild(r33);
+const r33=kasRow(28,'INF Lailatul Qodar 2/3',false,false,'=INF Lailatul Qodar Ã— 2/3');b2.appendChild(r33);
 // Baris 29: Kredit = D16*1
-const r34=kasRow(29,'INF Hari Raya 100%',false,false,'=INF Hari Raya × 100%');b2.appendChild(r34);
+const r34=kasRow(29,'INF Hari Raya 100%',false,false,'=INF Hari Raya Ã— 100%');b2.appendChild(r34);
 // Baris 30: Kredit = D22*7/8
-const r35=kasRow(30,'Warisan rod 7/8',false,false,'=Warisan rod × 7/8');b2.appendChild(r35);
+const r35=kasRow(30,'Warisan rod 7/8',false,false,'=Warisan rod Ã— 7/8');b2.appendChild(r35);
 // Baris 31: Kredit = D17*1
-const r36=kasRow(31,'Zakat',false,false,'=Zakat × 100%');b2.appendChild(r36);
-// Baris 32: Operasional — kredit manual
+const r36=kasRow(31,'Zakat',false,false,'=Zakat Ã— 100%');b2.appendChild(r36);
+// Baris 32: Operasional â€” kredit manual
 b2.appendChild(kasRow(32,'operasional',false,true,''));
 // Baris 33: Saldo akhir
 // Baris 33: Saldo akhir
@@ -2070,7 +2070,7 @@ function bersihkanAngka(teks){
   return parseFloat((teks||'').replace(/\./g,'').replace(',','.')) || 0;
 }
 
-// Format input angka saat blur — ketik "1000" jadi "1.000"
+// Format input angka saat blur â€” ketik "1000" jadi "1.000"
 function formatInputAngka(el){
   const raw = (el.textContent||'').trim();
   if(raw==='') return;
@@ -2111,7 +2111,7 @@ function recalc2(){
     td.dataset.precise = val;
   }
 
-  // Kredit formula — nomor baris baru
+  // Kredit formula â€” nomor baris baru
   setTd(document.getElementById('k23')?.querySelectorAll('td')[4], frTotal);          // FR 100%
   setTd(document.getElementById('k25')?.querySelectorAll('td')[4], infaqTotal);       // INFAQ
   setTd(document.getElementById('k26')?.querySelectorAll('td')[4], kd(13)*3/4);       // INF Romadhon 3/4
@@ -2151,14 +2151,14 @@ document.getElementById('t2').addEventListener('contextmenu', e=>{
     tampilContextMenuBukuKas(e, row);
   }
 });
-// Saldo awal (k6saldo) — simpan ke tabel saldo_awal, bukan buku_kas
+// Saldo awal (k6saldo) â€” simpan ke tabel saldo_awal, bukan buku_kas
 document.getElementById('b2').addEventListener('input', e=>{
   if(e.target.closest('#k6saldo')) { recalc2(); recalc3(); debounceSaveSaldo(); }
 });
 
-/* ═══════════════════════════════════════
-   SHEET 3 — LAPORAN KAS
-═══════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   SHEET 3 â€” LAPORAN KAS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const b3=document.getElementById('b3');
 
 function lapRow(ket,debCls,kreCls,debId,kreId,tglEdit=true){
@@ -2218,7 +2218,7 @@ function lapRowInp(ket,side){
   return row;
 }
 
-// Saldo Awal — label dinamis, bisa diinput
+// Saldo Awal â€” label dinamis, bisa diinput
 const rLS=document.createElement('tr');rLS.className='rl';
 const tdLSa=cel('td','','Saldo Awal');tdLSa.colSpan=3;tdLSa.id='lbl-saldo-awal-lap';tdLSa.style.textAlign='right';rLS.appendChild(tdLSa);
 rLS.appendChild(tdInp('inp','0')); // Kolom debet bisa diedit
@@ -2267,7 +2267,7 @@ b3.appendChild(r3_15);
 const r3_16=lapRowHybrid('Zakat','ref','inp','l3d16','',true);
 r3_16.querySelectorAll('td')[3].title='=Buku Kas baris Zakat (Debet)';
 b3.appendChild(r3_16);
-// Hibah, Laba — input
+// Hibah, Laba â€” input
 b3.appendChild(lapRowInp('Hibah','deb'));
 b3.appendChild(lapRowInp('Laba Usaha/Deviden','deb'));
 b3.appendChild(lapRowInp('','deb'));
@@ -2282,7 +2282,7 @@ b3.appendChild(rPK);
 const r3_22=lapRowHybrid('FR 100%','inp','ref','','l3e22',true);
 r3_22.querySelectorAll('td')[4].title='=D8 (sama dengan penerimaan FR)';
 b3.appendChild(r3_22);
-// SHODAQOH — input kredit
+// SHODAQOH â€” input kredit
 b3.appendChild(lapRowInp('SHODAQOH','kre'));
 // E24 = D10 (Infaq) -> otomatis
 const r3_24=lapRowHybrid('INFAQ','inp','ref','','l3e24',true);
@@ -2290,25 +2290,25 @@ r3_24.querySelectorAll('td')[4].title='=D10 (sama dengan penerimaan Infaq)';
 b3.appendChild(r3_24);
 // E25 = D11*3/4 -> otomatis
 const r3_25=lapRowHybrid('INF Romadhon 3/4','inp','ref','','l3e25',true);
-r3_25.querySelectorAll('td')[4].title='=INF Romadhon × 3/4';
+r3_25.querySelectorAll('td')[4].title='=INF Romadhon Ã— 3/4';
 b3.appendChild(r3_25);
 // E26 = D12*2/3 -> otomatis
 const r3_26=lapRowHybrid("INF JUM'AT 2/3",'inp','ref','','l3e26',true);
-r3_26.querySelectorAll('td')[4].title="=INF Jum'at × 2/3";
+r3_26.querySelectorAll('td')[4].title="=INF Jum'at Ã— 2/3";
 b3.appendChild(r3_26);
 // E27 = D13*2/3 -> otomatis
 const r3_27=lapRowHybrid('INF Lailatul Qodar 2/3','inp','ref','','l3e27',true);
-r3_27.querySelectorAll('td')[4].title='=INF Lailatul Qodar × 2/3';
+r3_27.querySelectorAll('td')[4].title='=INF Lailatul Qodar Ã— 2/3';
 b3.appendChild(r3_27);
 // E28 = D14*1 -> otomatis
 const r3_28=lapRowHybrid('INF Hari Raya 100%','inp','ref','','l3e28',true);
-r3_28.querySelectorAll('td')[4].title='=INF Hari Raya × 100%';
+r3_28.querySelectorAll('td')[4].title='=INF Hari Raya Ã— 100%';
 b3.appendChild(r3_28);
 // E29 = D15*7/8 -> otomatis
 const r3_29=lapRowHybrid('Warisan rod 7/8','inp','ref','','l3e29',true);
-r3_29.querySelectorAll('td')[4].title='=Warisan ROT × 7/8';
+r3_29.querySelectorAll('td')[4].title='=Warisan ROT Ã— 7/8';
 b3.appendChild(r3_29);
-// Zakat, Operasional — input kredit
+// Zakat, Operasional â€” input kredit
 b3.appendChild(lapRowInp('Zakat','kre'));
 b3.appendChild(lapRowInp('operasional','kre'));
 
@@ -2336,12 +2336,12 @@ b3.appendChild(rSA);
 function getN(id){ return bersihkanAngka((document.getElementById(id)||{textContent:'0'}).textContent); }
 
 function recalc3(){
-  // ── Tarik dari Data Jamaah ──
+  // â”€â”€ Tarik dari Data Jamaah â”€â”€
   const W35 = getN('jW');   // FR total
   const X35 = getN('jX');   // Shodaqoh total
   const Y35 = getN('jY');   // Infaq total
 
-  // ── Tarik dari Buku Kas (debet baris tertentu) ──
+  // â”€â”€ Tarik dari Buku Kas (debet baris tertentu) â”€â”€
   const D13 = numTd(document.getElementById('k13')?.querySelectorAll('td')[3]); // INF Romadhon
   const D14 = numTd(document.getElementById('k14')?.querySelectorAll('td')[3]); // INF Jum'at
   const D15 = numTd(document.getElementById('k15')?.querySelectorAll('td')[3]); // INF Lailatul Qodar
@@ -2366,7 +2366,7 @@ function recalc3(){
     }
   };
 
-  // ── Set Penerimaan (Debet) ──
+  // â”€â”€ Set Penerimaan (Debet) â”€â”€
   set('l3d8',  W35);
   set('l3d9',  X35);
   set('l3d10', Y35);
@@ -2377,7 +2377,7 @@ function recalc3(){
   set('l3d15', D22);
   set('l3d16', D17);
 
-  // ── Set Pengeluaran (Kredit) ──
+  // â”€â”€ Set Pengeluaran (Kredit) â”€â”€
   set('l3e22', W35);
   set('l3e24', Y35);
   set('l3e25', preciseVals['l3e25']);   // D13 * 3/4
@@ -2386,7 +2386,7 @@ function recalc3(){
   set('l3e28', D16);
   set('l3e29', preciseVals['l3e29']);   // D22 * 7/8
 
-  // ── Hitung Total: gunakan dataset.precise jika ada, fallback ke numTd ──
+  // â”€â”€ Hitung Total: gunakan dataset.precise jika ada, fallback ke numTd â”€â”€
   let totD = 0, totK = 0;
   b3.querySelectorAll('tr:not(.rl):not(.rj):not(.rt):not(.rs):not(.rsa)').forEach(row => {
     const tds = row.querySelectorAll('td');
@@ -2404,7 +2404,7 @@ function recalc3(){
   set('l3totD', totD);
   set('l3totK', totK);
 
-  // ── Saldo = Total Debet - Total Kredit (presisi penuh, tampil bulat) ──
+  // â”€â”€ Saldo = Total Debet - Total Kredit (presisi penuh, tampil bulat) â”€â”€
   const selisih = totD - totK;
   set('l3sBln', selisih);
   set('l3sAkh', selisih);
@@ -2418,12 +2418,12 @@ document.getElementById('t3').addEventListener('contextmenu', e=>{
     tampilContextMenuLaporanKas(e, row);
   }
 });
-// Saldo awal laporan kas — simpan ke tabel saldo_awal
+// Saldo awal laporan kas â€” simpan ke tabel saldo_awal
 document.getElementById('b3').addEventListener('input', e=>{
   if(e.target.closest('#l3sAwal')) { recalc3(); debounceSaveSaldo(); }
 });
 
-/* ─── Navigasi Bulan ─── */
+/* â”€â”€â”€ Navigasi Bulan â”€â”€â”€ */
 const BULAN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 let _periodeDate = {bulan:11, tahun:2025}; // 0-indexed, 11=Desember
 
@@ -2481,21 +2481,21 @@ function gantiPeriode(arah){
   });
 }
 
-/* ─── Manajemen Periode ─── */
+/* â”€â”€â”€ Manajemen Periode â”€â”€â”€ */
 async function tampilkanSemuaPeriode(){
-  console.log('🔍 tampilkanSemuaPeriode dipanggil');
+  console.log('ðŸ” tampilkanSemuaPeriode dipanggil');
   
   const sb = initSupabase();
   if(!sb){
-    console.log('❌ Supabase tidak terkoneksi');
-    alert('❌ Supabase belum terkoneksi!');
+    console.log('âŒ Supabase tidak terkoneksi');
+    alert('âŒ Supabase belum terkoneksi!');
     return;
   }
 
   const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok = cfg.kelompok||'Gumukrejo';
   
-  console.log('📊 Mengambil periode untuk kelompok:', kelompok);
+  console.log('ðŸ“Š Mengambil periode untuk kelompok:', kelompok);
 
   try {
     // Ambil semua periode yang ada dari tabel data_jamaah
@@ -2504,26 +2504,26 @@ async function tampilkanSemuaPeriode(){
       .eq('kelompok', kelompok)
       .order('periode', {ascending: false});
 
-    console.log('📋 Hasil query periodes:', { periodes, error });
+    console.log('ðŸ“‹ Hasil query periodes:', { periodes, error });
 
     if(error){
       console.error('Error:', error);
-      alert('❌ Gagal mengambil data periode: ' + error.message);
+      alert('âŒ Gagal mengambil data periode: ' + error.message);
       return;
     }
 
     // Ambil periode unik
     const uniquePeriodes = [...new Set(periodes?.map(p => p.periode) || [])];
-    console.log('🎯 Periode unik:', uniquePeriodes);
+    console.log('ðŸŽ¯ Periode unik:', uniquePeriodes);
     
     if(uniquePeriodes.length === 0){
-      console.log('📭 Tidak ada periode untuk kelompok:', kelompok);
-      alert('📋 Belum ada data untuk kelompok "' + kelompok + '"');
+      console.log('ðŸ“­ Tidak ada periode untuk kelompok:', kelompok);
+      alert('ðŸ“‹ Belum ada data untuk kelompok "' + kelompok + '"');
       return;
     }
 
     // Buat modal untuk pilih periode
-    console.log('🎯 Membuat modal untuk periode:', uniquePeriodes);
+    console.log('ðŸŽ¯ Membuat modal untuk periode:', uniquePeriodes);
     const modal = document.createElement('div');
     modal.style.cssText = `
       position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; 
@@ -2537,7 +2537,7 @@ async function tampilkanSemuaPeriode(){
     `;
 
     const title = document.createElement('h3');
-    title.textContent = '📋 Pilih Periode';
+    title.textContent = 'ðŸ“‹ Pilih Periode';
     title.style.cssText = 'margin:0 0 16px 0; color:var(--hijau); font-size:18px;';
     box.appendChild(title);
 
@@ -2558,7 +2558,7 @@ async function tampilkanSemuaPeriode(){
       actions.style.cssText = 'display:flex; gap:4px;';
       
       const switchBtn = document.createElement('button');
-      switchBtn.textContent = '🔄 Switch';
+      switchBtn.textContent = 'ðŸ”„ Switch';
       switchBtn.style.cssText = 'padding:4px 8px; font-size:10px; background:var(--hijau2); color:white; border:none; border-radius:4px; cursor:pointer;';
       switchBtn.onclick = async (e) => {
         e.stopPropagation();
@@ -2580,11 +2580,11 @@ async function tampilkanSemuaPeriode(){
         await loadAll();
         modal.remove();
         
-        showStatus(`✅ Switch ke periode: ${periode}`, '#2e7d5a');
+        showStatus(`âœ… Switch ke periode: ${periode}`, '#2e7d5a');
       };
       
       const editBtn = document.createElement('button');
-      editBtn.textContent = '✏️ Edit';
+      editBtn.textContent = 'âœï¸ Edit';
       editBtn.style.cssText = 'padding:4px 8px; font-size:10px; background:#f39c12; color:white; border:none; border-radius:4px; cursor:pointer;';
       editBtn.onclick = async (e) => {
         e.stopPropagation();
@@ -2592,11 +2592,11 @@ async function tampilkanSemuaPeriode(){
       };
       
       const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = '🗑️ Hapus';
+      deleteBtn.textContent = 'ðŸ—‘ï¸ Hapus';
       deleteBtn.style.cssText = 'padding:4px 8px; font-size:10px; background:#e74c3c; color:white; border:none; border-radius:4px; cursor:pointer;';
       deleteBtn.onclick = async (e) => {
         e.stopPropagation();
-        console.log('🗑️ Tombol hapus diklik untuk periode:', periode);
+        console.log('ðŸ—‘ï¸ Tombol hapus diklik untuk periode:', periode);
         await hapusPeriodeData(periode, modal);
       };
       
@@ -2636,7 +2636,7 @@ async function tampilkanSemuaPeriode(){
 
   } catch(e){
     console.error('Error:', e);
-    alert('❌ Terjadi kesalahan: ' + e.message);
+    alert('âŒ Terjadi kesalahan: ' + e.message);
   }
 }
 
@@ -2655,7 +2655,7 @@ async function editPeriodeData(oldPeriode, parentModal) {
   `;
 
   const title = document.createElement('h3');
-  title.textContent = '✏️ Edit Periode Data';
+  title.textContent = 'âœï¸ Edit Periode Data';
   title.style.cssText = 'margin:0 0 16px 0; color:var(--hijau); font-size:18px;';
   box.appendChild(title);
 
@@ -2664,9 +2664,9 @@ async function editPeriodeData(oldPeriode, parentModal) {
     <p style="margin:0 0 16px 0; color:#666; font-size:13px; line-height:1.4;">
       Data dengan periode <strong>${oldPeriode}</strong> akan dipindahkan ke periode baru.
       <br><br>
-      <strong>⚠️ Perhatian:</strong> Ini akan mengubah SEMUA data di periode tersebut:
-      <br>• Data Jamaah, Buku Kas, Laporan Kas
-      <br>• Saldo Awal
+      <strong>âš ï¸ Perhatian:</strong> Ini akan mengubah SEMUA data di periode tersebut:
+      <br>â€¢ Data Jamaah, Buku Kas, Laporan Kas
+      <br>â€¢ Saldo Awal
     </p>
   `;
   box.appendChild(info);
@@ -2696,23 +2696,23 @@ async function editPeriodeData(oldPeriode, parentModal) {
   cancelBtn.onclick = () => modal.remove();
 
   const confirmBtn = document.createElement('button');
-  confirmBtn.textContent = '🔄 Ubah Periode';
+  confirmBtn.textContent = 'ðŸ”„ Ubah Periode';
   confirmBtn.className = 'btn btn-p';
   confirmBtn.style.cssText = 'flex:1; background:#f39c12;';
   confirmBtn.onclick = async () => {
     const newPeriode = document.getElementById('new-periode-input').value.trim();
     
     if(!newPeriode) {
-      alert('❌ Masukkan periode baru!');
+      alert('âŒ Masukkan periode baru!');
       return;
     }
 
     if(newPeriode === oldPeriode) {
-      alert('❌ Periode baru sama dengan periode lama!');
+      alert('âŒ Periode baru sama dengan periode lama!');
       return;
     }
 
-    if(!confirm(`⚠️ Yakin ingin mengubah semua data dari "${oldPeriode}" ke "${newPeriode}"?\n\nTindakan ini tidak dapat dibatalkan!`)) {
+    if(!confirm(`âš ï¸ Yakin ingin mengubah semua data dari "${oldPeriode}" ke "${newPeriode}"?\n\nTindakan ini tidak dapat dibatalkan!`)) {
       return;
     }
 
@@ -2720,7 +2720,7 @@ async function editPeriodeData(oldPeriode, parentModal) {
       await prosesUbahPeriode(oldPeriode, newPeriode);
       modal.remove();
       parentModal.remove();
-      showStatus(`✅ Periode berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`, '#2e7d5a');
+      showStatus(`âœ… Periode berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`, '#2e7d5a');
       
       // Switch ke periode baru dan reload data
       document.getElementById('cfg-periode').value = newPeriode;
@@ -2745,7 +2745,7 @@ async function editPeriodeData(oldPeriode, parentModal) {
 
     } catch(e) {
       console.error('Error ubah periode:', e);
-      alert('❌ Gagal mengubah periode: ' + e.message);
+      alert('âŒ Gagal mengubah periode: ' + e.message);
     }
   };
 
@@ -2777,7 +2777,7 @@ async function prosesUbahPeriode(oldPeriode, newPeriode) {
   const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok = cfg.kelompok||'Gumukrejo';
 
-  console.log(`🔄 Mengubah periode: ${oldPeriode} → ${newPeriode} untuk kelompok: ${kelompok}`);
+  console.log(`ðŸ”„ Mengubah periode: ${oldPeriode} â†’ ${newPeriode} untuk kelompok: ${kelompok}`);
 
   // Update semua tabel yang ada
   const tables = [
@@ -2790,7 +2790,7 @@ async function prosesUbahPeriode(oldPeriode, newPeriode) {
   let totalUpdated = 0;
 
   for(const table of tables) {
-    console.log(`📝 Update tabel: ${table}`);
+    console.log(`ðŸ“ Update tabel: ${table}`);
     
     // Cek dulu data yang akan diupdate
     const { data: existingData, error: checkError } = await sb.from(table)
@@ -2799,16 +2799,16 @@ async function prosesUbahPeriode(oldPeriode, newPeriode) {
       .eq('periode', oldPeriode);
     
     if(checkError) {
-      console.warn(`⚠️ Error cek ${table}:`, checkError);
+      console.warn(`âš ï¸ Error cek ${table}:`, checkError);
       continue;
     }
 
     if(!existingData || existingData.length === 0) {
-      console.log(`📭 Tidak ada data di ${table} untuk periode ${oldPeriode}`);
+      console.log(`ðŸ“­ Tidak ada data di ${table} untuk periode ${oldPeriode}`);
       continue;
     }
 
-    console.log(`📊 Ditemukan ${existingData.length} record di ${table}`);
+    console.log(`ðŸ“Š Ditemukan ${existingData.length} record di ${table}`);
 
     // Update periode untuk semua record
     const { data: updatedData, error: updateError } = await sb.from(table)
@@ -2818,11 +2818,11 @@ async function prosesUbahPeriode(oldPeriode, newPeriode) {
       .select('*');
 
     if(updateError) {
-      console.error(`❌ Gagal update ${table}:`, updateError);
+      console.error(`âŒ Gagal update ${table}:`, updateError);
       throw new Error(`Gagal update ${table}: ${updateError.message}`);
     }
 
-    console.log(`✅ ${table}: ${updatedData?.length || 0} record berhasil diupdate`);
+    console.log(`âœ… ${table}: ${updatedData?.length || 0} record berhasil diupdate`);
     totalUpdated += (updatedData?.length || 0);
 
     // Verifikasi update berhasil
@@ -2833,24 +2833,24 @@ async function prosesUbahPeriode(oldPeriode, newPeriode) {
       .eq('periode', newPeriode);
     
     if(verifyError) {
-      console.warn(`⚠️ Error verifikasi ${table}:`, verifyError);
+      console.warn(`âš ï¸ Error verifikasi ${table}:`, verifyError);
     } else {
-      console.log(`✅ Verifikasi ${table}: ${verifyData?.length || 0} record di periode baru`);
+      console.log(`âœ… Verifikasi ${table}: ${verifyData?.length || 0} record di periode baru`);
     }
   }
 
-  console.log(`✅ Total ${totalUpdated} record berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`);
+  console.log(`âœ… Total ${totalUpdated} record berhasil diubah dari "${oldPeriode}" ke "${newPeriode}"`);
   
   // Reload data untuk memastikan perubahan terlihat
   if(totalUpdated > 0) {
-    console.log('🔄 Me-reload data setelah update periode...');
+    console.log('ðŸ”„ Me-reload data setelah update periode...');
     await loadAll();
   }
 }
 
 // Fungsi untuk hapus periode beserta semua data
 async function hapusPeriodeData(periode, parentModal) {
-  console.log('🗑️ hapusPeriodeData dipanggil untuk periode:', periode);
+  console.log('ðŸ—‘ï¸ hapusPeriodeData dipanggil untuk periode:', periode);
   
   const modal = document.createElement('div');
   modal.style.cssText = `
@@ -2865,14 +2865,14 @@ async function hapusPeriodeData(periode, parentModal) {
   `;
 
   const title = document.createElement('h3');
-  title.textContent = '🗑️ Hapus Periode';
+  title.textContent = 'ðŸ—‘ï¸ Hapus Periode';
   title.style.cssText = 'margin:0 0 16px 0; color:#e74c3c; font-size:18px;';
   box.appendChild(title);
 
   const warning = document.createElement('div');
   warning.innerHTML = `
     <div style="background:#fee; border:1px solid #fcc; border-radius:8px; padding:16px; margin-bottom:16px;">
-      <h4 style="color:#e74c3c; margin:0 0 12px 0; font-size:14px;">⚠️ PERINGATAN KRITIS!</h4>
+      <h4 style="color:#e74c3c; margin:0 0 12px 0; font-size:14px;">âš ï¸ PERINGATAN KRITIS!</h4>
       <p style="margin:0 0 8px 0; color:#333; font-size:13px; line-height:1.4;">
         Anda akan <strong>MENGHAPUS PERMANEN</strong> semua data untuk periode:
       </p>
@@ -2881,10 +2881,10 @@ async function hapusPeriodeData(periode, parentModal) {
       </div>
       <p style="margin:8px 0 0 0; color:#333; font-size:13px; line-height:1.4;">
         Data yang akan dihapus:
-        <br>• <strong>Data Jamaah</strong> (semua anggota & setoran)
-        <br>• <strong>Buku Kas</strong> (semua transaksi)
-        <br>• <strong>Laporan Kas</strong> (semua laporan)
-        <br>• <strong>Saldo Awal</strong>
+        <br>â€¢ <strong>Data Jamaah</strong> (semua anggota & setoran)
+        <br>â€¢ <strong>Buku Kas</strong> (semua transaksi)
+        <br>â€¢ <strong>Laporan Kas</strong> (semua laporan)
+        <br>â€¢ <strong>Saldo Awal</strong>
       </p>
       <p style="margin:8px 0 0 0; color:#666; font-size:12px; font-style:italic;">
         Tindakan ini <strong>TIDAK DAPAT DIBATALKAN!</strong>
@@ -2911,24 +2911,24 @@ async function hapusPeriodeData(periode, parentModal) {
   actions.style.cssText = 'display:flex; gap:8px;';
 
   const cancelBtn = document.createElement('button');
-  cancelBtn.textContent = '❌ Batal';
+  cancelBtn.textContent = 'âŒ Batal';
   cancelBtn.className = 'btn btn-r';
   cancelBtn.style.cssText = 'flex:1; font-size:14px;';
   cancelBtn.onclick = () => modal.remove();
 
   const confirmBtn = document.createElement('button');
-  confirmBtn.textContent = '🗑️ HAPUS PERMANEN';
+  confirmBtn.textContent = 'ðŸ—‘ï¸ HAPUS PERMANEN';
   confirmBtn.className = 'btn btn-r';
   confirmBtn.style.cssText = 'flex:1; background:#e74c3c; font-size:14px; font-weight:bold;';
   confirmBtn.onclick = async () => {
     const confirmText = document.getElementById('confirm-delete-input').value.trim();
     
     if(confirmText !== 'HAPUS') {
-      alert('❌ Masukkan "HAPUS" untuk konfirmasi penghapusan!');
+      alert('âŒ Masukkan "HAPUS" untuk konfirmasi penghapusan!');
       return;
     }
 
-    if(!confirm(`🗑️ ANDA YAKIN?\n\nPeriode "${periode}" dan SEMUA datanya akan dihapus PERMANEN!\n\nTidak ada cara untuk membatalkan tindakan ini!`)) {
+    if(!confirm(`ðŸ—‘ï¸ ANDA YAKIN?\n\nPeriode "${periode}" dan SEMUA datanya akan dihapus PERMANEN!\n\nTidak ada cara untuk membatalkan tindakan ini!`)) {
       return;
     }
 
@@ -2936,7 +2936,7 @@ async function hapusPeriodeData(periode, parentModal) {
       await prosesHapusPeriode(periode);
       modal.remove();
       parentModal.remove();
-      showStatus(`🗑️ Periode "${periode}" dan semua data telah dihapus`, '#e74c3c');
+      showStatus(`ðŸ—‘ï¸ Periode "${periode}" dan semua data telah dihapus`, '#e74c3c');
       
       // Refresh data
       setTimeout(() => {
@@ -2945,7 +2945,7 @@ async function hapusPeriodeData(periode, parentModal) {
 
     } catch(e) {
       console.error('Error hapus periode:', e);
-      alert('❌ Gagal menghapus periode: ' + e.message);
+      alert('âŒ Gagal menghapus periode: ' + e.message);
     }
   };
 
@@ -2977,7 +2977,7 @@ async function prosesHapusPeriode(periode) {
   const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
   const kelompok = cfg.kelompok||'Gumukrejo';
 
-  console.log(`🗑️ Menghapus periode: ${periode} untuk kelompok: ${kelompok}`);
+  console.log(`ðŸ—‘ï¸ Menghapus periode: ${periode} untuk kelompok: ${kelompok}`);
 
   // Hapus dari semua tabel yang ada
   const tables = [
@@ -2988,7 +2988,7 @@ async function prosesHapusPeriode(periode) {
   ];
 
   for(const table of tables) {
-    console.log(`🗑️ Hapus dari tabel: ${table}`);
+    console.log(`ðŸ—‘ï¸ Hapus dari tabel: ${table}`);
     
     const { error } = await sb.from(table)
       .delete()
@@ -2996,28 +2996,28 @@ async function prosesHapusPeriode(periode) {
       .eq('periode', periode);
     
     if(error) {
-      console.warn(`⚠️ Error hapus ${table}:`, error);
+      console.warn(`âš ï¸ Error hapus ${table}:`, error);
       // Lanjutkan ke tabel berikutnya meskipun ada error
     } else {
-      console.log(`✅ ${table}: Berhasil dihapus`);
+      console.log(`âœ… ${table}: Berhasil dihapus`);
     }
   }
 
-  console.log(`✅ Semua data periode "${periode}" berhasil dihapus`);
+  console.log(`âœ… Semua data periode "${periode}" berhasil dihapus`);
 }
 
 async function refreshPeriodeAktif(){
-  showStatus('🔄 Refresh data...', '#f39c12');
+  showStatus('ðŸ”„ Refresh data...', '#f39c12');
   try {
     await loadAll();
-    showStatus('✅ Data refreshed', '#2e7d5a');
+    showStatus('âœ… Data refreshed', '#2e7d5a');
   } catch(e){
     console.error('Error refresh:', e);
-    showStatus('❌ Refresh gagal', '#c0392b');
+    showStatus('âŒ Refresh gagal', '#c0392b');
   }
 }
 
-/* ─── Setting ─── */
+/* â”€â”€â”€ Setting â”€â”€â”€ */
 function loadSetting(){
   const s=JSON.parse(localStorage.getItem('cfg')||'{}');
   if(s.kelompok) document.getElementById('cfg-kelompok').value=s.kelompok;
@@ -3038,8 +3038,8 @@ function terapkanSetting(s){
   // Update cover & subtitle
   document.getElementById('cover-kelompok').textContent='Kelompok '+kelompok;
   document.getElementById('cover-periode').textContent=periode;
-  document.querySelectorAll('.psub').forEach(el=>el.textContent='Kelompok '+kelompok+' · '+periode);
-  document.getElementById('footer-text').textContent='Laporan Keuangan Kelompok '+kelompok+' — '+periode+' | Formula sesuai Excel asli';
+  document.querySelectorAll('.psub').forEach(el=>el.textContent='Kelompok '+kelompok+' Â· '+periode);
+  document.getElementById('footer-text').textContent='Laporan Keuangan Kelompok '+kelompok+' â€” '+periode+' | Formula sesuai Excel asli';
   updateLabelSaldoAwal();
   // Update Supabase client jika ada
   if(s.url&&s.key){
@@ -3056,11 +3056,11 @@ function simpanSetting(){
   localStorage.setItem('cfg',JSON.stringify(s));
   terapkanSetting(s);
   const st=document.getElementById('cfg-status');
-  st.textContent='✅ Setting tersimpan';st.style.display='block';
+  st.textContent='âœ… Setting tersimpan';st.style.display='block';
   setTimeout(()=>st.style.display='none',2500);
 }
 
-/* ─── Tab switch ─── */
+/* â”€â”€â”€ Tab switch â”€â”€â”€ */
 function showTab(id,btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
@@ -3070,10 +3070,10 @@ function showTab(id,btn){
   if(id==='kelas') renderKelas();
 }
 
-/* ─── Reset ─── */
+/* â”€â”€â”€ Reset â”€â”€â”€ */
 function resetAll(){
   if(!confirm('Reset semua data?')) return;
-  // Kecualikan saldo awal — disimpan di tabel terpisah
+  // Kecualikan saldo awal â€” disimpan di tabel terpisah
   document.querySelectorAll('[contenteditable=true]').forEach(el=>{
     if(el.closest('#k6saldo') || el.closest('#l3sAwal')) return;
     el.textContent='';
@@ -3084,9 +3084,9 @@ function resetAll(){
 // Initial calc
 recalc1();
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    LOAD DATA DARI SUPABASE
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function setCell(td, val){
   const d = td?.querySelector('[contenteditable]');
   const target = d || td;
@@ -3109,7 +3109,7 @@ async function loadAll(){
   const kelompok=cfg.kelompok||'Gumukrejo';
   const periode=getPeriodeStr();
 
-  // ── Data Jamaah ──
+  // â”€â”€ Data Jamaah â”€â”€
   const {data:dj, error:djErr} = await _sb.from('data_jamaah')
     .select('*').eq('kelompok',kelompok).eq('periode',periode)
     .order('baris');
@@ -3126,7 +3126,7 @@ async function loadAll(){
       b1.insertBefore(tr, b1.querySelector('tr.rt'));
       const td = tr.querySelectorAll('td');
       setCell(td[0], row.setor ? String(row.setor) : '');
-      if(row.kk==='1'){ td[3].dataset.checked='1'; td[3].textContent='✔'; }
+      if(row.kk==='1'){ td[3].dataset.checked='1'; td[3].textContent='âœ”'; }
       setCell(td[5], row.nama);
       const cols=['ir','sudr','ypk','donpns','jatdes','suds','satpam','asad','tanah','dapur','sdqremaja','bata','stia'];
       cols.forEach((c,i)=>{ if(row[c]) setCell(td[6+i], String(row[c])); });
@@ -3135,7 +3135,7 @@ async function loadAll(){
       cols2.forEach((c,i)=>{ if(row[c]) setCell(td[19+i], String(row[c])); });
     });
   } else if(b1.querySelectorAll('tr:not(.rt)').length === 0){
-    // Benar-benar kosong — pakai nama default (pertama kali)
+    // Benar-benar kosong â€” pakai nama default (pertama kali)
     const namaList=['SUNARNO','SRI','BAMABNG','SITI KHOTIJAH','DENDI','EVA','DEWI','FAHRIL','AGIL','AISYAH','MURTINI','ANING','SUMIYATUN','MUSLIMIN','NOVI','NABILA','NAJWA','PUJIYANTO','NUR HIDAYATI','AMANDA','PUJIYONO','SITI SUPRIHATIN','ROFIQ','NOVA','YANUAR','JUMERI','ETIK SUSILOWATI','PUJIASMORO','ARIF SAMIYATI','DINA','FADILA','DAVIZA','IRMANIDA','HANANTO','WAHYU WIDAYATI','SALSABILA','YAVIS','AL AZZAM','AIRIN','KENZO','SUSANTI','SATRIA','FERNANDA','HASAN','YUNI','ARFADHIA','JENNAIRA','SAKIR','TRI RAHAYU','EKO NURYANTO','HURIYAH','REZA','ALIKHA','ANINDITA','JOKO','MITA','SULIMAH','NUNIK','ANIS','ZIDAN','SUWARTI'];
     namaList.forEach(nama=>{
       const tr=buatBarisDOM(false);
@@ -3144,15 +3144,15 @@ async function loadAll(){
     });
   }
 
-  // ── Buku Kas ──
+  // â”€â”€ Buku Kas â”€â”€
   const {data:bk} = await _sb.from('buku_kas')
     .select('*').eq('kelompok',kelompok).eq('periode',periode)
     .order('baris');
 
   if(bk&&bk.length){
-    // Map keterangan → nomor baris DOM yang benar
+    // Map keterangan â†’ nomor baris DOM yang benar
     const KET_TO_BARIS = {
-      'FR ….': null, 'SDQ …..': null, 'INF….': null, // baris 7-12 bisa duplikat, skip
+      'FR â€¦.': null, 'SDQ â€¦..': null, 'INFâ€¦.': null, // baris 7-12 bisa duplikat, skip
       'INF Romadhon': 13, "INF Jum'at": 14, 'INF Lailatul Qodar': 15,
       'INF Hari Raya': 16, 'Zakat': 17,
       'Warisan rod': 22,
@@ -3230,7 +3230,7 @@ async function loadAll(){
     });
   }
 
-  // ── Laporan Kas ──
+  // â”€â”€ Laporan Kas â”€â”€
   const {data:lk} = await _sb.from('laporan_kas')
     .select('*').eq('kelompok',kelompok).eq('periode',periode)
     .order('baris');
@@ -3254,14 +3254,14 @@ async function loadAll(){
   pasangFormatterAngka(document.getElementById('t1'));
   pasangFormatterAngka(document.getElementById('t2'));
   pasangFormatterAngka(document.getElementById('t3'));
-  terapkanKelasKeData(); // isi kolom kelas — memanggil recalc1 di akhir
+  terapkanKelasKeData(); // isi kolom kelas â€” memanggil recalc1 di akhir
   recalc2();
   recalc3();
 }
 
-/* ══════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    DOWNLOAD EXCEL
-══════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function getTeks(td){
   if(!td) return '';
   const d = td.querySelector('[contenteditable]');
@@ -3269,7 +3269,7 @@ function getTeks(td){
 }
 function getAngka(td){
   const t = getTeks(td);
-  if(t===''||t==='✔') return t;
+  if(t===''||t==='âœ”') return t;
   const n = bersihkanAngka(t);
   // Tulis 0 hanya jika teks memang '0', bukan dari sel kosong
   if(n===0) return t===''?'':0;
@@ -3381,7 +3381,7 @@ function downloadExcel(){
       const isTotal = tr.className.includes('rt')||tr.className.includes('rs')||tr.className.includes('rsa');
       const isLabel = tr.className.includes('rl')||tr.className.includes('rj');
 
-      // Baris label (rl/rj): colspan besar — tulis label di kolom Keterangan (index 1)
+      // Baris label (rl/rj): colspan besar â€” tulis label di kolom Keterangan (index 1)
       if(isLabel){
         for(let c=0;c<totalCols;c++) row.push('');
         for(let c=0;c<totalCols;c++) srow.push(STYLE_DATA);
@@ -3463,7 +3463,7 @@ function downloadExcel(){
       else if(h.includes('DEBET')||h.includes('KREDIT')||h.includes('SALDO')) w=14;
       colWidths[c]=w;
     });
-    // Scan isi data — skip kolom fixed (NO, KK, Anggota)
+    // Scan isi data â€” skip kolom fixed (NO, KK, Anggota)
     aoa.forEach(row=>{
       row.forEach((val,c)=>{
         if(fixedCols.has(c)) return;
@@ -3506,3 +3506,4 @@ loadAll();
 </script>
 </body>
 </html>
+
