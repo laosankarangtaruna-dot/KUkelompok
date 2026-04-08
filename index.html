@@ -171,7 +171,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#888;border-top:1px s
   <div class="div"></div>
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
     <button class="btn btn-p" onclick="tambahBarisBukuKas()" style="background:var(--hijau2)">➕ Tambah Baris</button>
-    <button class="btn btn-r" onclick="debugBukuKasData()" style="font-size:11px;padding:4px 10px">🔍 Debug Data</button>
+    <button class="btn btn-r" onclick="resetBukuKasDB()" style="font-size:11px;padding:4px 10px">�️ Reset Data Kas DB</button>
     <span style="font-size:11px;color:#888">Klik kanan pada baris untuk opsi hapus</span>
   </div>
   <div class="legend">
@@ -1681,6 +1681,20 @@ window.hapusAgresif = async function() {
   }
 };
 
+// Reset: hapus semua data buku_kas dari DB untuk periode ini, lalu simpan ulang dari DOM
+async function resetBukuKasDB(){
+  if(!confirm('Reset semua data Buku Kas di database untuk periode ini?\n\nData yang sudah diinput di layar akan disimpan ulang dengan struktur yang benar.\n\nLanjutkan?')) return;
+  const cfg = JSON.parse(localStorage.getItem('cfg')||'{}');
+  const kelompok = cfg.kelompok||'Gumukrejo';
+  const periode = getPeriodeStr();
+  showStatus('⏳ Reset data kas...', '#e67e22');
+  // Hapus semua data lama
+  await _sb.from('buku_kas').delete().eq('kelompok',kelompok).eq('periode',periode);
+  // Simpan ulang dari DOM (struktur baru)
+  await saveBukuKas();
+  showStatus('✅ Data kas direset & disimpan ulang', '#2e7d5a');
+}
+
 // Debug: Lihat semua data Buku Kas di database
 async function debugBukuKasData() {
   const sb = initSupabase();
@@ -3135,48 +3149,77 @@ async function loadAll(){
     .select('*').eq('kelompok',kelompok).eq('periode',periode)
     .order('baris');
 
-  // Baris yang hanya boleh punya Debet (kredit harus 0)
-  const BARIS_DEBET_ONLY = new Set([7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]);
-  // Baris yang hanya boleh punya Kredit (debet harus 0)
-  const BARIS_KREDIT_ONLY = new Set([23,25,26,27,28,29,30,31,32]);
-
   if(bk&&bk.length){
-    // Bersihkan data yang salah posisi di DB
-    const rowsToFix = bk.filter(r =>
-      (BARIS_DEBET_ONLY.has(r.baris) && r.kredit && r.kredit !== 0) ||
-      (BARIS_KREDIT_ONLY.has(r.baris) && r.debet && r.debet !== 0) ||
-      (r.kredit && r.kredit >= 100000000) // nilai kredit tidak wajar (>= 100 juta)
+    // Map keterangan → nomor baris DOM yang benar
+    const KET_TO_BARIS = {
+      'FR ….': null, 'SDQ …..': null, 'INF….': null, // baris 7-12 bisa duplikat, skip
+      'INF Romadhon': 13, "INF Jum'at": 14, 'INF Lailatul Qodar': 15,
+      'INF Hari Raya': 16, 'Zakat': 17,
+      'Warisan rod': 22,
+      'FR 100%': 23, 'SHODAQOH': 24, 'INFAQ': 25,
+      'INF Romadhon 3/4': 26, "INF JUM'AT 2/3": 27, 'INF Lailatul Qodar 2/3': 28,
+      'INF Hari Raya 100%': 29, 'Warisan rod 7/8': 30, 'Zakat': 31,
+      'operasional': 32,
+    };
+
+    // Baris yang hanya boleh punya Debet
+    const DEBET_ONLY = new Set([7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]);
+    // Baris yang hanya boleh punya Kredit (manual)
+    const KREDIT_MANUAL = new Set([24,32]);
+
+    // Deteksi dan perbaiki data yang salah: kredit di baris debet-only
+    const needsFix = bk.filter(r =>
+      (DEBET_ONLY.has(r.baris) && r.kredit && r.kredit > 0 && r.kredit < 100000000) ||
+      (r.kredit && r.kredit >= 100000000)
     );
-    if(rowsToFix.length){
-      for(const r of rowsToFix){
-        let patch = {};
-        if(BARIS_DEBET_ONLY.has(r.baris)){
-          // Pindahkan kredit ke debet jika debet masih 0
-          if((!r.debet || r.debet === 0) && r.kredit > 0 && r.kredit < 100000000){
-            patch.debet = r.kredit;
+
+    if(needsFix.length){
+      // Cari baris yang punya keterangan cocok dengan label di DOM
+      for(const r of needsFix){
+        const ket = (r.keterangan||'').trim();
+        const targetBaris = KET_TO_BARIS[ket];
+        const patch = { kredit: 0 };
+
+        // Jika keterangan cocok dengan baris debet yang benar, pindahkan nilai
+        if(targetBaris && DEBET_ONLY.has(targetBaris) && r.kredit > 0 && r.kredit < 100000000){
+          // Cek apakah baris target sudah ada di DB
+          const existing = bk.find(x => x.baris === targetBaris);
+          if(existing){
+            if(!existing.debet || existing.debet === 0){
+              await _sb.from('buku_kas').update({debet: r.kredit}).eq('id', existing.id);
+            }
+          } else {
+            // Buat baris baru di posisi yang benar
+            await _sb.from('buku_kas').insert({
+              kelompok, periode, baris: targetBaris,
+              keterangan: ket, debet: r.kredit, kredit: 0,
+              updated_at: new Date().toISOString()
+            });
           }
-          patch.kredit = 0;
         }
-        if(BARIS_KREDIT_ONLY.has(r.baris)) patch.debet = 0;
-        if(r.kredit >= 100000000) patch.kredit = 0;
+        // Hapus kredit dari baris yang salah
         await _sb.from('buku_kas').update(patch).eq('id', r.id);
       }
+      // Reload data setelah fix
+      const {data:bk2} = await _sb.from('buku_kas')
+        .select('*').eq('kelompok',kelompok).eq('periode',periode).order('baris');
+      if(bk2) bk2.forEach(row => _loadBukuKasRow(row));
+    } else {
+      bk.forEach(row => _loadBukuKasRow(row));
     }
+  }
 
-    bk.forEach(row=>{
-      const tr = document.getElementById(`k${row.baris}`); if(!tr) return;
-      const td = tr.querySelectorAll('td');
-      if(td.length<4) return;
-      setCell(td[0], row.tgl);
-      setCell(td[2], row.code);
-      // Debet — hanya isi jika ada contenteditable (bukan baris kredit formula)
-      if(td[3]?.querySelector('[contenteditable]')) setCell(td[3], row.debet ? String(row.debet) : '');
-      // kredit hanya isi kalau bukan formula (ada contenteditable) dan nilai wajar
-      if(td[4]?.querySelector('[contenteditable]')){
-        const kVal = row.kredit || 0;
-        if(kVal > 0 && kVal < 100000000) setCell(td[4], String(kVal));
-      }
-    });
+  function _loadBukuKasRow(row){
+    const tr = document.getElementById(`k${row.baris}`); if(!tr) return;
+    const td = tr.querySelectorAll('td');
+    if(td.length<4) return;
+    setCell(td[0], row.tgl);
+    setCell(td[2], row.code);
+    if(td[3]?.querySelector('[contenteditable]')) setCell(td[3], row.debet ? String(row.debet) : '');
+    if(td[4]?.querySelector('[contenteditable]')){
+      const kVal = row.kredit || 0;
+      if(kVal > 0 && kVal < 100000000) setCell(td[4], String(kVal));
+    }
   }
   // Sembunyikan baris yang sudah dihapus user
   const barisHapus = getBarisHapus();
