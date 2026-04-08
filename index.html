@@ -3141,9 +3141,36 @@ async function loadAll(){
   const {data:bk} = await _sb.from('buku_kas')
     .select('*').eq('kelompok',kelompok).eq('periode',periode)
     .order('baris');
+
+  // Baris yang hanya boleh punya Debet (kredit harus 0)
+  const BARIS_DEBET_ONLY = new Set([7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]);
+  // Baris yang hanya boleh punya Kredit (debet harus 0)
+  const BARIS_KREDIT_ONLY = new Set([28,30,31,32,33,34,35,36,37]);
+
   if(bk&&bk.length){
+    // Bersihkan data yang salah posisi di DB
+    const rowsToFix = bk.filter(r =>
+      (BARIS_DEBET_ONLY.has(r.baris) && r.kredit && r.kredit !== 0) ||
+      (BARIS_KREDIT_ONLY.has(r.baris) && r.debet && r.debet !== 0) ||
+      (r.kredit && r.kredit >= 100000000) // nilai kredit tidak wajar (>= 100 juta)
+    );
+    if(rowsToFix.length){
+      for(const r of rowsToFix){
+        let patch = {};
+        if(BARIS_DEBET_ONLY.has(r.baris)){
+          // Pindahkan kredit ke debet jika debet masih 0
+          if((!r.debet || r.debet === 0) && r.kredit > 0 && r.kredit < 100000000){
+            patch.debet = r.kredit;
+          }
+          patch.kredit = 0;
+        }
+        if(BARIS_KREDIT_ONLY.has(r.baris)) patch.debet = 0;
+        if(r.kredit >= 100000000) patch.kredit = 0;
+        await _sb.from('buku_kas').update(patch).eq('id', r.id);
+      }
+    }
+
     bk.forEach(row=>{
-      // Cari baris berdasarkan id (k7, k8, dst) — tidak terpengaruh baris label di DOM
       const tr = document.getElementById(`k${row.baris}`); if(!tr) return;
       const td = tr.querySelectorAll('td');
       if(td.length<4) return;
@@ -3151,8 +3178,11 @@ async function loadAll(){
       setCell(td[2], row.code);
       // Debet — hanya isi jika ada contenteditable (bukan baris kredit formula)
       if(td[3]?.querySelector('[contenteditable]')) setCell(td[3], row.debet ? String(row.debet) : '');
-      // kredit hanya isi kalau bukan formula (ada contenteditable)
-      if(td[4]?.querySelector('[contenteditable]')) setCell(td[4], row.kredit ? String(row.kredit) : '');
+      // kredit hanya isi kalau bukan formula (ada contenteditable) dan nilai wajar
+      if(td[4]?.querySelector('[contenteditable]')){
+        const kVal = row.kredit || 0;
+        if(kVal > 0 && kVal < 100000000) setCell(td[4], String(kVal));
+      }
     });
   }
   // Sembunyikan baris yang sudah dihapus user
@@ -3191,8 +3221,6 @@ async function loadAll(){
   terapkanKelasKeData(); // isi kolom kelas — memanggil recalc1 di akhir
   recalc2();
   recalc3();
-  // Simpan ulang buku kas untuk membersihkan data kredit lama yang salah posisi
-  if(bk && bk.length) saveBukuKas();
 }
 
 /* ══════════════════════════════════════
